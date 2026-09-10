@@ -1,0 +1,739 @@
+<title>Quatre semaines</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+<style>
+*{box-sizing:border-box}
+
+:root{
+  color-scheme:light;
+  --ground:#E9ECF2; --surface:#FFFFFF; --surface-2:#F3F5FA;
+  --line:#D2D8E4; --line-2:#B6BFCF;
+  --ink:#151922; --ink-2:#464E5F; --ink-3:#737C8F;
+  --accent:#2B4C9B; --accent-soft:#DFE6F7;
+  --good:#1B8462; --warn:#B0730B; --bad:#B33A47;
+
+  --chantier-ink:#96490A; --chantier-soft:#FAE9D2; --chantier-line:#E4C296; --chantier-pure:#C2650A;
+  --prepa-ink:#2A4A96;    --prepa-soft:#E0E7F7;    --prepa-line:#B7C5E9;    --prepa-pure:#3D5FB4;
+  --passif-ink:#645F73;   --passif-soft:#E8E6ED;   --passif-line:#CFCBD9;   --passif-pure:#8A8399;
+  --cloture-ink:#116048;  --cloture-soft:#D9EFE6;  --cloture-line:#A2D4C2;  --cloture-pure:#1B8462;
+  --reception-ink:#8A2C69;--reception-soft:#F6E1EF;--reception-line:#E1B6D3;--reception-pure:#B93C8E;
+  --visite-ink:#53621C;   --visite-soft:#ECF1D6;   --visite-line:#C9D69A;   --visite-pure:#75892A;
+  --preparu-ink:#155F6E;  --preparu-soft:#DAEFF3;  --preparu-line:#A1D0DA;  --preparu-pure:#1E8299;
+  --reunion-ink:#333A4A;  --reunion-soft:#E2E5EC;  --reunion-line:#C0C6D3;  --reunion-pure:#4A5468;
+}
+
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --ground:#0F1116; --surface:#171A21; --surface-2:#1E222B;
+    --line:#2A2F3B; --line-2:#3B4252;
+    --ink:#E6E9F0; --ink-2:#AAB2C2; --ink-3:#798294;
+    --accent:#7B9AE8; --accent-soft:#1B2440;
+    --good:#4FBE97; --warn:#DDA23C; --bad:#E4707E;
+
+    --chantier-ink:#EDA85A; --chantier-soft:#2E2113; --chantier-line:#5B4222; --chantier-pure:#E08A2E;
+    --prepa-ink:#93ABEE;    --prepa-soft:#1A2140;    --prepa-line:#334066;    --prepa-pure:#6C8FE0;
+    --passif-ink:#A69FB8;   --passif-soft:#232230;   --passif-line:#3A3749;   --passif-pure:#8F87A3;
+    --cloture-ink:#5FC5A0;  --cloture-soft:#10281F;  --cloture-line:#224B3B;  --cloture-pure:#31A67F;
+    --reception-ink:#E48ACB;--reception-soft:#2C1626;--reception-line:#552A47;--reception-pure:#CE5CA8;
+    --visite-ink:#B6C86A;   --visite-soft:#212713;   --visite-line:#414B23;   --visite-pure:#98AE44;
+    --preparu-ink:#6DC2D6;  --preparu-soft:#0F262C;  --preparu-line:#1E4A56;  --preparu-pure:#37A0B8;
+    --reunion-ink:#AAB2C2;  --reunion-soft:#22262F;  --reunion-line:#39404E;  --reunion-pure:#5E6879;
+  }
+}
+
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --ground:#0F1116; --surface:#171A21; --surface-2:#1E222B;
+  --line:#2A2F3B; --line-2:#3B4252;
+  --ink:#E6E9F0; --ink-2:#AAB2C2; --ink-3:#798294;
+  --accent:#7B9AE8; --accent-soft:#1B2440;
+  --good:#4FBE97; --warn:#DDA23C; --bad:#E4707E;
+
+  --chantier-ink:#EDA85A; --chantier-soft:#2E2113; --chantier-line:#5B4222; --chantier-pure:#E08A2E;
+  --prepa-ink:#93ABEE;    --prepa-soft:#1A2140;    --prepa-line:#334066;    --prepa-pure:#6C8FE0;
+  --passif-ink:#A69FB8;   --passif-soft:#232230;   --passif-line:#3A3749;   --passif-pure:#8F87A3;
+  --cloture-ink:#5FC5A0;  --cloture-soft:#10281F;  --cloture-line:#224B3B;  --cloture-pure:#31A67F;
+  --reception-ink:#E48ACB;--reception-soft:#2C1626;--reception-line:#552A47;--reception-pure:#CE5CA8;
+  --visite-ink:#B6C86A;   --visite-soft:#212713;   --visite-line:#414B23;   --visite-pure:#98AE44;
+  --preparu-ink:#6DC2D6;  --preparu-soft:#0F262C;  --preparu-line:#1E4A56;  --preparu-pure:#37A0B8;
+  --reunion-ink:#AAB2C2;  --reunion-soft:#22262F;  --reunion-line:#39404E;  --reunion-pure:#5E6879;
+}
+
+[data-b="chantier"] {--bi:var(--chantier-ink); --bs:var(--chantier-soft); --bl:var(--chantier-line); --bp:var(--chantier-pure)}
+[data-b="prepa"]    {--bi:var(--prepa-ink);    --bs:var(--prepa-soft);    --bl:var(--prepa-line);    --bp:var(--prepa-pure)}
+[data-b="passif"]   {--bi:var(--passif-ink);   --bs:var(--passif-soft);   --bl:var(--passif-line);   --bp:var(--passif-pure)}
+[data-b="cloture"]  {--bi:var(--cloture-ink);  --bs:var(--cloture-soft);  --bl:var(--cloture-line);  --bp:var(--cloture-pure)}
+[data-b="reception"]{--bi:var(--reception-ink);--bs:var(--reception-soft);--bl:var(--reception-line);--bp:var(--reception-pure)}
+[data-b="visite"]   {--bi:var(--visite-ink);   --bs:var(--visite-soft);   --bl:var(--visite-line);   --bp:var(--visite-pure)}
+[data-b="preparu"]  {--bi:var(--preparu-ink);  --bs:var(--preparu-soft);  --bl:var(--preparu-line);  --bp:var(--preparu-pure)}
+[data-b="reunion"]  {--bi:var(--reunion-ink);  --bs:var(--reunion-soft);  --bl:var(--reunion-line);  --bp:var(--reunion-pure)}
+
+body{
+  margin:0; background:var(--ground); color:var(--ink);
+  font-family:"IBM Plex Sans",system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+  font-size:15px; line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1180px; margin:0 auto; padding-inline:20px; padding-block:0}
+
+h1,h2,h3{margin:0; text-wrap:balance}
+h1{font-family:"Barlow Condensed",Impact,sans-serif; font-weight:700; font-size:clamp(38px,7vw,64px); line-height:.97; letter-spacing:-.01em}
+h2{font-family:"Barlow Condensed",Impact,sans-serif; font-weight:600; font-size:clamp(26px,4vw,36px); line-height:1.05}
+h3{font-size:15px; font-weight:600; letter-spacing:.01em}
+p{margin:0}
+
+.eyebrow{
+  font-family:"Barlow Condensed",sans-serif; font-weight:600;
+  text-transform:uppercase; letter-spacing:.13em; font-size:13px; color:var(--ink-3);
+}
+.lede{font-size:17px; line-height:1.6; color:var(--ink-2); max-width:64ch}
+.note{font-size:13.5px; line-height:1.55; color:var(--ink-3); max-width:70ch}
+.mono{font-family:"IBM Plex Mono",ui-monospace,monospace; font-variant-numeric:tabular-nums}
+b,strong{font-weight:600; color:var(--ink)}
+
+/* ---------- en-tête ---------- */
+header.top{
+  border-bottom:1px solid var(--line);
+  background:linear-gradient(180deg,var(--surface),var(--ground));
+}
+.top .wrap{padding-block:44px 34px; display:flex; flex-direction:column; gap:18px}
+.top h1{max-width:16ch}
+.top .rule{height:3px; width:54px; background:var(--accent); border-radius:2px}
+
+/* ---------- barre de contrôle ---------- */
+.control{
+  position:sticky; top:0; z-index:20;
+  background:color-mix(in srgb, var(--surface) 88%, transparent);
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line);
+}
+.control .wrap{
+  padding-block:11px; display:flex; align-items:center; gap:16px; flex-wrap:wrap;
+}
+.control .lbl{font-family:"Barlow Condensed",sans-serif; text-transform:uppercase; letter-spacing:.11em; font-size:13px; font-weight:600; color:var(--ink-3)}
+.seg{display:flex; background:var(--surface-2); border:1px solid var(--line); border-radius:9px; padding:3px; gap:3px}
+.seg button{
+  font:inherit; font-size:14px; font-weight:600; cursor:pointer;
+  border:0; background:transparent; color:var(--ink-2);
+  padding:6px 15px; border-radius:6px; transition:background .16s,color .16s;
+}
+.seg button:hover{color:var(--ink)}
+.seg button[aria-pressed="true"]{background:var(--accent); color:#fff}
+.seg button:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+.control .hint{font-size:13.5px; color:var(--ink-3); flex:1 1 260px; min-width:0}
+
+/* ---------- légende ---------- */
+.legend{display:flex; flex-wrap:wrap; gap:7px 9px; align-items:center}
+.chip{
+  display:inline-flex; align-items:center; gap:6px;
+  font-size:12.5px; font-weight:500; color:var(--ink-2);
+  background:var(--bs); border:1px solid var(--bl); border-radius:20px; padding:3px 10px 3px 7px;
+}
+.chip i{width:9px; height:9px; border-radius:50%; background:var(--bp); flex:none}
+.chip.fond{position:relative}
+.chip.fond::after{content:"fond"; font-family:"Barlow Condensed",sans-serif; text-transform:uppercase; letter-spacing:.1em; font-size:10px; color:var(--ink-3); margin-left:2px}
+
+/* ---------- propositions ---------- */
+.prop{padding-block:52px; border-bottom:1px solid var(--line)}
+.prop:nth-of-type(even){background:var(--surface-2)}
+.propHead{display:flex; gap:18px; align-items:flex-start; margin-bottom:22px}
+.tag{
+  flex:none; width:44px; height:44px; border-radius:11px;
+  display:grid; place-items:center;
+  font-family:"Barlow Condensed",sans-serif; font-weight:700; font-size:23px;
+  background:var(--accent); color:#fff;
+}
+.propHead .txt{display:flex; flex-direction:column; gap:5px; min-width:0}
+.thesis{font-size:16.5px; color:var(--ink-2); max-width:60ch}
+
+.stage{
+  background:var(--surface); border:1px solid var(--line); border-radius:14px;
+  padding:16px; overflow:hidden;
+}
+.stageBar{
+  display:flex; align-items:baseline; gap:10px; margin-bottom:12px; flex-wrap:wrap;
+}
+.stageBar .t{font-family:"Barlow Condensed",sans-serif; text-transform:uppercase; letter-spacing:.12em; font-size:12px; font-weight:600; color:var(--ink-3)}
+.stageBar .v{font-size:12.5px; color:var(--ink-3)}
+
+.verdict{display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top:20px}
+.verdict > div{
+  border-radius:11px; padding:13px 15px; border:1px solid var(--line); background:var(--surface);
+}
+.verdict .k{
+  font-family:"Barlow Condensed",sans-serif; text-transform:uppercase; letter-spacing:.11em;
+  font-size:12px; font-weight:600; margin-bottom:6px; display:flex; align-items:center; gap:6px;
+}
+.verdict .pour .k{color:var(--good)}
+.verdict .contre .k{color:var(--bad)}
+.verdict .pour{border-left:3px solid var(--good)}
+.verdict .contre{border-left:3px solid var(--bad)}
+.verdict p{font-size:14px; color:var(--ink-2)}
+@media (max-width:640px){ .verdict{grid-template-columns:1fr} }
+</style>
+<style>
+/* ================= conteneur défilable pour les maquettes larges ================= */
+.scrollx{overflow-x:auto; overflow-y:hidden; padding-bottom:4px; min-width:0; max-width:100%}
+
+/* ================= A — la grille ================= */
+.grille{min-width:660px; display:grid; grid-template-columns:40px repeat(5,minmax(0,1fr)); gap:6px; --rowh:14px}
+.gCorner{}
+.gDayHead{
+  font-family:"Barlow Condensed",sans-serif; text-transform:uppercase; letter-spacing:.11em;
+  font-size:12.5px; font-weight:600; color:var(--ink-2); padding:0 0 5px 3px;
+}
+.gDayHead small{display:block; font-family:"IBM Plex Sans",sans-serif; text-transform:none; letter-spacing:0; font-size:10.5px; color:var(--ink-3); font-weight:400}
+.gTime{display:grid; grid-template-rows:repeat(20,var(--rowh)); padding-top:2px}
+.gTime span{
+  grid-column:1; font-family:"IBM Plex Mono",monospace; font-variant-numeric:tabular-nums;
+  font-size:9.5px; color:var(--ink-3); text-align:right; padding-right:5px; transform:translateY(-4px);
+}
+.gLanes{
+  display:grid; grid-template-columns:repeat(var(--n),minmax(0,1fr));
+  grid-template-rows:repeat(20,var(--rowh)); gap:2px;
+  background:var(--surface-2); border:1px solid var(--line); border-radius:8px; padding:2px;
+  background-image:repeating-linear-gradient(180deg,transparent 0,transparent calc(var(--rowh)*2 - 1px),var(--line) calc(var(--rowh)*2 - 1px),var(--line) calc(var(--rowh)*2));
+  background-position:0 2px; background-repeat:repeat-y;
+}
+.gBlk{
+  background:var(--bs); border:1px solid var(--bl); border-left:3px solid var(--bp);
+  border-radius:5px; padding:2px 4px; overflow:hidden; min-width:0;
+  font-size:10.5px; line-height:1.2; font-weight:600; color:var(--bi);
+}
+.gBlk .h{display:block; font-family:"IBM Plex Mono",monospace; font-size:9px; font-weight:400; opacity:.75}
+.gLunch{
+  grid-column:1/-1; align-self:stretch; border-radius:4px;
+  background:repeating-linear-gradient(45deg,transparent 0 4px,var(--line) 4px 5px);
+  opacity:.8;
+}
+
+/* ================= B — le jour en colonnes ================= */
+.bStrip{display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:7px; margin-bottom:16px}
+.bCard{
+  font:inherit; color:inherit; text-align:left; cursor:pointer;
+  border:1px solid var(--line); background:var(--surface-2); border-radius:10px; padding:8px 8px 9px;
+  display:flex; flex-direction:column; gap:7px; transition:border-color .15s,background .15s;
+}
+.bCard:hover{border-color:var(--line-2)}
+.bCard[aria-pressed="true"]{border-color:var(--accent); background:var(--accent-soft)}
+.bCard:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+.bCard .d{font-family:"Barlow Condensed",sans-serif; text-transform:uppercase; letter-spacing:.1em; font-size:12px; font-weight:600; color:var(--ink-2)}
+.bBars{display:flex; flex-direction:column; gap:2px; height:46px}
+.bBars i{flex:var(--f) 1 0; background:var(--bp); border-radius:3px; min-height:3px}
+.bCard .n{font-size:10.5px; color:var(--ink-3); line-height:1.2}
+.bCols{display:grid; grid-template-columns:repeat(var(--n),minmax(0,1fr)); gap:9px; align-items:start}
+.bCol{border:1px solid var(--bl); background:var(--surface); border-radius:10px; overflow:hidden}
+.bCol .hd{background:var(--bs); border-bottom:1px solid var(--bl); padding:9px 11px}
+.bCol .hd .nm{font-weight:600; font-size:13.5px; color:var(--bi); line-height:1.25}
+.bCol .hd .sub{font-size:11.5px; color:var(--ink-3); line-height:1.3; margin-top:1px}
+.bCol .hd .hr{font-family:"IBM Plex Mono",monospace; font-variant-numeric:tabular-nums; font-size:11px; color:var(--bi); opacity:.85; margin-top:3px; display:block}
+.bCol ul{list-style:none; margin:0; padding:9px 11px 11px; display:flex; flex-direction:column; gap:7px}
+.bCol li{display:flex; gap:8px; align-items:flex-start; font-size:12.8px; line-height:1.35; color:var(--ink-2)}
+.bCol li .box{width:14px; height:14px; border:1.5px solid var(--bl); border-radius:4px; flex:none; margin-top:1px; display:grid; place-items:center}
+.bCol li.done .box{background:var(--bp); border-color:var(--bp)}
+.bCol li.done .box::after{content:"✓"; color:#fff; font-size:9px; line-height:1; font-weight:700}
+.bCol li.done{color:var(--ink-3); text-decoration:line-through; text-decoration-color:var(--line-2)}
+.bCol .empty{padding:10px 11px 12px; font-size:12.5px; color:var(--ink-3); font-style:italic}
+@media (max-width:700px){ .bCols{grid-template-columns:1fr} }
+
+/* ================= C — le damier de charge ================= */
+.damier{display:grid; grid-template-columns:50px minmax(0,1fr) minmax(0,1fr) 104px; gap:6px; min-width:580px; align-items:stretch}
+.dH{font-family:"Barlow Condensed",sans-serif; text-transform:uppercase; letter-spacing:.11em; font-size:11.5px; font-weight:600; color:var(--ink-3); padding-bottom:1px}
+.dDay{display:flex; align-items:center; font-family:"Barlow Condensed",sans-serif; text-transform:uppercase; letter-spacing:.09em; font-weight:600; font-size:14px; color:var(--ink-2)}
+.dCell{background:var(--surface-2); border:1px solid var(--line); border-radius:8px; padding:3px; display:flex; flex-direction:column; gap:3px; min-height:64px}
+.dBlk{
+  flex:var(--f) 1 0; min-height:17px; background:var(--bs); border:1px solid var(--bl); border-left:3px solid var(--bp);
+  border-radius:5px; padding:1px 6px; display:flex; align-items:center; justify-content:space-between; gap:6px;
+  font-size:11.5px; font-weight:600; color:var(--bi); overflow:hidden; white-space:nowrap;
+}
+.dBlk span{overflow:hidden; text-overflow:ellipsis}
+.dBlk .h{font-family:"IBM Plex Mono",monospace; font-size:9.5px; font-weight:400; opacity:.75; flex:none}
+.dCharge{display:flex; flex-direction:column; gap:5px; justify-content:center; padding-left:2px}
+.dBar{display:flex; height:10px; border-radius:6px; overflow:hidden; border:1px solid var(--line); background:var(--surface-2)}
+.dBar i{flex:var(--f) 1 0; background:var(--bp)}
+.dTot{font-family:"IBM Plex Mono",monospace; font-variant-numeric:tabular-nums; font-size:10.5px; color:var(--ink-3)}
+
+/* ================= D — le rail ================= */
+.rail{min-width:740px}
+.railHead{display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); margin-bottom:5px; padding:0 5px}
+.railHead div{
+  font-family:"Barlow Condensed",sans-serif; text-transform:uppercase; letter-spacing:.1em;
+  font-size:12px; font-weight:600; color:var(--ink-3); padding-left:8px; border-left:1px solid var(--line);
+}
+.railHead div:first-child{border-left:0; padding-left:2px}
+.railBody{
+  display:flex; flex-direction:column; gap:4px; padding:5px;
+  background:var(--surface-2); border:1px solid var(--line); border-radius:10px;
+  background-image:repeating-linear-gradient(90deg,transparent 0,transparent calc(20% - 1px),var(--line) calc(20% - 1px),var(--line) 20%);
+  background-position:5px 0; background-clip:content-box;
+}
+.railLane{display:grid; grid-template-columns:repeat(50,minmax(0,1fr)); min-height:27px; align-items:stretch}
+.railBlk{
+  grid-row:1; margin:0 1px; background:var(--bs); border:1px solid var(--bl); border-left:3px solid var(--bp);
+  border-radius:6px; padding:2px 7px; font-size:11.5px; font-weight:600; color:var(--bi);
+  overflow:hidden; white-space:nowrap; text-overflow:ellipsis; display:flex; align-items:center; gap:7px;
+}
+.railBlk .h{font-family:"IBM Plex Mono",monospace; font-size:9.5px; font-weight:400; opacity:.7}
+.railFond{opacity:.72}
+
+/* ================= comparaison + recommandation ================= */
+.cmpWrap{overflow-x:auto}
+.cmp{width:100%; min-width:620px; border-collapse:collapse; font-size:14px}
+.cmp th,.cmp td{padding:9px 10px; border-bottom:1px solid var(--line); text-align:left; vertical-align:middle}
+.cmp thead th{font-family:"Barlow Condensed",sans-serif; text-transform:uppercase; letter-spacing:.1em; font-size:12px; color:var(--ink-3); font-weight:600; white-space:nowrap}
+.cmp tbody th{font-weight:500; color:var(--ink-2); font-size:13.5px}
+.cmp td{text-align:center}
+.cmp .dots{font-family:"IBM Plex Mono",monospace; letter-spacing:.14em; font-size:13px}
+.s3{color:var(--good)} .s2{color:var(--warn)} .s1{color:var(--bad); opacity:.85}
+.cmp col.win{background:var(--accent-soft)}
+.cmp tfoot td,.cmp tfoot th{border-bottom:0; padding-top:12px; font-size:13px; color:var(--ink-3)}
+
+.reco{background:var(--surface); border:1px solid var(--line-2); border-radius:16px; padding:24px; display:flex; flex-direction:column; gap:16px}
+.reco .badge{
+  align-self:flex-start; background:var(--accent); color:#fff; border-radius:20px; padding:4px 13px;
+  font-family:"Barlow Condensed",sans-serif; text-transform:uppercase; letter-spacing:.12em; font-size:12px; font-weight:600;
+}
+.recoSplit{display:grid; grid-template-columns:1fr 1fr; gap:16px}
+@media (max-width:760px){ .recoSplit{grid-template-columns:1fr} }
+.mini{border:1px dashed var(--line-2); border-radius:11px; padding:13px; background:var(--surface-2); display:flex; flex-direction:column; gap:9px; min-width:0}
+.recoSplit > *{min-width:0}
+.bCols > *{min-width:0}
+.mini .cap{font-family:"Barlow Condensed",sans-serif; text-transform:uppercase; letter-spacing:.11em; font-size:11.5px; font-weight:600; color:var(--ink-3)}
+
+.avis{border-left:3px solid var(--accent); background:var(--accent-soft); border-radius:0 11px 11px 0; padding:14px 17px; display:flex; flex-direction:column; gap:7px}
+.avis .k{font-family:"Barlow Condensed",sans-serif; text-transform:uppercase; letter-spacing:.12em; font-size:12px; font-weight:600; color:var(--accent)}
+.avis p{font-size:14.5px; color:var(--ink-2)}
+
+.asks{display:flex; flex-direction:column; gap:11px; counter-reset:q}
+.ask{display:flex; gap:12px; align-items:flex-start}
+.ask .num{
+  flex:none; width:25px; height:25px; border-radius:50%; border:1.5px solid var(--line-2);
+  display:grid; place-items:center; font-family:"IBM Plex Mono",monospace; font-size:11.5px; color:var(--ink-3);
+}
+.ask p{font-size:14.5px; color:var(--ink-2)}
+.ask b{display:block}
+
+footer.end{padding-block:36px 48px}
+footer.end .wrap{display:flex; flex-direction:column; gap:10px}
+
+@media (prefers-reduced-motion:reduce){ *{transition:none !important; animation:none !important} }
+</style>
+<header class="top"><div class="wrap">
+  <div class="rule"></div>
+  <p class="eyebrow">Plaaning · propositions d'agencement</p>
+  <h1>Quatre façons de tenir la même semaine</h1>
+  <p class="lede">Même semaine, mêmes chantiers, mêmes dossiers — quatre mises en page. Le but n'est pas de choisir la plus jolie, mais celle qui <b>tient encore debout le mercredi</b>, quand trois choses se superposent. Bascule l'interrupteur ci-dessous : les quatre maquettes changent en même temps.</p>
+</div></header>
+
+<div class="control"><div class="wrap">
+  <span class="lbl">La semaine est</span>
+  <div class="seg" role="group" aria-label="Charge de la semaine">
+    <button type="button" id="wCalme" data-w="calme" aria-pressed="true">Calme</button>
+    <button type="button" id="wChargee" data-w="chargee" aria-pressed="false">Chargée</button>
+  </div>
+  <p class="hint">En calme, il ne reste que la journée type. En chargée, les colonnes s'activent — et on voit laquelle des quatre encaisse.</p>
+</div></div>
+
+<div class="wrap" style="padding-block:18px 4px"><div class="legend" id="legend"></div></div>
+
+<!-- ============ A ============ -->
+<section class="prop"><div class="wrap">
+  <div class="propHead">
+    <div class="tag">A</div>
+    <div class="txt">
+      <h2>La grille</h2>
+      <p class="thesis">Le calendrier vertical classique — sauf qu'un jour peut se fendre en plusieurs couloirs côte à côte.</p>
+    </div>
+  </div>
+  <div class="stage">
+    <div class="stageBar"><span class="t">Lundi → vendredi, 8 h – 18 h</span><span class="v">Chaque couloir dans un jour = une brique activée. Le premier couloir est toujours la journée type.</span></div>
+    <div class="scrollx"><div class="grille" id="mockA"></div></div>
+  </div>
+  <div class="verdict">
+    <div class="pour"><div class="k">Ce que ça t'apporte</div><p>Le temps est <b>réel</b> : une surveillance de 8 h à 10 h occupe vraiment le haut de la colonne, et un trou se voit comme un trou. C'est l'agencement où l'on repère le mieux qu'il reste deux heures libres jeudi matin.</p></div>
+    <div class="contre"><div class="k">Là où ça coince</div><p>Regarde mercredi en semaine chargée : quatre couloirs dans une colonne, les libellés deviennent des confettis. Et sur un écran de téléphone, il faut faire défiler horizontalement pour voir vendredi.</p></div>
+  </div>
+</div></section>
+
+<!-- ============ B ============ -->
+<section class="prop"><div class="wrap">
+  <div class="propHead">
+    <div class="tag">B</div>
+    <div class="txt">
+      <h2>Le jour en colonnes</h2>
+      <p class="thesis">La semaine en bandeau réduit tout en haut, et le jour choisi ouvert en grand : une colonne par brique activée, avec ses sous-tâches.</p>
+    </div>
+  </div>
+  <div class="stage">
+    <div class="stageBar"><span class="t">Clique un jour dans le bandeau</span><span class="v" id="bInfo"></span></div>
+    <div class="bStrip" id="mockBStrip"></div>
+    <div class="bCols" id="mockBCols"></div>
+  </div>
+  <div class="verdict">
+    <div class="pour"><div class="k">Ce que ça t'apporte</div><p>C'est <b>littéralement ta phrase</b> : activer une colonne dans le jour. Et c'est le seul agencement où les sous-tâches — PVRC, PVRF, FNC, PA — tiennent à l'écran sans écraser le reste. Sur téléphone, les colonnes s'empilent et ça reste lisible.</p></div>
+    <div class="contre"><div class="k">Là où ça coince</div><p>Tu ne vois qu'<b>un jour à la fois</b> en détail. Tout repose sur la qualité du bandeau du haut : s'il est faible, tu perds le fil de la semaine et tu oublies le jeudi.</p></div>
+  </div>
+</div></section>
+
+<!-- ============ C ============ -->
+<section class="prop"><div class="wrap">
+  <div class="propHead">
+    <div class="tag">C</div>
+    <div class="txt">
+      <h2>Le damier de charge</h2>
+      <p class="thesis">Cinq lignes, deux tranches, et une jauge de charge à droite. Aucune heure précise — juste le poids de chaque demi-journée.</p>
+    </div>
+  </div>
+  <div class="stage">
+    <div class="stageBar"><span class="t">La hauteur d'un bloc = sa durée</span><span class="v">La jauge de droite additionne tout ce qui est engagé dans la journée.</span></div>
+    <div class="scrollx"><div class="damier" id="mockC"></div></div>
+  </div>
+  <div class="verdict">
+    <div class="pour"><div class="k">Ce que ça t'apporte</div><p>La semaine entière tient dans un écran, sans défilement. La jauge de droite te dit d'un coup d'œil <b>quel jour est surchargé et lequel est vide</b> — exactement ce qu'il faut voir avant d'accepter une réunion de plus.</p></div>
+    <div class="contre"><div class="k">Là où ça coince</div><p>« Surveillance à 10 h » devient « surveillance, matin ». Pour quelqu'un qui a des rendez-vous à heure fixe, c'est une perte réelle. Et les sous-tâches n'ont aucune place : il leur faut un panneau à côté.</p></div>
+  </div>
+</div></section>
+
+<!-- ============ D ============ -->
+<section class="prop"><div class="wrap">
+  <div class="propHead">
+    <div class="tag">D</div>
+    <div class="txt">
+      <h2>Le rail</h2>
+      <p class="thesis">Une seule bande continue du lundi au vendredi. Un chantier qui court quatre jours est <em>une barre</em>, pas quatre cases.</p>
+    </div>
+  </div>
+  <div class="stage">
+    <div class="stageBar"><span class="t">Le temps coule de gauche à droite</span><span class="v">La première ligne est la journée type. Les suivantes s'empilent au fur et à mesure que ça se remplit.</span></div>
+    <div class="scrollx"><div class="rail" id="mockD"></div></div>
+  </div>
+  <div class="verdict">
+    <div class="pour"><div class="k">Ce que ça t'apporte</div><p>Le seul agencement où la <b>continuité se voit</b>. Bel-Air court du lundi au jeudi, et ça se lit d'un seul geste au lieu de se déduire de quatre cases identiques. Pour un chantier en cours, c'est la bonne façon de le représenter.</p></div>
+    <div class="contre"><div class="k">Là où ça coince</div><p>Aucune place verticale pour les sous-tâches, et il faut faire défiler horizontalement sur téléphone. Seul, il ne suffit pas à piloter une journée.</p></div>
+  </div>
+</div></section>
+<!-- ============ comparaison ============ -->
+<section class="prop"><div class="wrap">
+  <div class="propHead">
+    <div class="tag neutral">=</div>
+    <div class="txt">
+      <h2>Ce que chacune sait faire</h2>
+      <p class="thesis">Six critères tirés de ta façon de travailler, pas de critères génériques d'agenda.</p>
+    </div>
+  </div>
+
+  <div class="stage">
+    <div class="cmpWrap"><table class="cmp">
+      <colgroup><col><col><col class="win"><col><col></colgroup>
+      <thead><tr><th>Critère</th><th>A · Grille</th><th>B · Colonnes</th><th>C · Damier</th><th>D · Rail</th></tr></thead>
+      <tbody>
+        <tr><th>Voir la semaine entière d'un coup</th>
+          <td class="dots s3">●●●</td><td class="dots s2">●●○</td><td class="dots s3">●●●</td><td class="dots s3">●●●</td></tr>
+        <tr><th>Caler une tâche à une heure précise</th>
+          <td class="dots s3">●●●</td><td class="dots s2">●●○</td><td class="dots s1">●○○</td><td class="dots s2">●●○</td></tr>
+        <tr><th>Loger les sous-tâches (PVRC, FNC, PA…)</th>
+          <td class="dots s1">●○○</td><td class="dots s3">●●●</td><td class="dots s1">●○○</td><td class="dots s1">●○○</td></tr>
+        <tr><th>Rester lisible sur téléphone</th>
+          <td class="dots s1">●○○</td><td class="dots s3">●●●</td><td class="dots s2">●●○</td><td class="dots s1">●○○</td></tr>
+        <tr><th>Coller à « activer une colonne dans le jour »</th>
+          <td class="dots s2">●●○</td><td class="dots s3">●●●</td><td class="dots s2">●●○</td><td class="dots s2">●●○</td></tr>
+        <tr><th>Voir un chantier qui court sur plusieurs jours</th>
+          <td class="dots s1">●○○</td><td class="dots s1">●○○</td><td class="dots s2">●●○</td><td class="dots s3">●●●</td></tr>
+      </tbody>
+      <tfoot><tr><td colspan="5">Aucune ne gagne partout — et les deux colonnes qui se complètent le mieux sont <b>B</b> et <b>D</b> : là où l'une est faible, l'autre est forte.</td></tr></tfoot>
+    </table></div>
+  </div>
+
+  <div style="height:26px"></div>
+
+  <div class="reco">
+    <span class="badge">Ma recommandation</span>
+    <h2 style="font-size:clamp(22px,3.4vw,30px)">B pour travailler, le rail de D pour se repérer</h2>
+    <p class="lede">Pas un compromis mou : chacun garde son rôle. Le <b>rail</b> occupe le haut de l'écran et ne sert qu'à une chose — te dire où tu en es dans la semaine et quels chantiers courent. En dessous, le <b>jour ouvert en colonnes</b>, avec les cases à cocher. Tu cliques un jour dans le rail, il s'ouvre en dessous.</p>
+
+    <div class="mini">
+      <span class="cap">L'écran entier — le rail pour se repérer, le jeudi ouvert pour exécuter</span>
+      <div class="scrollx"><div class="rail" id="recoRail"></div></div>
+      <div class="bCols" id="recoCols"></div>
+    </div>
+
+    <div class="avis">
+      <span class="k">Pourquoi celle-là et pas une autre</span>
+      <p>Ton problème n'est pas de <em>savoir</em> ce que tu as à faire — c'est de ne pas partir en vrille en cours de journée. Un agencement qui te montre tout, tout le temps (A, C) nourrit la dispersion : cinq jours affichés, c'est cinq occasions de penser à autre chose. B fait l'inverse : <b>un seul jour est net à la fois</b>, le reste est réduit à une bande. Tu gardes le contrôle sans garder la tentation.</p>
+      <p>Et le rail apporte ce que B n'a pas : un chantier en cours, c'est <b>une barre continue</b>, pas quatre cases indépendantes. C'est aussi ce qui rend visible « Bel-Air se termine jeudi, donc la réception se cale jeudi ».</p>
+    </div>
+
+    <div class="avis" style="border-left-color:var(--passif-pure); background:var(--passif-soft)">
+      <span class="k" style="color:var(--passif-ink)">Une conviction que je te soumets</span>
+      <p>Le <b>passif</b> doit être moche. C'est la seule brique dont tu m'as dit qu'elle était « vouée à être moins importante » : je propose de la dessiner en gris terne, sans relief, pendant que les autres ont de la couleur. Et d'afficher chaque semaine le total d'heures de passif — pour que sa <b>diminution devienne visible et gratifiante</b>. Une brique qu'on veut voir disparaître ne doit pas être agréable à regarder.</p>
+    </div>
+  </div>
+
+  <div style="height:26px"></div>
+
+  <div class="stage">
+    <div class="stageBar"><span class="t">Ce qu'il reste à trancher</span></div>
+    <div class="asks">
+      <div class="ask"><span class="num">1</span><p><b>Les listes de sous-tâches sont-elles complètes ?</b> Tu as terminé Chantier et Clôture par « et d'autres ». Tant qu'elles ne sont pas figées, les colonnes ne sont pas dimensionnées. <em>Ma proposition : donne-moi la liste complète des deux, on les gravera et on gardera une ligne libre en bas.</em></p></div>
+      <div class="ask"><span class="num">2</span><p><b>Une brique dure-t-elle une demi-journée ou des heures précises ?</b> Ça change tout le reste. <em>Mon avis : demi-journées par défaut, heures précises seulement pour ce qui est subi — réunions, réception, visites. Tu ne te bats pas contre ton planning à la demi-heure près.</em></p></div>
+      <div class="ask"><span class="num">3</span><p><b>Les réunions : saisies à la main, ou lues depuis ton agenda ?</b> <em>Mon avis : à la main pour commencer. Brancher un agenda demande un compte et un serveur, et tuerait la promesse « un fichier, aucune dépendance ». On verra ça une fois l'outil rodé.</em></p></div>
+      <div class="ask"><span class="num">4</span><p><b>Une semaine à la fois, ou un historique ?</b> <em>Mon avis : un historique, mais discret. Sans lui, impossible de montrer que le passif recule — et c'est justement le retour dont tu as besoin pour tenir la nouvelle organisation.</em></p></div>
+    </div>
+  </div>
+</div></section>
+
+<footer class="end"><div class="wrap">
+  <p class="eyebrow">Étape suivante</p>
+  <p class="note">Dis-moi la lettre que tu retiens — ou le mélange que tu veux — et je construis la vraie interface dans le dépôt. Ces maquettes sont figées et remplies d'exemples : <b>Bel-Air</b>, <b>Sainte-Croix</b>, <b>Verneuil</b> et <b>OT 21 447</b> sont inventés, aucune donnée réelle n'apparaît ici.</p>
+</div></footer>
+<style>
+.tag.neutral{background:var(--surface); color:var(--ink-2); border:1.5px solid var(--line-2)}
+</style>
+<script>
+(function(){
+"use strict";
+
+var B = {
+  prepa:    {nom:"Prépa dossiers",       court:"Prépa",     fond:true},
+  passif:   {nom:"Passif",               court:"Passif",    fond:true},
+  chantier: {nom:"Chantier en cours",    court:"Chantier"},
+  cloture:  {nom:"Clôture de dossier",   court:"Clôture"},
+  reception:{nom:"Réception de travaux", court:"Réception"},
+  visite:   {nom:"Visite terrain",       court:"Visite"},
+  preparu:  {nom:"Prépa réunion",        court:"Prépa réu."},
+  reunion:  {nom:"Réunion",              court:"Réunion"}
+};
+var ORDRE = ["prepa","passif","chantier","cloture","reception","visite","preparu","reunion"];
+
+var TACHES = {
+  chantier : [["Surveillance",1],["CR + 1N",1],["Retours mail",0],["FNC à traiter",0],["PA à traiter",0]],
+  cloture  : [["Envoi PVRC",1],["Envoi PVRF",0],["Clôture de l'OT",0],["Réalisation de la FEP",0],["Clôture FNC et PA",0]],
+  reception: [["Constat sur site",0],["Lever les réserves",0],["Lancer le paiement",0]],
+  visite   : [["Points à vérifier",0],["Photos",0]],
+  preparu  : [["Ordre du jour",0],["Chiffres à sortir",0]],
+  passif   : [["Vieux mails",0],["À faire signer",0],["À clôturer",0]],
+  prepa    : [],
+  reunion  : []
+};
+var VIDE = {
+  prepa  : "Pas de sous-catégorie — seul le nom du dossier compte.",
+  reunion: "Subie. Rien à préparer ici."
+};
+
+var JOURS = [
+  {k:"lun", c:"Lun", n:"Lundi"},   {k:"mar", c:"Mar", n:"Mardi"},
+  {k:"mer", c:"Mer", n:"Mercredi"},{k:"jeu", c:"Jeu", n:"Jeudi"},
+  {k:"ven", c:"Ven", n:"Vendredi"}
+];
+
+var SEMAINES = {
+  calme: {jours:{
+    lun:{dossier:"Sainte-Croix", sus:[]},
+    mar:{dossier:"Sainte-Croix", sus:[]},
+    mer:{dossier:"Verneuil",     sus:[{b:"reunion", de:11, a:12, t:"Réunion hebdo"}]},
+    jeu:{dossier:"Verneuil",     sus:[]},
+    ven:{dossier:"Verneuil",     sus:[]}
+  }},
+  chargee: {jours:{
+    lun:{dossier:"Sainte-Croix", sus:[{b:"chantier", de:8, a:17, t:"Bel-Air"}]},
+    mar:{dossier:"Sainte-Croix", sus:[{b:"chantier", de:8, a:12, t:"Bel-Air"},
+                                      {b:"cloture",  de:13, a:17, t:"OT 21 447"}]},
+    mer:{dossier:"Verneuil",     sus:[{b:"chantier", de:8, a:12, t:"Bel-Air"},
+                                      {b:"reunion",  de:11, a:12, t:"Réunion hebdo"},
+                                      {b:"visite",   de:14, a:16.5, t:"Bel-Air — lot 3"}]},
+    jeu:{dossier:"Verneuil",     sus:[{b:"chantier", de:8, a:12, t:"Bel-Air"},
+                                      {b:"reception",de:10, a:11, t:"Bel-Air"},
+                                      {b:"preparu",  de:15, a:16, t:"Point mensuel"}]},
+    ven:{dossier:"Verneuil",     sus:[{b:"cloture",  de:8, a:12.5, t:"Bel-Air"}]}
+  }}
+};
+
+/* ---------- utilitaires ---------- */
+function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+function hh(h){ var H=Math.floor(h), M=Math.round((h-H)*60); return M ? H+"h"+(M<10?"0":"")+M : H+"h"; }
+function dur(d){ var H=Math.floor(d), M=Math.round((d-H)*60);
+  if(!M) return H+" h"; if(!H) return M+" min"; return H+" h "+M; }
+function blocs(j){
+  return [{b:"prepa", de:8, a:12, t:j.dossier, fond:true},
+          {b:"passif", de:13, a:17, t:"", fond:true}].concat(j.sus);
+}
+function lane(j,b){ return b.fond ? 0 : 1 + j.sus.indexOf(b); }
+
+/* ---------- A · la grille ---------- */
+function renderA(w){
+  var h = '<div class="gCorner"></div>';
+  JOURS.forEach(function(J){
+    var d = w.jours[J.k];
+    var s = d.sus.length ? d.sus.length + " en plus" : "journée type";
+    h += '<div class="gDayHead">'+J.c+'<small>'+s+'</small></div>';
+  });
+  h += '<div class="gTime">';
+  for(var i=0;i<10;i++) h += '<span style="grid-row:'+(i*2+1)+'/span 2">'+(8+i)+'h</span>';
+  h += '</div>';
+  JOURS.forEach(function(J){
+    var d = w.jours[J.k], bl = blocs(d), n = 1 + d.sus.length;
+    var inner = '<div class="gLunch" style="grid-row:9/span 2"></div>';
+    bl.forEach(function(b){
+      var r0 = Math.round((b.de-8)*2)+1, rs = Math.round((b.a-b.de)*2);
+      var lab = esc(B[b.b].court);
+      if(rs >= 4) lab += '<span class="h">'+hh(b.de)+"–"+hh(b.a)+(b.t ? " · "+esc(b.t) : "")+'</span>';
+      inner += '<div class="gBlk" data-b="'+b.b+'" style="grid-column:'+(lane(d,b)+1)+';grid-row:'+r0+'/span '+rs+'">'+lab+'</div>';
+    });
+    h += '<div class="gDay"><div class="gLanes" style="--n:'+n+'">'+inner+'</div></div>';
+  });
+  document.getElementById("mockA").innerHTML = h;
+}
+
+/* ---------- B · le jour en colonnes ---------- */
+function colonnesHTML(w, jourK){
+  var d = w.jours[jourK], bl = blocs(d);
+  return bl.map(function(b){
+    var t = TACHES[b.b] || [], corps;
+    if(t.length){
+      corps = '<ul>' + t.map(function(x){
+        return '<li class="'+(x[1]?"done":"")+'"><span class="box"></span><span>'+esc(x[0])+'</span></li>';
+      }).join("") + '</ul>';
+    } else {
+      corps = '<p class="empty">'+esc(VIDE[b.b] || "—")+'</p>';
+    }
+    return '<div class="bCol" data-b="'+b.b+'">'
+      + '<div class="hd"><div class="nm">'+esc(B[b.b].nom)+'</div>'
+      + (b.t ? '<div class="sub">'+esc(b.t)+'</div>' : '')
+      + '<span class="hr">'+hh(b.de)+" – "+hh(b.a)+" · "+dur(b.a-b.de)+'</span></div>'
+      + corps + '</div>';
+  }).join("");
+}
+function renderB(w){
+  var strip = JOURS.map(function(J){
+    var d = w.jours[J.k], bl = blocs(d), n = bl.length;
+    var bars = bl.map(function(b){ return '<i data-b="'+b.b+'" style="--f:'+(b.a-b.de)+'"></i>'; }).join("");
+    return '<button type="button" class="bCard" data-j="'+J.k+'" aria-pressed="'+(J.k===jourB)+'">'
+      + '<span class="d">'+J.c+'</span><span class="bBars">'+bars+'</span>'
+      + '<span class="n">'+n+(n>1?" colonnes":" colonne")+'</span></button>';
+  }).join("");
+  document.getElementById("mockBStrip").innerHTML = strip;
+
+  var jn = JOURS.filter(function(J){ return J.k===jourB; })[0].n;
+  var nb = blocs(w.jours[jourB]).length;
+  document.getElementById("bInfo").textContent = jn + " — " + nb + (nb>1 ? " colonnes actives" : " colonne active");
+
+  var cols = document.getElementById("mockBCols");
+  cols.style.setProperty("--n", nb);
+  cols.innerHTML = colonnesHTML(w, jourB);
+}
+
+/* ---------- C · le damier ---------- */
+function renderC(w){
+  var h = '<div class="dH"></div><div class="dH">Matin</div><div class="dH">Après-midi</div><div class="dH">Charge</div>';
+  JOURS.forEach(function(J){
+    var d = w.jours[J.k], bl = blocs(d);
+    h += '<div class="dDay">'+J.c+'</div>';
+    [bl.filter(function(b){return b.de < 12.5;}), bl.filter(function(b){return b.de >= 12.5;})].forEach(function(g){
+      h += '<div class="dCell">' + g.map(function(b){
+        return '<div class="dBlk" data-b="'+b.b+'" style="--f:'+(b.a-b.de)+'">'
+          + '<span>'+esc(B[b.b].court)+(b.t ? " · "+esc(b.t) : "")+'</span>'
+          + '<b class="h">'+dur(b.a-b.de)+'</b></div>';
+      }).join("") + '</div>';
+    });
+    var tot = bl.reduce(function(s,b){ return s + (b.a-b.de); }, 0);
+    h += '<div class="dCharge"><div class="dBar">'
+      + bl.map(function(b){ return '<i data-b="'+b.b+'" style="--f:'+(b.a-b.de)+'"></i>'; }).join("")
+      + '</div><span class="dTot">'+dur(tot)+' engagées</span></div>';
+  });
+  document.getElementById("mockC").innerHTML = h;
+}
+
+/* ---------- D · le rail ---------- */
+function renderD(w, cible){
+  var h = '<div class="railHead">' + JOURS.map(function(J){ return '<div>'+J.c+'</div>'; }).join("") + '</div>';
+  var laneFond = [];
+  JOURS.forEach(function(J,i){
+    var d = w.jours[J.k];
+    laneFond.push({b:"prepa",  t:d.dossier, s:i*10,   e:i*10+4,  j:1, fond:1});
+    laneFond.push({b:"passif", t:"",        s:i*10+5, e:i*10+9,  j:1, fond:1});
+  });
+
+  var fils = {};
+  JOURS.forEach(function(J,i){
+    w.jours[J.k].sus.forEach(function(s){
+      var k = s.b + "|" + s.t;
+      (fils[k] = fils[k] || []).push({b:s.b, t:s.t, jour:i, de:s.de, a:s.a});
+    });
+  });
+  var segs = [];
+  Object.keys(fils).forEach(function(k){
+    var cur = null;
+    fils[k].forEach(function(s){
+      if(cur && s.jour === cur.dernier + 1){ cur.dernier = s.jour; cur.a = s.a; cur.j++; }
+      else { cur = {b:s.b, t:s.t, premier:s.jour, dernier:s.jour, de:s.de, a:s.a, j:1}; segs.push(cur); }
+    });
+  });
+  segs.forEach(function(s){ s.s = s.premier*10 + (s.de-8); s.e = s.dernier*10 + (s.a-8); });
+  segs.sort(function(a,b){ return a.s - b.s; });
+
+  var packs = [];
+  segs.forEach(function(s){
+    var li = -1;
+    for(var i=0;i<packs.length;i++){
+      var libre = packs[i].every(function(o){ return o.e <= s.s || o.s >= s.e; });
+      if(libre){ li = i; break; }
+    }
+    if(li < 0){ packs.push([]); li = packs.length-1; }
+    packs[li].push(s);
+  });
+
+  function ligne(items, fond){
+    return '<div class="railLane">' + items.map(function(s){
+      var c0 = Math.round(s.s)+1, c1 = Math.round(s.e)+1;
+      var det = s.j > 1 ? s.j+" jours" : dur(s.a - s.de);
+      return '<div class="railBlk'+(fond?" railFond":"")+'" data-b="'+s.b+'" style="grid-column:'+c0+'/'+c1+'">'
+        + esc(B[s.b].court) + (s.t ? " · "+esc(s.t) : "")
+        + '<span class="h">'+det+'</span></div>';
+    }).join("") + '</div>';
+  }
+  h += '<div class="railBody">' + ligne(laneFond, true)
+     + packs.map(function(p){ return ligne(p, false); }).join("") + '</div>';
+  document.getElementById(cible).innerHTML = h;
+}
+
+/* ---------- légende ---------- */
+(function(){
+  document.getElementById("legend").innerHTML = ORDRE.map(function(k){
+    return '<span class="chip'+(B[k].fond?" fond":"")+'" data-b="'+k+'"><i></i>'+esc(B[k].nom)+'</span>';
+  }).join("");
+})();
+
+/* ---------- pilotage ---------- */
+var semaine = "calme", jourB = "mer";
+
+function tout(){
+  var w = SEMAINES[semaine];
+  renderA(w); renderB(w); renderC(w); renderD(w, "mockD");
+  renderD(w, "recoRail");
+  var rc = document.getElementById("recoCols");
+  rc.style.setProperty("--n", blocs(w.jours.jeu).length);
+  rc.innerHTML = colonnesHTML(w, "jeu");
+}
+
+document.querySelectorAll(".seg button").forEach(function(btn){
+  btn.addEventListener("click", function(){
+    semaine = btn.dataset.w;
+    document.querySelectorAll(".seg button").forEach(function(b){
+      b.setAttribute("aria-pressed", String(b === btn));
+    });
+    tout();
+  });
+});
+
+document.getElementById("mockBStrip").addEventListener("click", function(e){
+  var c = e.target.closest(".bCard");
+  if(!c) return;
+  jourB = c.dataset.j;
+  renderB(SEMAINES[semaine]);
+});
+
+tout();
+})();
+</script>
