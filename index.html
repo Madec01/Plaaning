@@ -707,11 +707,24 @@ function nomsDossiers(){
     return a.nom.localeCompare(b.nom);
   });
 }
+/* une fiche sans nom n'a pas de cle parlante : on retrouve sa brique par ses colonnes */
+function briquesLocales(){
+  var m = {};
+  Object.keys(etat.semaines).forEach(function(cs){
+    ((etat.semaines[cs]||{}).jours||[]).forEach(function(j){
+      (j.cols||[]).forEach(function(c){
+        var k = cleFiche(c);
+        if(k.indexOf("local|") === 0) m[k] = {b:c.b, nom:""};
+      });
+    });
+  });
+  return m;
+}
 /* les fiches datees qui recouvrent la semaine affichee */
 function periodesSemaine(){
-  var fin = plusJours(lundi,4), J = 86400000, out = [];
+  var fin = plusJours(lundi,4), J = 86400000, out = [], loc = briquesLocales();
   Object.keys(etat.fiches).forEach(function(k){
-    var d = decoupe(k); if(!d || LIEES.indexOf(d.b) < 0) return;
+    var d = decoupe(k) || loc[k]; if(!d || LIEES.indexOf(d.b) < 0) return;
     var f = etat.fiches[k], pe = periode(f); if(!pe) return;
     if(pe.d2 < lundi || pe.d1 > fin) return;
     var i0 = Math.max(0, Math.round((pe.d1 - lundi)/J));
@@ -851,9 +864,9 @@ function renderRail(){
       return '<div class="railLane">' + rang.map(function(pe){
         var c0 = Math.round(pe.s)+1, c1 = Math.max(c0+1, Math.round(pe.e)+1);
         return '<div class="railPeriode'+(pe.avant?" avant":"")+(pe.apres?" apres":"")+'" data-b="'+pe.b+'" '
-          + 'style="grid-column:'+c0+'/'+c1+'" title="'+esc(B[pe.b].nom+" · "+pe.nom+(pe.badge?" — "+pe.badge:""))+'">'
+          + 'style="grid-column:'+c0+'/'+c1+'" title="'+esc(B[pe.b].nom+(pe.nom?" · "+pe.nom:"")+(pe.badge?" — "+pe.badge:""))+'">'
           + (pe.avant ? '<span class="fl">◀</span>' : '')
-          + '<span class="nm">'+esc(B[pe.b].court)+' · '+esc(pe.nom)+'</span>'
+          + '<span class="nm">'+esc(B[pe.b].court)+(pe.nom ? ' · '+esc(pe.nom) : '')+'</span>'
           + (pe.badge ? '<span class="bd">'+esc(pe.badge)+'</span>' : '')
           + (pe.apres ? '<span class="fl">▶</span>' : '')
           + '</div>';
@@ -934,6 +947,12 @@ function renderRetard(){
 }
 
 /* ---------- le jour ouvert ---------- */
+/* la seule chose qui merite d'etre signalee : la periode ne touche pas la semaine affichee */
+function texteAstuce(f){
+  var pe = periode(f);
+  if(!pe) return "";
+  return (pe.d2 < lundi || pe.d1 > plusJours(lundi,4)) ? "période hors de la semaine affichée" : "";
+}
 function badgeDates(f){
   var d1 = deIso(f.debut), d2 = deIso(f.fin), auj = aujourdhui(), J = 86400000;
   if(!d1 && !d2) return "";
@@ -1001,7 +1020,7 @@ function colHTML(c){
       + '<span class="paire"><span class="lb">au</span>'
       + '<input type="date" data-act="fin" data-c="'+c.id+'" value="'+esc(f.fin||"")+'" aria-label="Fin"></span>'
       + (bd ? '<span class="reste'+(bd==="terminé"||bd==="échu"?" fini":"")+'">'+esc(bd)+'</span>' : '')
-      + ((f.debut || f.fin) && !c.nom ? '<span class="astuce">nomme le dossier pour le voir courir dans le rail</span>' : '')
+      + (texteAstuce(f) ? '<span class="astuce">'+esc(texteAstuce(f))+'</span>' : '')
       + '</div>';
   }
 
@@ -1106,14 +1125,14 @@ function majBadgeDates(c){
   var col = document.querySelector('input[data-act="debut"][data-c="'+c.id+'"]');
   var zone = col && col.closest(".dates");
   if(!zone) return;
-  var f = fiche(c), astuce = zone.querySelector(".astuce");
-  if((f.debut || f.fin) && !c.nom){
+  var f = fiche(c), astuce = zone.querySelector(".astuce"), txt = texteAstuce(f);
+  if(txt){
     if(!astuce){
       astuce = document.createElement("span");
       astuce.className = "astuce";
-      astuce.textContent = "nomme le dossier pour le voir courir dans le rail";
       zone.appendChild(astuce);
     }
+    astuce.textContent = txt;
   } else if(astuce) astuce.remove();
   var b = badgeDates(f), sp = zone.querySelector(".reste");
   if(!b){ if(sp) sp.remove(); return; }
@@ -1161,13 +1180,28 @@ function relier(c, nouveauNom){
 
   if(etat.fiches[nouvelle]){
     var f = etat.fiches[nouvelle];
+    /* ce qui a ete fait dans la colonne avant qu'elle soit nommee ne doit pas se perdre */
+    var loc = estLocale ? etat.fiches[ancienne] : null, repris = 0;
+    if(loc && loc !== f){
+      (loc.taches||[]).forEach(function(lt){
+        if(!lt.f && !lt.note && !lt.p) return;
+        var cible = null;
+        (f.taches||[]).forEach(function(t){ if(!cible && t.t === lt.t) cible = t; });
+        if(!cible){ f.taches.push(lt); repris++; return; }
+        if(lt.f && !cible.f){ cible.f = true; repris++; }
+        if(lt.note && !cible.note){ cible.note = lt.note; repris++; }
+        if(lt.p && !cible.p){ cible.p = lt.p; repris++; }
+      });
+      if(loc.note && !f.note) f.note = loc.note;
+    }
     var faites = (f.taches||[]).filter(function(t){ return t.f; }).length;
     var notes  = (f.taches||[]).filter(function(t){ return t.note; }).length;
     if(deplacable) delete etat.fiches[ancienne];
     var bouts = [];
     if(faites) bouts.push(faites+" ligne"+(faites>1?"s":"")+" déjà cochée"+(faites>1?"s":""));
     if(notes)  bouts.push(notes+" commentaire"+(notes>1?"s":""));
-    return "Fiche « "+c.nom+" » · "+B[c.b].nom+" retrouvée" + (bouts.length ? " — "+bouts.join(", ") : "") + ".";
+    return "Fiche « "+c.nom+" » · "+B[c.b].nom+" retrouvée" + (bouts.length ? " — "+bouts.join(", ") : "") + "."
+         + (repris ? " Ce que tu venais de cocher ici a été repris." : "");
   }
   if(deplacable){ etat.fiches[nouvelle] = etat.fiches[ancienne]; delete etat.fiches[ancienne]; }
   else if(!etat.fiches[nouvelle]) etat.fiches[nouvelle] = ficheNeuve(c.b);

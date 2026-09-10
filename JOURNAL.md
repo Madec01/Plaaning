@@ -320,3 +320,79 @@ calcul de ce qui est resté en plan.
   sa période, plutôt que de la proposer en un clic ? *(Choix actuel : proposer. Créer
   d'office bloquerait des heures tous les jours d'un chantier d'un mois et gonflerait
   le total engagé, alors qu'on n'est pas dessus tous les jours.)*
+
+---
+
+## 006 — Reprendre une prépa vingt jours après
+*10 septembre 2026*
+
+### La question posée
+> « Et pour les liens entre colonnes, si je continue ma prépa 20 jours après pour un
+> dossier, je retrouve la même colonne ? »
+
+### La réponse, vérifiée
+Oui. Scénario joué de bout en bout : prépa `PNPE3270` le lundi 7 septembre — deux
+lignes cochées (Prise en compte, Régimes), un commentaire sur la ligne ADR, une note
+de fiche. Saut de trois semaines, lundi 28 septembre. On tape `PNPE3270` dans la
+colonne Prépa, et tout revient : les cases cochées, le commentaire de ligne, la note
+de fiche. L'outil l'annonce — *« Fiche PNPE3270 · Prépa dossiers retrouvée —
+3 lignes déjà cochées, 1 commentaire. »*
+
+**Trois chemins** mènent à la même fiche :
+1. **Taper le nom du dossier** dans la colonne. Les noms connus sont proposés.
+2. **« En cours ce jour-là »** — si la fiche a des dates qui couvrent ce jour, elle est
+   proposée en un clic, déjà nommée.
+3. **« Resté en plan »** — si toutes ses séances sont passées et qu'il reste des lignes
+   à faire, elle remonte d'elle-même avec un bouton *Reporter*.
+
+### Corrigé — un trou trouvé en écrivant le test
+Cocher une ligne **avant** de nommer la colonne, puis taper le nom d'un dossier
+existant, faisait perdre la coche : la fiche retrouvée écrasait ce qu'on venait de
+faire. C'est pourtant le geste naturel — on ouvre sa journée, on coche, on nomme
+ensuite. Reprendre une fiche existante **fusionne** désormais ce qui vient d'être fait :
+coches, commentaires de ligne et heures posées sont repris, et une ligne absente de la
+fiche y est ajoutée. La note de fiche n'est reprise que si la fiche n'en avait pas,
+pour ne rien écraser.
+
+### Limite assumée
+Prépa, Chantier, Clôture et Réception d'un même dossier restent **quatre fiches
+distinctes** : cocher « Régimes » en prépa ne coche rien dans le chantier. Le lien
+entre elles est le nom, pas l'avancement.
+
+---
+
+## 007 — Une période sans nom reste une période
+*10 septembre 2026*
+
+### Le défaut signalé
+> « Quand je mets les dates du chantier, ça ne l'affiche pas dans le rail. »
+
+### Ce qui se passait
+Reproduit en jouant les cinq cas de figure. Un seul échouait, et c'était le plus
+courant : **des dates saisies sans avoir nommé le dossier**. Le bandeau de périodes ne
+regardait que les fiches nommées — une fiche sans nom n'a pas de clé parlante, donc
+elle était ignorée. On activait un chantier, on posait ses dates, et il ne se passait
+rien.
+
+Erreur de conception de ma part : **une période existe dès qu'il y a des dates.** Le
+nom sert à savoir *lequel*, son absence ne doit pas la rendre invisible.
+
+### Corrigé
+- La barre s'affiche maintenant même sans nom de dossier — étiquetée simplement
+  « Chantier ». Nommer le dossier ajoute son identité, ce n'est plus une condition
+  d'existence. *(La brique d'une fiche non nommée est retrouvée à partir des colonnes
+  qui la portent.)*
+- L'astuce affichée sous les dates disait « nomme le dossier pour le voir courir dans
+  le rail » — c'est devenu faux. Elle est remplacée par la seule information qui
+  manquait vraiment : **« période hors de la semaine affichée »**, quand les dates ne
+  touchent pas la semaine qu'on regarde. C'était l'autre façon de ne rien voir sans
+  comprendre pourquoi.
+
+### Les cinq cas, tous vérifiés
+| Cas | Résultat |
+|---|---|
+| Dates sans nom | `Chantier — J3 sur 4` |
+| Nom puis dates | `Chantier · PNPE3270 — J3 sur 4` |
+| Dates puis nom | `Chantier · PNPE3270 — J3 sur 4` |
+| Nom + seulement la date de fin | `Chantier · PNPE9999 — fin dans 1 j` |
+| Période sur une semaine future | rien cette semaine (+ l'astuce), la barre deux semaines plus tard |
