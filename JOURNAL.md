@@ -191,3 +191,83 @@ données réelles, conformément à l'entrée 001.
 - Le nom du dépôt garde sa coquille (`Plaaning`).
 - À l'usage : faut-il pouvoir **reporter au lendemain** une sous-tâche non faite,
   et **recopier une semaine** sur la suivante ?
+
+---
+
+## 004 — Les fiches se lient, et rien ne se perd
+*10 septembre 2026*
+
+C'est la modification la plus structurante depuis le début : l'état ne vit plus dans
+la case d'un jour, il vit dans une **fiche attachée à un dossier**.
+
+### Le problème posé
+> « Je prépare le dossier PNPE3270, ensuite je fais le chantier PNPE3270, ensuite je
+> clôture le dossier PNPE3270. […] Une prépa se fait sur plusieurs semaines : quand
+> le lundi 01/10 j'ai préparé un truc et que je reprends le 15/10, il faut que la
+> nouvelle fiche réaffiche ce qui était coché et les commentaires. »
+
+En v1, les sous-tâches appartenaient à la colonne. Deux colonnes du même dossier à
+deux dates étaient donc deux listes sans rapport. C'était faux.
+
+### Ce qui change
+Une colonne dans un jour n'est plus qu'une **séance** : un créneau de travail. Ce qui
+est coché, commenté et planifié appartient à une **fiche**, identifiée par
+`brique + nom du dossier`.
+
+- **Le nom du dossier fait le lien.** Tu tapes `PNPE3270` dans une colonne Chantier :
+  s'il existe déjà une fiche Chantier de ce dossier, elle **revient telle quelle**, et
+  l'outil te le dit — *« Fiche PNPE3270 · Chantier en cours retrouvée — 3 lignes déjà
+  cochées, 1 commentaire. »*
+- **Les noms déjà utilisés sont proposés** à la saisie, pour qu'une faute de frappe ne
+  casse pas le lien.
+- Prépa, Chantier, Clôture et Réception d'un même dossier restent **des fiches
+  distinctes** — elles ne partagent pas leurs cases à cocher. C'est volontaire : ce sont
+  trois moments différents du même dossier, pas la même liste.
+- Une colonne sans nom (Passif, Réunion, une Visite ponctuelle) garde une fiche à elle,
+  locale à ce jour-là. Rien ne change pour elles.
+
+### Ajouté
+- **Des dates sur les dossiers.** Toute fiche nommée (chantier, prépa, clôture,
+  réception) a un `du … au …`, avec un repère calculé : *dans 5 j*, *J4 sur 12*,
+  *terminé*.
+- **Des commentaires partout.** Une note par fiche — elle suit le dossier d'une séance
+  à l'autre — et une note par sous-tâche. Les notes existantes restent visibles sans
+  qu'on ait à cliquer.
+- **Une heure et une durée par sous-tâche**, facultatives. Quand elles sont posées,
+  la sous-tâche **apparaît dans le rail** comme un bloc plein, distinct des séances.
+  Un bloc trop court pour porter son nom l'affiche à côté de lui.
+- **« Resté en plan »**, la réponse à *comment on gère ce qui n'a pas été fait*.
+  Au-dessus du jour, la liste des fiches dont **toutes les séances sont passées** et
+  qui gardent des lignes non cochées, avec un bouton **Reporter** qui ouvre la fiche
+  sur le jour choisi — sans rien perdre de ce qui était déjà fait.
+
+### Décision annulée
+L'entrée 001 disait : *« Prépa dossier restera un bloc où je n'aurai pas de
+sous-catégorie. »* **Ce n'est plus vrai.** Prépa dossiers a désormais son modèle :
+**Prise en compte, Régimes, PDS, ADR, FEP, Logistique.** Le nom du dossier reste, et
+devient en plus la clé de liaison.
+
+### Migration
+Les données v1 sont converties automatiquement au premier chargement : chaque colonne
+nommée devient une fiche, les cases cochées sont conservées. Le stockage est réécrit
+au format v2 dans la foulée. Les clés de semaine passent de `2026-S37` à la date du
+lundi (`2026-09-07`), ce qui permet de dater les séances passées — nécessaire au
+calcul de ce qui est resté en plan.
+
+### Corrections faites en cours de route
+- **« Resté en plan » était inutilisable** : il remontait chaque colonne Prépa créée
+  par défaut et jamais touchée, soit dix lignes de bruit. Une journée type n'est pas
+  un engagement — seules comptent désormais les fiches **nommées**, ou celles où
+  quelque chose a été coché, commenté ou planifié.
+- **L'édition redessinait trop.** Passer du champ « du » au champ « au » détruisait le
+  champ visé et faisait perdre le focus. Les heures de séance, les dates et la
+  planification ne redessinent plus que ce qu'elles changent.
+- Le bouton *Reporter* lisait une brique que le rendu n'écrivait pas : il ne
+  fonctionnait pas.
+- La ligne de dates se cassait en deux avec le « au » orphelin en fin de ligne.
+
+### En attente de décision
+- Faut-il **recopier une semaine** sur la suivante ?
+- Une fiche terminée doit-elle **disparaître** des propositions de noms, ou rester
+  consultable ?
+- Le rail doit-il montrer la **période du chantier** (les dates) en plus des séances ?
