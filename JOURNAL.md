@@ -396,3 +396,30 @@ nom sert à savoir *lequel*, son absence ne doit pas la rendre invisible.
 | Dates puis nom | `Chantier · PNPE3270 — J3 sur 4` |
 | Nom + seulement la date de fin | `Chantier · PNPE9999 — fin dans 1 j` |
 | Période sur une semaine future | rien cette semaine (+ l'astuce), la barre deux semaines plus tard |
+
+---
+
+## 008 — Le lien porte sur le dossier, jamais sur l'avancement
+*10 septembre 2026*
+
+Décision confirmée, et désormais close.
+
+> « Oui c'est ça, pas de lien avec l'avancement. »
+
+Prépa, Chantier, Clôture et Réception d'un même dossier sont **quatre fiches
+indépendantes**. Le nom du dossier les rassemble — il les retrouve, les propose à la
+saisie, trace leur période dans le rail — mais **chacune garde son propre avancement**.
+
+Cocher « Régimes » dans la prépa de `PNPE3270` ne coche rien dans le chantier
+`PNPE3270`. C'est voulu : ce sont trois moments distincts du même dossier, pas une
+liste unique. « Envoi PVRC » n'a rien à faire dans une prépa, et « Régimes » n'a rien
+à faire dans une clôture.
+
+**Ce que le nom partage** : l'identité du dossier, sa présence dans les noms proposés,
+sa période et ses dates *(propres à chaque fiche)*, et le fait de retrouver une séance
+passée.
+**Ce que le nom ne partage pas** : les cases cochées, les commentaires, les heures
+posées sur les sous-tâches.
+
+Aucune modification du code : c'est le comportement en place depuis l'entrée 004.
+Cette entrée ne fait que fermer la question restée ouverte.
