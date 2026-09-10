@@ -131,3 +131,63 @@ réelle dans le dépôt, conformément à l'entrée 001.
    *(Proposition : à la main, pour préserver « un fichier, aucune dépendance ».)*
 4. Une semaine à la fois, ou un historique ?
    *(Proposition : un historique discret, sinon impossible de montrer que le passif recule.)*
+
+---
+
+## 003 — L'outil, version 1
+*10 septembre 2026*
+
+### Décisions prises (réponses aux questions de l'entrée 002)
+1. **Les listes de sous-tâches ne sont pas figées** — « trop complexe de tout trouver
+   maintenant ». Conséquence de conception : les listes **se complètent en travaillant**.
+   Chaque brique démarre avec ce qu'on connaît déjà ; on ajoute une ligne dans une colonne
+   et on clique l'étoile ★ pour la garder au modèle. Elle réapparaîtra la prochaine fois.
+   Un panneau « Modèles de sous-tâches » en bas de page permet de les relire et de les élaguer.
+2. **Une brique peut avoir des heures précises.** Chaque colonne a un début et une fin
+   réglables à 5 minutes près. Les valeurs par défaut restent des demi-journées
+   (prépa 8h–12h, passif 13h–17h) mais rien n'est verrouillé.
+3. **Les réunions se saisissent à la main.** Aucun agenda branché, aucune dépendance.
+4. **Un petit historique.** Les semaines sont conservées ; le bandeau du haut montre les
+   heures de passif des **six dernières semaines** et l'écart avec la semaine précédente.
+5. **Agencement retenu : B + le rail de D**, conforme à la recommandation de l'entrée 002.
+
+### Ajouté
+`index.html` — l'application, en un seul fichier, sans dépendance ni serveur.
+
+- **Le rail** en haut : la semaine entière, lundi→vendredi, le temps de gauche à droite.
+  Un chantier présent plusieurs jours de suite se fusionne en **une seule barre**
+  (« Chantier · Bel-Air — 4 jours »). Chaque en-tête de jour affiche ses heures engagées,
+  en orange au-delà de 9 h. On clique un jour, ou directement un bloc, pour l'ouvrir.
+- **Le jour ouvert** en dessous : une colonne par brique. La rangée
+  « Activer une colonne » ajoute chantier, clôture, réception, visite, prépa réunion
+  ou réunion. **Le bouton Réception porte un repère « jeudi » quand on est jeudi** ; les
+  autres jours, il fonctionne quand même mais rappelle que les réceptions se calent le jeudi.
+- **La journée type est là par défaut** : toute journée neuve arrive avec Prépa 8h–12h
+  et Passif 13h–17h. On peut retirer l'une ou l'autre ; une rangée « Remettre la journée
+  type » permet de la ramener.
+- **Prépa dossiers n'a pas de sous-catégorie**, seulement le nom du dossier — comme demandé.
+- **Bilan** : heures de passif de la semaine, écart avec la précédente (▼ en vert quand
+  ça recule), courbe des six dernières semaines, et total engagé.
+- Thème clair / sombre, et tout est utilisable au doigt.
+
+### Stockage
+`localStorage`, clé `plaaning.v1`. **Rien ne part sur le réseau.** Le dépôt reste vide de
+données réelles, conformément à l'entrée 001.
+
+### Publié
+- Application utilisable immédiatement : <https://claude.ai/code/artifact/4cd9348b-9b83-4c7a-8f36-136788358d08>
+- Maquettes de l'entrée 002 : <https://claude.ai/code/artifact/889d4a26-aab9-494f-abf0-0e8761efc805>
+
+### Corrections faites en cours de route
+- Les champs d'heure étaient trop étroits : dans un navigateur réglé en anglais, le
+  « AM/PM » se faisait couper. Largeur rendue souple, vérifié en français et en anglais.
+- Un bloc d'une heure dans le rail affichait un libellé tronqué qui ressemblait à un bug.
+  En dessous de trois heures, le bloc n'affiche plus que sa couleur ; le détail est dans
+  l'infobulle.
+
+### En attente de décision
+- **Publier en GitHub Pages** pour avoir une URL permanente : à activer dans
+  *Settings → Pages → Source : branche `main`, dossier `/ (root)`*.
+- Le nom du dépôt garde sa coquille (`Plaaning`).
+- À l'usage : faut-il pouvoir **reporter au lendemain** une sous-tâche non faite,
+  et **recopier une semaine** sur la suivante ?
