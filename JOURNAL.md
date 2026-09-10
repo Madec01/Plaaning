@@ -271,3 +271,52 @@ calcul de ce qui est resté en plan.
 - Une fiche terminée doit-elle **disparaître** des propositions de noms, ou rester
   consultable ?
 - Le rail doit-il montrer la **période du chantier** (les dates) en plus des séances ?
+
+---
+
+## 005 — Les dates portent le chantier toutes seules
+*10 septembre 2026*
+
+### Décisions prises
+1. **Pas de recopie d'une semaine sur l'autre.** *« Un chantier, je connais les dates
+   de fin, donc si ça dure un mois ça se reportera automatiquement. »* La période
+   remplace la recopie : on saisit les dates une fois, et le chantier se montre de
+   lui-même sur toutes les semaines qu'il traverse.
+2. **Les dossiers terminés restent proposés**, mais en dernier et étiquetés
+   *« terminé le JJ/MM »*.
+3. **Le rail doit montrer qu'un chantier court toute la semaine, et lequel.**
+   Ce qui **annule la recommandation de l'entrée 004**, où j'avais conseillé de ne pas
+   afficher les périodes dans le rail au motif que ça le rendrait illisible. C'était
+   à côté : la période est justement le repère qui manquait.
+
+### Ajouté
+- **Un bandeau de périodes** en haut du rail, séparé des séances par un trait. Chaque
+  dossier daté y trace une pastille sur les jours qu'il couvre, avec son repère
+  (*J9 sur 38*). Les flèches **◀** et **▶** disent qu'il a commencé avant lundi ou
+  qu'il continue après vendredi. C'est là qu'on lit d'un coup d'œil ce qui court cette
+  semaine, et lequel.
+- **« En cours ce jour-là »** : dans la rangée d'activation, les dossiers dont la
+  période couvre le jour ouvert sont proposés en un clic, déjà nommés.
+- **Une période encore en cours ne compte plus comme « resté en plan ».** Un chantier
+  qui court jusqu'au 9 octobre n'est pas en retard le 10 septembre.
+
+### Corrigé
+- **Les dates n'étaient pas accessibles sur un chantier.** Elles existaient depuis
+  l'entrée 004 mais ne s'affichaient qu'une fois le dossier nommé — donc invisibles au
+  moment où on active la colonne. Elles sont désormais toujours là sur Chantier,
+  Clôture et Réception. *(Prépa dossiers garde la condition : cette colonne est créée
+  par défaut tous les jours, une ligne de dates vide partout serait du bruit.)*
+  Quand une date est posée sans nom de dossier, une astuce explique que le rail ne
+  peut pas encore montrer la période.
+- **Les périodes étaient mal placées dans le rail.** Elles passaient par le calcul de
+  position des séances, qui recalcule les bornes à partir d'heures — les périodes,
+  elles, sont bornées en jours. Leurs bornes étaient donc écrasées par `NaN`, et la
+  barre s'affichait sur une seule colonne au lieu de sa vraie étendue.
+- **Changer une date ne rafraîchissait pas le rail** : la période n'apparaissait
+  qu'après avoir changé de semaine.
+
+### En attente de décision
+- Faut-il que le chantier **crée aussi la colonne** automatiquement sur chaque jour de
+  sa période, plutôt que de la proposer en un clic ? *(Choix actuel : proposer. Créer
+  d'office bloquerait des heures tous les jours d'un chantier d'un mois et gonflerait
+  le total engagé, alors qu'on n'est pas dessus tous les jours.)*

@@ -410,6 +410,27 @@ textarea.note::placeholder{color:var(--ink-3); font-style:italic}
 .railLegende .ex1{background:var(--surface-2); border:1px solid var(--line-2); border-left:3px solid var(--ink-3)}
 .railLegende .ex2{background:var(--ink-3)}
 
+
+/* ---- bandeau des périodes : ce qui court, et pour combien de temps ---- */
+.railPeriodes{
+  display:flex; flex-direction:column; gap:3px;
+  padding-bottom:5px; margin-bottom:3px; border-bottom:1px dashed var(--line-2);
+}
+.railPeriodes .railLane{min-height:21px}
+.railPeriode{
+  grid-row:1; margin:0 1px; display:flex; align-items:center; gap:6px; overflow:hidden;
+  background:var(--bs); border:1px solid var(--bl); border-radius:20px;
+  padding:1px 10px; font-size:11px; color:var(--bi); white-space:nowrap;
+}
+.railPeriode .nm{font-weight:600; overflow:hidden; text-overflow:ellipsis}
+.railPeriode .bd{font-family:"IBM Plex Mono",monospace; font-size:9.5px; opacity:.75}
+.railPeriode .fl{font-size:9px; opacity:.65; flex:none}
+.railPeriode.avant{border-top-left-radius:4px; border-bottom-left-radius:4px}
+.railPeriode.apres{border-top-right-radius:4px; border-bottom-right-radius:4px}
+.railLegende .ex3{background:var(--surface-2); border:1px solid var(--line-2); border-radius:20px}
+.addBtn.suggere{border-style:solid; box-shadow:inset 0 -2px 0 var(--bp)}
+.astuce{font-size:10.5px; color:var(--ink-3); font-style:italic; flex:1 1 100%; line-height:1.3}
+
 /* les actions doivent rester visibles au doigt */
 @media (hover:none){ .liAct{opacity:1} }
 </style>
@@ -448,6 +469,7 @@ textarea.note::placeholder{color:var(--ink-3); font-style:italic}
   <div class="railLegende">
     <span><i class="ex1"></i>une séance — le temps que tu bloques</span>
     <span><i class="ex2"></i>une sous-tâche à heure fixe</span>
+    <span><i class="ex3"></i>la période d'un dossier, d'après ses dates</span>
   </div>
 </div></div>
 
@@ -648,13 +670,65 @@ function heuresBrique(cleLundi, b){
     return t + (j.cols||[]).reduce(function(u,c){ return u + (c.b===b ? duree(c) : 0); }, 0);
   }, 0);
 }
+function decoupe(k){
+  var i = k.indexOf("|");
+  if(i <= 0 || k.slice(0,i) === "local") return null;
+  return {b:k.slice(0,i), nom:k.slice(i+1)};
+}
+/* la periode d'une fiche, bornee a ce qui est renseigne */
+function periode(f){
+  var d1 = deIso(f.debut), d2 = deIso(f.fin);
+  if(!d1 && !d2) return null;
+  return {d1:d1 || d2, d2:d2 || d1, ouverteAvant:!d1, ouverteApres:!d2};
+}
+function periodeEnCours(f){
+  var pe = periode(f); if(!pe) return false;
+  return pe.d2 >= aujourdhui();
+}
+function couvreLe(f, jour){
+  var pe = periode(f); if(!pe) return false;
+  return pe.d1 <= jour && jour <= pe.d2;
+}
+/* les dossiers connus, les terminés en dernier */
 function nomsDossiers(){
-  var vus = {};
+  var par = {};
   Object.keys(etat.fiches).forEach(function(k){
-    var i = k.indexOf("|");
-    if(i > 0 && k.slice(0,i) !== "local") vus[k.slice(i+1)] = true;
+    var d = decoupe(k); if(!d) return;
+    var e = par[d.nom] || (par[d.nom] = {nom:d.nom, fin:null});
+    var f2 = deIso((etat.fiches[k]||{}).fin);
+    if(f2 && (!e.fin || f2 > e.fin)) e.fin = f2;
   });
-  return Object.keys(vus).sort();
+  var auj = aujourdhui();
+  return Object.keys(par).map(function(n){
+    var e = par[n];
+    return {nom:n, fini:!!(e.fin && e.fin < auj), fin:e.fin};
+  }).sort(function(a,b){
+    if(a.fini !== b.fini) return a.fini ? 1 : -1;
+    return a.nom.localeCompare(b.nom);
+  });
+}
+/* les fiches datees qui recouvrent la semaine affichee */
+function periodesSemaine(){
+  var fin = plusJours(lundi,4), J = 86400000, out = [];
+  Object.keys(etat.fiches).forEach(function(k){
+    var d = decoupe(k); if(!d || LIEES.indexOf(d.b) < 0) return;
+    var f = etat.fiches[k], pe = periode(f); if(!pe) return;
+    if(pe.d2 < lundi || pe.d1 > fin) return;
+    var i0 = Math.max(0, Math.round((pe.d1 - lundi)/J));
+    var i1 = Math.min(4, Math.round((pe.d2 - lundi)/J));
+    if(i1 < i0) return;
+    out.push({b:d.b, nom:d.nom, s:i0*10, e:(i1+1)*10,
+              avant:(pe.d1 < lundi), apres:(pe.d2 > fin), badge:badgeDates(f)});
+  });
+  return out.sort(function(a,b){ return (a.s - b.s) || (b.e - a.e); });
+}
+function dossiersDuJour(jour){
+  var out = [];
+  Object.keys(etat.fiches).forEach(function(k){
+    var d = decoupe(k); if(!d || LIEES.indexOf(d.b) < 0) return;
+    if(couvreLe(etat.fiches[k], jour)) out.push({cle:k, b:d.b, nom:d.nom});
+  });
+  return out;
 }
 
 /* ================= affichage ================= */
@@ -725,7 +799,11 @@ function segmentsRail(s){
   });
   return {fond:fond, autres:fusion.concat(taches)};
 }
-function bornes(sg){ sg.s = posRail(sg.j0,sg.de); sg.e = posRail(sg.j1,sg.a); if(sg.e <= sg.s) sg.e = sg.s + 0.5; }
+function bornes(sg){
+  /* une période arrive avec ses bornes déjà posées en jours, pas en heures */
+  if(typeof sg.s !== "number"){ sg.s = posRail(sg.j0, sg.de); sg.e = posRail(sg.j1, sg.a); }
+  if(sg.e <= sg.s) sg.e = sg.s + 0.5;
+}
 function paquets(liste){
   var out = [];
   liste.forEach(bornes);
@@ -766,6 +844,23 @@ function renderRail(){
       + '<span class="ch'+(ch>9?" over":"")+'">'+esc(dur(ch))+'</span></button>';
   }).join("");
 
+  var per = periodesSemaine();
+  var bandeau = "";
+  if(per.length){
+    bandeau = '<div class="railPeriodes">' + paquets(per).map(function(rang){
+      return '<div class="railLane">' + rang.map(function(pe){
+        var c0 = Math.round(pe.s)+1, c1 = Math.max(c0+1, Math.round(pe.e)+1);
+        return '<div class="railPeriode'+(pe.avant?" avant":"")+(pe.apres?" apres":"")+'" data-b="'+pe.b+'" '
+          + 'style="grid-column:'+c0+'/'+c1+'" title="'+esc(B[pe.b].nom+" · "+pe.nom+(pe.badge?" — "+pe.badge:""))+'">'
+          + (pe.avant ? '<span class="fl">◀</span>' : '')
+          + '<span class="nm">'+esc(B[pe.b].court)+' · '+esc(pe.nom)+'</span>'
+          + (pe.badge ? '<span class="bd">'+esc(pe.badge)+'</span>' : '')
+          + (pe.apres ? '<span class="fl">▶</span>' : '')
+          + '</div>';
+      }).join("") + '</div>';
+    }).join("") + '</div>';
+  }
+
   var seg = segmentsRail(s), corps;
   if(!seg.fond.length && !seg.autres.length){
     corps = '<div class="railLane"><div class="railVide">Semaine vide — ouvre un jour et active ce dont tu as besoin.</div></div>';
@@ -773,7 +868,7 @@ function renderRail(){
     seg.fond.forEach(bornes);
     corps = ligneRail(seg.fond, true) + paquets(seg.autres).map(function(p){ return ligneRail(p, false); }).join("");
   }
-  $("rail").innerHTML = '<div class="railHead">'+tete+'</div><div class="railBody">'+corps+'</div>';
+  $("rail").innerHTML = '<div class="railHead">'+tete+'</div><div class="railBody">'+bandeau+corps+'</div>';
 }
 
 /* ---------- ce qui n'a pas été fait ---------- */
@@ -802,6 +897,8 @@ function retards(){
         if(!f) return;
         /* une journee type jamais touchee n'est pas un engagement : on l'ignore */
         if(!engagee(f, c.nom)) return;
+        /* un chantier dont la periode court encore n'est pas resté en plan */
+        if(periodeEnCours(f)) return;
         var reste = (f.taches||[]).filter(function(t){ return !t.f; }).length;
         if(!reste) return;
         var e = vus[cf] || (vus[cf] = {cle:cf, b:c.b, nom:c.nom, derniere:d, reste:reste, aVenir:false});
@@ -896,7 +993,7 @@ function colHTML(c){
   var lignes = (f.taches||[]).map(function(t){ return tacheHTML(c,t); }).join("");
 
   var dates = "";
-  if(liee && c.nom){
+  if(liee && (c.nom || c.b !== "prepa")){
     var bd = badgeDates(f);
     dates = '<div class="dates">'
       + '<span class="paire"><span class="lb">du</span>'
@@ -904,6 +1001,7 @@ function colHTML(c){
       + '<span class="paire"><span class="lb">au</span>'
       + '<input type="date" data-act="fin" data-c="'+c.id+'" value="'+esc(f.fin||"")+'" aria-label="Fin"></span>'
       + (bd ? '<span class="reste'+(bd==="terminé"||bd==="échu"?" fini":"")+'">'+esc(bd)+'</span>' : '')
+      + ((f.debut || f.fin) && !c.nom ? '<span class="astuce">nomme le dossier pour le voir courir dans le rail</span>' : '')
       + '</div>';
   }
 
@@ -950,6 +1048,8 @@ function renderJour(){
 
   $("cols").innerHTML = colsTriees(j).map(colHTML).join("");
 
+  majSuggestions();
+
   var manquants = FOND.filter(function(k){ return !(j.cols||[]).some(function(c){ return c.b === k; }); });
   $("repos").innerHTML = manquants.length
     ? '<span class="lbl">Remettre la journée type</span>' + manquants.map(function(k){
@@ -957,7 +1057,11 @@ function renderJour(){
       }).join("")
     : "";
 
-  $("dossiers").innerHTML = nomsDossiers().map(function(n){ return '<option value="'+esc(n)+'"></option>'; }).join("");
+  $("dossiers").innerHTML = nomsDossiers().map(function(d){
+    return '<option value="'+esc(d.nom)+'"'
+         + (d.fini ? ' label="terminé le '+esc(dateJJMM(d.fin))+'"' : '')
+         + '></option>';
+  }).join("");
 }
 
 function renderModeles(){
@@ -1002,11 +1106,39 @@ function majBadgeDates(c){
   var col = document.querySelector('input[data-act="debut"][data-c="'+c.id+'"]');
   var zone = col && col.closest(".dates");
   if(!zone) return;
-  var b = badgeDates(fiche(c)), sp = zone.querySelector(".reste");
+  var f = fiche(c), astuce = zone.querySelector(".astuce");
+  if((f.debut || f.fin) && !c.nom){
+    if(!astuce){
+      astuce = document.createElement("span");
+      astuce.className = "astuce";
+      astuce.textContent = "nomme le dossier pour le voir courir dans le rail";
+      zone.appendChild(astuce);
+    }
+  } else if(astuce) astuce.remove();
+  var b = badgeDates(f), sp = zone.querySelector(".reste");
   if(!b){ if(sp) sp.remove(); return; }
-  if(!sp){ sp = document.createElement("span"); sp.className = "reste"; zone.appendChild(sp); }
+  if(!sp){
+    sp = document.createElement("span"); sp.className = "reste";
+    zone.insertBefore(sp, zone.querySelector(".astuce"));
+  }
   sp.textContent = b;
   sp.className = "reste" + (b === "terminé" || b === "échu" ? " fini" : "");
+}
+
+function majSuggestions(){
+  var j = leJour(), d = dateDuJour(), dejaLa = {};
+  (j.cols||[]).forEach(function(c){ dejaLa[cleFiche(c)] = true; });
+  var enCours = dossiersDuJour(d).filter(function(x){ return !dejaLa[x.cle]; });
+  var zone = $("add");
+  zone.querySelectorAll(".suggere, .lblSug").forEach(function(e){ e.remove(); });
+  if(!enCours.length) return;
+  zone.insertAdjacentHTML("beforeend",
+    '<span class="lbl lblSug" style="margin-left:6px">En cours ce jour-là</span>'
+    + enCours.map(function(x){
+        return '<button type="button" class="addBtn suggere" data-b="'+x.b+'" data-act="addSuggere" '
+          + 'data-brique="'+x.b+'" data-nom="'+esc(x.nom)+'" title="Ouvrir cette fiche sur ce jour">'
+          + '<span class="plus">＋</span>'+esc(B[x.b].court)+' · '+esc(x.nom)+'</button>';
+      }).join(""));
 }
 
 var minuteur = null;
@@ -1056,6 +1188,12 @@ document.addEventListener("click", function(e){
     leJour().cols.push(colNeuve(k, h[0], h[1]));
     ajoutOuvert = null; edition = null; sauver(); tout();
     if(k === "reception" && jourSel !== JOUR_RECEPTION) toast("Note : tu cales d'habitude les réceptions le jeudi.");
+
+  } else if(act === "addSuggere"){
+    k = el.dataset.brique;
+    var hs = H_DEF[k] || [8,12];
+    leJour().cols.push(colNeuve(k, hs[0], hs[1], el.dataset.nom || ""));
+    ajoutOuvert = null; edition = null; sauver(); tout();
 
   } else if(act === "reporter"){
     k = el.dataset.cle;
@@ -1189,6 +1327,7 @@ document.addEventListener("change", function(e){
   if(act === "nom"){
     var msg = relier(c, el.value);
     sauver(); tout();
+
     if(msg) toast(msg);
 
   } else if(act === "de" || act === "a"){
@@ -1203,7 +1342,7 @@ document.addEventListener("change", function(e){
 
   } else if(act === "debut" || act === "fin"){
     fiche(c)[act === "debut" ? "debut" : "fin"] = el.value || "";
-    sauver(); majBadgeDates(c);
+    sauver(); majBadgeDates(c); renderRail(); majSuggestions();
 
   } else if(act === "pDate" || act === "pHeure" || act === "pDuree"){
     t = tacheParId(c, el.dataset.t); if(!t) return;
