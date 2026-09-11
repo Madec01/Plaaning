@@ -288,19 +288,18 @@ input{font:inherit; color:inherit}
 @media (min-width:1500px){ .cols{grid-template-columns:repeat(auto-fit,minmax(260px,1fr))} }
 .cols > *{min-width:0}
 .col{
-  border:1px solid var(--line); border-top:3px solid var(--bp);
+  border:1px solid var(--bl); border-top:5px solid var(--bp);
   background:var(--surface); border-radius:11px;
   overflow:hidden; display:flex; flex-direction:column;
   box-shadow:0 1px 2px rgba(16,22,38,.07), 0 4px 10px -6px rgba(16,22,38,.16);
 }
-.col .hd{background:var(--surface-2); border-bottom:1px solid var(--line); padding:9px 10px 10px; display:flex; flex-direction:column; gap:4px}
+.col .hd{background:var(--bs); border-bottom:1px solid var(--bl); padding:9px 10px 10px; display:flex; flex-direction:column; gap:4px}
 .col .hd .top{display:flex; align-items:center; gap:4px}
-.col .hd .nm{font-weight:600; font-size:14px; color:var(--ink); flex:1; min-width:0; line-height:1.25; display:flex; align-items:center; gap:7px}
-.col .hd .nm::before{content:""; width:9px; height:9px; border-radius:50%; background:var(--bp); flex:none}
+.col .hd .nm{font-weight:600; font-size:14px; color:var(--bi); flex:1; min-width:0; line-height:1.25}
 .kill{border:0; background:transparent; color:var(--ink-3); cursor:pointer; width:23px; height:23px; border-radius:6px; display:grid; place-items:center; font-size:16px; line-height:1; flex:none}
-.kill:hover{background:var(--line); color:var(--ink)}
+.kill:hover{background:var(--bl); color:var(--bi)}
 .titre{
-  border:0; background:transparent; border-bottom:1px dashed var(--line-2); width:100%;
+  border:0; background:transparent; border-bottom:1px dashed var(--bl); width:100%;
   font-size:12.5px; color:var(--ink-2); padding:2px 0;
 }
 .titre::placeholder{color:var(--ink-3); font-style:italic}
@@ -312,7 +311,7 @@ input{font:inherit; color:inherit}
   font-size:11.5px; color:var(--bi); cursor:pointer;
   flex:0 1 auto; width:auto; min-width:64px; max-width:112px;
 }
-.heures input:hover{border-color:var(--line-2); background:var(--surface)}
+.heures input:hover{border-color:var(--bl); background:var(--surface)}
 .heures input:focus{border-color:var(--bp); background:var(--surface); outline:none; cursor:text}
 .heures .dd{font-family:"IBM Plex Mono",monospace; font-size:11px; color:var(--ink-3)}
 .heures .dur{font-family:"IBM Plex Mono",monospace; font-size:11px; color:var(--bi); opacity:.8; margin-left:auto}
@@ -323,7 +322,7 @@ input{font:inherit; color:inherit}
 .tache{display:flex; gap:7px; align-items:flex-start; flex:1; min-width:0; cursor:pointer}
 .tache input{position:absolute; opacity:0; width:0; height:0}
 .tache .box{
-  width:15px; height:15px; border:1.5px solid var(--line-2); border-radius:4px; flex:none;
+  width:15px; height:15px; border:1.5px solid var(--bl); border-radius:4px; flex:none;
   margin-top:1px; display:grid; place-items:center; background:var(--surface);
 }
 .tache input:checked + .box{background:var(--bp); border-color:var(--bp)}
@@ -334,7 +333,7 @@ input{font:inherit; color:inherit}
 .liAct{display:flex; gap:0; flex:none; opacity:0; transition:opacity .12s}
 li:hover .liAct, li:focus-within .liAct{opacity:1}
 .liAct button{border:0; background:transparent; cursor:pointer; color:var(--ink-3); width:21px; height:21px; border-radius:5px; display:grid; place-items:center; font-size:12px; line-height:1}
-.liAct button:hover{background:var(--line); color:var(--ink)}
+.liAct button:hover{background:var(--bl); color:var(--bi)}
 .liAct .pin.on{color:var(--bp); opacity:1}
 .addTache{
   border:0; background:transparent; color:var(--ink-3); cursor:pointer; text-align:left;
@@ -400,11 +399,11 @@ footer.pied p{max-width:80ch}
   font-family:"IBM Plex Mono",monospace; font-variant-numeric:tabular-nums;
   font-size:11px; color:var(--bi); cursor:pointer; flex:0 1 auto; min-width:104px; max-width:134px;
 }
-.dates input[type="date"]:hover{border-color:var(--line-2); background:var(--surface)}
+.dates input[type="date"]:hover{border-color:var(--bl); background:var(--surface)}
 .dates input[type="date"]:focus{border-color:var(--bp); background:var(--surface); outline:none}
 .dates .reste{
   font-family:"IBM Plex Mono",monospace; font-size:10.5px; color:var(--bi);
-  background:var(--surface); border:1px solid var(--line-2); border-radius:20px; padding:0 7px;
+  background:var(--surface); border:1px solid var(--bl); border-radius:20px; padding:0 7px;
 }
 .dates .reste.fini{color:var(--ink-3); border-color:var(--line)}
 
@@ -412,12 +411,12 @@ footer.pied p{max-width:80ch}
   border:0; background:transparent; color:var(--ink-3); cursor:pointer; flex:none;
   width:23px; height:23px; border-radius:6px; display:grid; place-items:center; font-size:13px; line-height:1;
 }
-.icone:hover{background:var(--line); color:var(--ink)}
+.icone:hover{background:var(--bl); color:var(--bi)}
 .icone.on{color:var(--bp)}
 
 textarea.note{
   width:calc(100% - 20px); margin:8px 10px 2px; display:block;
-  border:1px solid var(--line-2); border-radius:8px; background:var(--surface-2);
+  border:1px solid var(--bl); border-radius:8px; background:var(--surface-2);
   padding:6px 8px; font:inherit; font-size:12.5px; line-height:1.45; color:var(--ink-2);
   resize:vertical; min-height:46px;
 }
@@ -430,20 +429,20 @@ textarea.note::placeholder{color:var(--ink-3); font-style:italic}
 .meta .qd{
   font-family:"IBM Plex Mono",monospace; font-variant-numeric:tabular-nums;
   font-size:10.5px; font-weight:600; color:var(--bi);
-  background:var(--surface-2); border:1px solid var(--line-2); border-radius:20px; padding:0 7px;
+  background:var(--bs); border:1px solid var(--bl); border-radius:20px; padding:0 7px;
 }
 .meta .nt{font-size:11.5px; font-style:italic; color:var(--ink-3); line-height:1.4; overflow-wrap:anywhere; flex:1 1 100%}
 .edit{padding:4px 4px 6px 22px; display:flex; flex-direction:column; gap:6px}
 .edit .rang{display:flex; gap:5px; align-items:center; flex-wrap:wrap}
 .edit label{font-size:10.5px; color:var(--ink-3); text-transform:uppercase; letter-spacing:.08em; font-family:"Barlow Condensed",sans-serif; font-weight:600}
 .edit input[type="time"],.edit input[type="number"],.edit input[type="date"]{
-  border:1px solid var(--line-2); background:var(--surface); border-radius:6px; padding:3px 5px;
+  border:1px solid var(--bl); background:var(--surface); border-radius:6px; padding:3px 5px;
   font-family:"IBM Plex Mono",monospace; font-variant-numeric:tabular-nums; font-size:11.5px; color:var(--ink);
 }
 .edit input[type="number"]{width:66px}
 .edit input:focus{outline:none; border-color:var(--bp)}
 .edit textarea{
-  border:1px solid var(--line-2); border-radius:7px; background:var(--surface); padding:5px 7px;
+  border:1px solid var(--bl); border-radius:7px; background:var(--surface); padding:5px 7px;
   font:inherit; font-size:12.5px; line-height:1.45; color:var(--ink-2); resize:vertical; min-height:44px; width:100%;
 }
 .edit textarea:focus{outline:none; border-color:var(--bp)}

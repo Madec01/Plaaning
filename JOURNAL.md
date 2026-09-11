@@ -673,3 +673,51 @@ les blocs (`z-index:0`, les couloirs à `1`) pour ne rien assombrir.
 
 Vérifié sur lundi, mercredi et vendredi : la bande se pose à 0 %, 40 % et 80 % de la
 largeur, sur 20 % à chaque fois.
+
+---
+
+## 014 — Rendre leur couleur aux cartes du jour
+*11 septembre 2026*
+
+### Le défaut signalé
+> « Même dans la partie du jour concerné, je voudrais que toutes les tuiles soient
+> différenciables d'un coup d'œil. Là c'est compliqué. »
+
+C'était le prix, non annoncé, de la neutralisation faite à l'entrée 010 : les cartes
+étaient devenues des boîtes blanches identiques, distinguées par un filet de 3 px et une
+pastille de 9 px. Il fallait **lire** le titre pour savoir où l'on était — exactement ce
+qu'un planning doit éviter.
+
+### Ce qui annule l'entrée 010 sur ce point
+La neutralisation des cartes reposait sur un raisonnement juste **à ce moment-là** : les
+deux zones étaient sur le même plan clair, et la signature « fond teinté + bordure
+colorée » dupliquée était ce qui les faisait fondre l'une dans l'autre.
+
+Mais l'entrée 010 a aussi rendu le rail **sombre**. La séparation des deux zones est
+désormais portée par **la valeur du plan** — sombre contre clair — qui est un signal
+bien plus fort. La contrainte qui justifiait de neutraliser les cartes a donc disparu en
+même temps qu'elle était posée. Je ne l'ai pas vu ; l'usage l'a montré.
+
+### Corrigé
+Les cartes retrouvent leur couleur, en plus franc qu'avant :
+- **Bandeau de tête de 5 px** dans le ton pur de la brique (c'était 3 px).
+- **En-tête teinté** dans le ton doux — c'est la grande surface de couleur qui permet le
+  coup d'œil, un filet ne suffit pas.
+- **Titre dans l'encre de la brique**, bordure de carte dans son trait, et tous les
+  détails (cases, champs, badges) rendus à leur brique.
+- La pastille devant le titre disparaît : redondante dès lors que l'en-tête est coloré.
+
+Les deux zones restent parfaitement distinctes — le rail est une régie sombre à blocs
+saturés, le jour un établi clair à cartes pastel. Rien à voir.
+
+### Vérification
+Contraste du titre sur son en-tête teinté, mesuré pour les **sept briques dans les deux
+thèmes** : toutes au-dessus de 4,5:1. La plus basse est le Passif (4,95 en clair) —
+cohérent, c'est la brique qu'on veut voir disparaître.
+
+### La leçon
+Une recommandation de design vaut dans son contexte. Celle de l'agent — « neutraliser
+l'établi » — était solide tant que les deux zones partageaient un plan. Elle est devenue
+inutile, puis nuisible, dès que le rail a changé de valeur. Appliquer les deux moitiés
+d'un conseil sans revérifier que la première rend la seconde inutile, c'est ce qui a
+produit ce défaut.
