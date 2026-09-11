@@ -423,3 +423,38 @@ posées sur les sous-tâches.
 
 Aucune modification du code : c'est le comportement en place depuis l'entrée 004.
 Cette entrée ne fait que fermer la question restée ouverte.
+
+---
+
+## 009 — Le planning prend toute la page
+*11 septembre 2026*
+
+### Le défaut signalé
+> « Le planning devrait prendre toute la page, tu as laissé de grosses marges à droite
+> et à gauche. »
+
+Exact. Le conteneur était plafonné à **1240 px** et centré : sur un écran de 1920 px,
+ça abandonnait 340 px de chaque côté. Un plafond de lecture a du sens pour un texte
+suivi ; il n'en a aucun pour un planning, où chaque pixel de largeur est du temps
+affiché en plus.
+
+### Corrigé
+- Le plafond saute. La page occupe toute la largeur, avec une gouttière qui respire
+  sans coller au bord : `clamp(12px, 1.2vw, 26px)` — 12 px sur téléphone, 26 px sur
+  grand écran.
+- **Le rail y gagne le plus** : les noms de dossiers ne sont plus tronqués.
+  `Chantier · PNPE3270` et `Prépa · PNPE3418` s'affichent en entier au lieu de finir
+  en points de suspension.
+- Seul le texte suivi garde une largeur de lecture (le pied de page, l'explication des
+  modèles), parce qu'une ligne de 1900 px ne se lit pas.
+- Au-delà de 1500 px, la largeur minimale d'une colonne passe de 212 à 260 px, pour
+  éviter que l'espace gagné ne serve qu'à multiplier des colonnes étroites.
+
+Vérifié sans débordement horizontal à 1920, 1280 et 390 px.
+
+### Corrigé aussi — trouvé sur la capture
+« Resté en plan » proposait de **reporter une fiche déjà ouverte sur le jour affiché** :
+on regardait jeudi, et il conseillait de reporter sur jeudi une fiche qui s'y trouvait
+déjà. Le clic était sans effet — un message disait « déjà ouverte » — mais c'était du
+bruit dans un bandeau qui doit rester court pour être lu. Une fiche présente sur le
+jour affiché n'y figure plus.

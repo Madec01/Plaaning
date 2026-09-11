@@ -82,7 +82,7 @@ body{
   font-size:15px; line-height:1.5; -webkit-font-smoothing:antialiased;
   -webkit-text-size-adjust:100%;
 }
-.wrap{max-width:1240px; margin:0 auto; padding-inline:16px}
+.wrap{width:100%; padding-inline:clamp(12px,1.2vw,26px)}
 h1,h2,h3{margin:0}
 p{margin:0}
 button{font:inherit; color:inherit}
@@ -213,6 +213,7 @@ input{font:inherit; color:inherit}
 }
 
 .cols{display:grid; grid-template-columns:repeat(auto-fit,minmax(212px,1fr)); gap:11px; align-items:start}
+@media (min-width:1500px){ .cols{grid-template-columns:repeat(auto-fit,minmax(260px,1fr))} }
 .cols > *{min-width:0}
 .col{border:1px solid var(--bl); background:var(--surface); border-radius:11px; overflow:hidden; display:flex; flex-direction:column}
 .col .hd{background:var(--bs); border-bottom:1px solid var(--bl); padding:9px 10px 10px; display:flex; flex-direction:column; gap:4px}
@@ -304,6 +305,7 @@ li:hover .liAct, li:focus-within .liAct{opacity:1}
 .toast.on{opacity:1; transform:translateX(-50%) translateY(0)}
 footer.pied{padding-block:0 30px}
 footer.pied .wrap{font-size:12.5px; color:var(--ink-3); line-height:1.55}
+footer.pied p{max-width:80ch}
 @media (prefers-reduced-motion:reduce){ *{transition:none !important; animation:none !important} }
 @media (max-width:520px){
   .bar .wrap{gap:9px}
@@ -926,7 +928,11 @@ function retards(){
     .sort(function(a,b){ return a.derniere - b.derniere; });
 }
 function renderRetard(){
-  var toutes = retards(), zone = $("retard");
+  var ouvertes = {};
+  ((leJour()||{}).cols||[]).forEach(function(c){ ouvertes[cleFiche(c)] = true; });
+  /* inutile de proposer le report d'une fiche deja ouverte sur le jour affiche */
+  var toutes = retards().filter(function(e){ return !ouvertes[e.cle]; });
+  var zone = $("retard");
   if(!toutes.length){ zone.innerHTML = ""; return; }
   var liste = toutes.slice(0,8), surplus = toutes.length - liste.length;
   var jn = JOUR_LONG[jourSel].toLowerCase();
