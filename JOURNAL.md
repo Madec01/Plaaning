@@ -585,3 +585,57 @@ type en 9,5 px).
 Le premier script de mesure mentait : il ne **compositait pas les fonds semi-transparents**
 et lisait `rgba(255,255,255,.07)` comme du blanc pur, annonçant 1,07:1 là où le vrai
 rapport est 8,29:1. Corrigé avant de conclure quoi que ce soit.
+
+---
+
+## 012 — Des tuiles, et le planning qui se recale tout seul
+*11 septembre 2026*
+
+### Le défaut signalé
+> « Je n'aime pas trop le blanc, c'est trop criard avec les fonds sombres. Je voudrais
+> que les tuiles des jours dans le rail aient une couleur un peu différente du fond
+> sombre, là c'est moche. »
+
+Deux problèmes distincts, tous deux fondés :
+1. L'onglet du jour sélectionné était un **aplat quasi blanc** posé sur le rail sombre.
+   Je l'avais choisi pour qu'il prenne exactement la couleur de l'établi — c'était le
+   dispositif de lien entre les deux zones. Mais un blanc franc sur de l'ardoise, c'est
+   un phare : ça criait plus que ça ne reliait.
+2. Les quatre autres jours n'avaient **aucun fond du tout** — juste un trait de
+   séparation. Ils ne se lisaient pas comme des objets cliquables, ils flottaient.
+
+### Corrigé
+- **Les cinq jours sont devenus des tuiles** : un fond légèrement plus clair que le
+  plan du rail, une bordure, des coins supérieurs arrondis, un écart de 5 px entre
+  elles. Elles se lisent enfin comme des onglets.
+- **Plus aucun blanc dans le rail.** L'onglet actif passe à une **ardoise bleutée**
+  (`#4C5F88` en clair, `#41547C` en sombre), nettement plus claire que ses voisines et
+  teintée d'accent, avec un filet d'accent en tête. Le lien avec l'établi ne repose plus
+  sur une égalité de couleur mais sur la **position et l'encoche**, qui prend elle aussi
+  cette ardoise bleutée au lieu du blanc.
+
+Contraste revérifié sur les douze éléments de texte du rail : tous au-dessus de 4,5:1
+dans les deux thèmes.
+
+### Le planning s'ouvre sur aujourd'hui
+> « Je veux aussi que ça se mette automatiquement au jour actuel quand j'ouvre l'appli. »
+
+L'application s'ouvrait **déjà** sur le jour courant — mais deux cas la mettaient en
+défaut, et ce sont sans doute ceux-là qui ont été vécus :
+
+1. **Un onglet laissé ouvert.** La semaine et le jour sont calculés au chargement.
+   Un onglet ouvert la veille restait sur la veille : rouvrir l'onglet ne recharge rien.
+   Désormais, au retour sur la page, **si la date a changé depuis le chargement**, le
+   planning se recale sur aujourd'hui et le dit. La condition est importante : sans
+   elle, revenir sur l'onglet arracherait la semaine qu'on est en train de consulter
+   volontairement.
+2. **Le week-end.** Samedi et dimanche affichaient le vendredi écoulé. Ils ouvrent
+   maintenant sur le **lundi suivant** — pour un planning de travail, c'est le prochain
+   jour utile qui compte, pas le dernier.
+
+Ajouté aussi : une **pastille sur la tuile du jour**, pour repérer aujourd'hui même en
+consultant une autre semaine. Et le bouton « Cette semaine » passe par le même calcul.
+
+Vérifié en simulant l'horloge : mercredi, samedi, dimanche, et le passage de minuit sur
+un onglet resté ouvert — y compris le cas où l'on consulte une autre semaine le même
+jour, qui ne doit surtout pas bouger.

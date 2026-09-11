@@ -19,7 +19,8 @@
   --accent:#2B4C9B; --accent-soft:#DFE6F7;
   --good:#1B8462; --warn:#B0730B; --bad:#B33A47;
   --zone-rail:#333C50; --zone-jour:#EDF1F7; --onFill:#FFFFFF; --zone-sep:#1B2130;
-  --tab-ink:#151922; --tab-ink-2:#5A6274; --tab-accent:#2B4C9B;
+  --tab-repos:#3C465C; --tab-bord:#4B5771; --tab-survol:#45516B;
+  --tab-actif:#4C5F88; --tab-ink:#FFFFFF; --tab-ink-2:#DDE4F1; --tab-accent:#93AFF0;
   /* rampe « rail » : les memes teintes, remontees en luminosite pour un fond sombre.
      Un seul jeu, valable dans les deux themes — le rail est sombre partout. */
   --chantier-rail:#E08A1E;  --prepa-rail:#6E8FE0;   --passif-rail:#8F88A6;
@@ -46,8 +47,10 @@
     --accent:#7B9AE8; --accent-soft:#1B2440;
     --good:#4FBE97; --warn:#DDA23C; --bad:#E4707E;
     --zone-rail:#2A3245; --zone-jour:#12161C; --onFill:#12141A; --zone-sep:#0A0D13;
-    --tab-ink:#E6E9F0; --tab-ink-2:#98A2B5; --tab-accent:#8FAAF0;
-  --tab-ink:#E6E9F0; --tab-ink-2:#98A2B5; --tab-accent:#8FAAF0;
+    --tab-repos:#333C52; --tab-bord:#414C67; --tab-survol:#3B4661;
+  --tab-actif:#41547C; --tab-ink:#F2F6FF; --tab-ink-2:#CBD6EC; --tab-accent:#8FAAF0;
+  --tab-repos:#333C52; --tab-bord:#414C67; --tab-survol:#3B4661;
+  --tab-actif:#41547C; --tab-ink:#F2F6FF; --tab-ink-2:#CBD6EC; --tab-accent:#8FAAF0;
 
     --chantier-ink:#EDA85A; --chantier-soft:#2E2113; --chantier-line:#5B4222; --chantier-pure:#E08A2E;
     --prepa-ink:#93ABEE;    --prepa-soft:#1A2140;    --prepa-line:#334066;    --prepa-pure:#6C8FE0;
@@ -68,7 +71,8 @@
   --accent:#7B9AE8; --accent-soft:#1B2440;
   --good:#4FBE97; --warn:#DDA23C; --bad:#E4707E;
   --zone-rail:#2A3245; --zone-jour:#12161C; --onFill:#12141A; --zone-sep:#0A0D13;
-  --tab-ink:#E6E9F0; --tab-ink-2:#98A2B5; --tab-accent:#8FAAF0;
+  --tab-repos:#333C52; --tab-bord:#414C67; --tab-survol:#3B4661;
+  --tab-actif:#41547C; --tab-ink:#F2F6FF; --tab-ink-2:#CBD6EC; --tab-accent:#8FAAF0;
 
   --chantier-ink:#EDA85A; --chantier-soft:#2E2113; --chantier-line:#5B4222; --chantier-pure:#E08A2E;
   --prepa-ink:#93ABEE;    --prepa-soft:#1A2140;    --prepa-line:#334066;    --prepa-pure:#6C8FE0;
@@ -174,19 +178,28 @@ input{font:inherit; color:inherit}
 }
 .scrollx{overflow-x:auto; overflow-y:hidden; min-width:0; max-width:100%; padding-bottom:5px}
 .rail{min-width:780px}
-.railHead{display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); padding:0 5px; margin-bottom:4px}
+.railHead{display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); padding:0 5px; margin-bottom:5px; gap:5px}
 .rHead{
-  background:transparent; border:0; border-left:1px solid var(--line); cursor:pointer;
-  text-align:left; padding:6px 9px; border-radius:9px 9px 0 0; display:flex; flex-direction:column; gap:0;
+  background:var(--tab-repos); border:1px solid var(--tab-bord); border-bottom:0; cursor:pointer;
+  text-align:left; padding:7px 10px 8px; border-radius:10px 10px 0 0;
+  display:flex; flex-direction:column; gap:0; transition:background .14s;
 }
-.rHead:first-child{border-left:0}
-.rHead:hover{background:var(--surface-2)}
-.rHead[aria-pressed="true"]{background:var(--zone-jour); border-radius:9px 9px 0 0}
+.rHead:hover{background:var(--tab-survol)}
+.rHead.auj{border-color:var(--tab-accent)}
+.pastilleAuj{
+  display:inline-block; width:6px; height:6px; border-radius:50%;
+  background:var(--tab-accent); margin-left:6px; vertical-align:middle;
+}
+.rHead[aria-pressed="true"]{
+  background:var(--tab-actif); border-color:var(--tab-actif);
+  box-shadow:inset 0 2px 0 var(--tab-accent);
+}
+.rHead[aria-pressed="true"] .d{color:var(--tab-ink)}
 .rHead[aria-pressed="true"] .dt{color:var(--tab-ink-2)}
 .rHead[aria-pressed="true"] .ch{color:var(--tab-ink-2)}
-.rHead[aria-pressed="true"] .ch.over{color:#B0730B}
+.rHead[aria-pressed="true"] .ch.over{color:#FFC46B}
 .rHead .d{font-family:"Barlow Condensed",sans-serif; text-transform:uppercase; letter-spacing:.09em; font-size:14px; font-weight:600; color:var(--ink-2); line-height:1.2}
-.rHead[aria-pressed="true"] .d{color:var(--tab-accent)}
+
 .rHead .dt{font-family:"IBM Plex Mono",monospace; font-size:10.5px; color:var(--ink-3); line-height:1.3}
 .rHead .ch{font-family:"IBM Plex Mono",monospace; font-size:10px; color:var(--ink-3); line-height:1.3}
 .rHead .ch.over{color:var(--warn); font-weight:600}
@@ -465,8 +478,7 @@ textarea.note::placeholder{color:var(--ink-3); font-style:italic}
 .ancre{
   grid-row:1; justify-self:center; width:0; height:0;
   border-left:10px solid transparent; border-right:10px solid transparent;
-  border-top:9px solid var(--zone-jour);
-  filter:drop-shadow(0 1px 0 var(--line-2));
+  border-top:9px solid var(--tab-actif);
 }
 
 
@@ -653,8 +665,16 @@ function aujourdhui(){ var d=new Date(); d.setHours(0,0,0,0); return d; }
 /* ================= état ================= */
 var CLE = "plaaning.v1";
 var etat = charger();
-var lundi = lundiDe(new Date());
-var jourSel = Math.min(4, (new Date().getDay()+6)%7);
+/* ou doit s'ouvrir le planning : aujourd'hui, ou lundi prochain si on est samedi ou dimanche */
+function ancrageDuJour(){
+  var d = new Date(), i = (d.getDay()+6)%7;
+  if(i > 4){ d = plusJours(d, 7-i); i = 0; }
+  return {lundi:lundiDe(d), jour:i};
+}
+var _a0 = ancrageDuJour();
+var lundi = _a0.lundi;
+var jourSel = _a0.jour;
+var dateChargement = iso(new Date());
 var ajoutOuvert = null;   /* colonne dont la ligne « ajouter » est ouverte */
 var edition = null;       /* {cle:"<cleFiche>|<idTache>", mode:"note"|"quand"} */
 var noteOuverte = {};     /* cleFiche -> true quand on ouvre une note vide */
@@ -936,10 +956,13 @@ function ligneRail(items, estFond){
 }
 function renderRail(){
   var s = sem();
+  var isoAuj = iso(new Date());
   var tete = s.jours.map(function(j,i){
     var ch = heuresJour(j), d = plusJours(lundi,i);
-    return '<button type="button" class="rHead" data-act="allerJour" data-j="'+i+'" aria-pressed="'+(i===jourSel)+'">'
-      + '<span class="d">'+JOUR_COURT[i]+'</span>'
+    var estAuj = (iso(d) === isoAuj);
+    return '<button type="button" class="rHead'+(estAuj?" auj":"")+'" data-act="allerJour" data-j="'+i+'" '
+      + 'aria-pressed="'+(i===jourSel)+'"'+(estAuj?' title="Aujourd\'hui"':'')+'>'
+      + '<span class="d">'+JOUR_COURT[i]+(estAuj?'<span class="pastilleAuj"></span>':'')+'</span>'
       + '<span class="dt">'+esc(dateCourte(d))+'</span>'
       + '<span class="ch'+(ch>9?" over":"")+'">'+esc(dur(ch))+'</span></button>';
   }).join("");
@@ -1504,10 +1527,23 @@ document.addEventListener("change", function(e){
 /* ---------- navigation et thème ---------- */
 $("prev").addEventListener("click", function(){ lundi = plusJours(lundi,-7); ajoutOuvert = null; edition = null; tout(); });
 $("next").addEventListener("click", function(){ lundi = plusJours(lundi, 7); ajoutOuvert = null; edition = null; tout(); });
-$("today").addEventListener("click", function(){
-  lundi = lundiDe(new Date());
-  jourSel = Math.min(4, (new Date().getDay()+6)%7);
-  ajoutOuvert = null; edition = null; tout();
+function recaler(){
+  var a = ancrageDuJour();
+  lundi = a.lundi; jourSel = a.jour;
+  ajoutOuvert = null; edition = null;
+  tout();
+}
+$("today").addEventListener("click", recaler);
+
+/* un onglet laisse ouvert toute la nuit doit se recaler au reveil — mais jamais
+   pendant qu'on consulte deliberement une autre semaine le meme jour */
+document.addEventListener("visibilitychange", function(){
+  if(document.hidden) return;
+  var auj = iso(new Date());
+  if(auj === dateChargement) return;
+  dateChargement = auj;
+  recaler();
+  toast("On a changé de jour — le planning s'est recalé sur aujourd'hui.");
 });
 function appliqueTheme(){
   if(etat.theme) document.documentElement.setAttribute("data-theme", etat.theme);
