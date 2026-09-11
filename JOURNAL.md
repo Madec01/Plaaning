@@ -538,3 +538,50 @@ régie sombre + neutralisation de l'établi, les deux étant indissociables — 
 Deux points ont été écartés volontairement : les cases cochées gardent la couleur de
 leur brique (elle aide à savoir dans quelle colonne on descend), et les lignes faites
 restent barrées.
+
+---
+
+## 011 — Le rail était trop sombre
+*11 septembre 2026*
+
+### Le défaut signalé
+> « Y a du mieux, mais le bandeau rail est trop sombre et illisible maintenant. »
+
+Capture à l'appui, sur une **semaine vide**. C'est là que le défaut saute : une semaine
+vide n'est faite que de journée type, et j'avais dessiné la journée type en **contour
+pointillé ténu** sur un aplat **quasi noir** (`#1B2130`). Résultat : un grand pavé sombre
+rempli de traits à peine visibles. Le parti pris « régie sombre » ne payait que sur une
+semaine chargée — c'est-à-dire précisément pas la situation de départ.
+
+Mauvais arbitrage de ma part : j'ai suivi la recommandation de l'agent jusqu'au bout
+sans la confronter au cas le plus fréquent.
+
+### Corrigé
+- **Le plan du rail remonte** de `#1B2130` à `#333C50` (ardoise moyenne) en thème clair,
+  et de `#080B12` à `#2A3245` en sombre. La séparation d'avec l'établi reste franche —
+  c'est un écart de valeur énorme dans les deux cas — mais le plan cesse d'être un trou.
+- **La journée type devient lisible** : un fond à `rgba(255,255,255,.07)`, un **libellé
+  en encre claire** (et non plus dans le ton de la brique), et le pointillé de brique
+  conservé en bordure. Elle reste manifestement « non engagée » par sa forme, sans être
+  illisible.
+- **Le passif remonte** de `#565169` à `#8F88A6`. L'ancien ton était si sombre qu'il
+  disparaissait sur le plan du rail. Il reste le plus terne des huit — c'est voulu —
+  mais terne n'est pas invisible.
+- Les neutres de la zone semaine remontent d'un cran, et les numéros de semaine de la
+  courbe passent de 8,5 à 9,5 px.
+
+### Corrigé aussi — trouvé sur la capture de vérification
+- **L'onglet du jour sélectionné avait une encre illisible.** Il prend le fond clair de
+  l'établi (c'est le lien entre les deux zones), mais gardait les neutres clairs du rail :
+  texte pâle sur fond pâle. Trois jetons dédiés (`--tab-ink`, `--tab-ink-2`,
+  `--tab-accent`) lui donnent l'encre de la zone où il atterrit, dans les deux thèmes.
+- Les numéros de semaine de la courbe du passif étaient **coupés** par le bord du bandeau.
+
+### Vérification
+Contraste mesuré, et non jugé à l'œil, sur les **douze éléments de texte** du rail dans
+les deux thèmes : tous au-dessus de 4,5:1 (le plus bas à 4,75 pour les durées de journée
+type en 9,5 px).
+
+Le premier script de mesure mentait : il ne **compositait pas les fonds semi-transparents**
+et lisait `rgba(255,255,255,.07)` comme du blanc pur, annonçant 1,07:1 là où le vrai
+rapport est 8,29:1. Corrigé avant de conclure quoi que ce soit.
