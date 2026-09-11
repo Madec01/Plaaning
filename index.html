@@ -15,9 +15,16 @@
   color-scheme:light;
   --ground:#E9ECF2; --surface:#FFFFFF; --surface-2:#F3F5FA;
   --line:#D2D8E4; --line-2:#B6BFCF;
-  --ink:#151922; --ink-2:#464E5F; --ink-3:#737C8F;
+  --ink:#151922; --ink-2:#464E5F; --ink-3:#6A7285;
   --accent:#2B4C9B; --accent-soft:#DFE6F7;
   --good:#1B8462; --warn:#B0730B; --bad:#B33A47;
+  --zone-rail:#1B2130; --zone-jour:#EDF1F7; --onFill:#FFFFFF; --zone-sep:#05070C;
+  /* rampe « rail » : les memes teintes, remontees en luminosite pour un fond sombre.
+     Un seul jeu, valable dans les deux themes — le rail est sombre partout. */
+  --chantier-rail:#E08A1E;  --prepa-rail:#6E8FE0;   --passif-rail:#565169;
+  --cloture-rail:#26936D;   --reception-rail:#E06BB4; --visite-rail:#A8C13C;
+  --preparu-rail:#35AFC9;   --reunion-rail:#737E94;
+  --railInk:#11151E; --railInkClair:#DCD8E6;
 
   --chantier-ink:#96490A; --chantier-soft:#FAE9D2; --chantier-line:#E4C296; --chantier-pure:#C2650A;
   --prepa-ink:#2A4A96;    --prepa-soft:#E0E7F7;    --prepa-line:#B7C5E9;    --prepa-pure:#3D5FB4;
@@ -37,6 +44,7 @@
     --ink:#E6E9F0; --ink-2:#AAB2C2; --ink-3:#798294;
     --accent:#7B9AE8; --accent-soft:#1B2440;
     --good:#4FBE97; --warn:#DDA23C; --bad:#E4707E;
+    --zone-rail:#080B12; --zone-jour:#151A23; --onFill:#12141A; --zone-sep:#2A3242;
 
     --chantier-ink:#EDA85A; --chantier-soft:#2E2113; --chantier-line:#5B4222; --chantier-pure:#E08A2E;
     --prepa-ink:#93ABEE;    --prepa-soft:#1A2140;    --prepa-line:#334066;    --prepa-pure:#6C8FE0;
@@ -56,6 +64,7 @@
   --ink:#E6E9F0; --ink-2:#AAB2C2; --ink-3:#798294;
   --accent:#7B9AE8; --accent-soft:#1B2440;
   --good:#4FBE97; --warn:#DDA23C; --bad:#E4707E;
+  --zone-rail:#080B12; --zone-jour:#151A23; --onFill:#12141A; --zone-sep:#2A3242;
 
   --chantier-ink:#EDA85A; --chantier-soft:#2E2113; --chantier-line:#5B4222; --chantier-pure:#E08A2E;
   --prepa-ink:#93ABEE;    --prepa-soft:#1A2140;    --prepa-line:#334066;    --prepa-pure:#6C8FE0;
@@ -67,14 +76,14 @@
   --reunion-ink:#AAB2C2;  --reunion-soft:#22262F;  --reunion-line:#39404E;  --reunion-pure:#5E6879;
 }
 
-[data-b="chantier"] {--bi:var(--chantier-ink); --bs:var(--chantier-soft); --bl:var(--chantier-line); --bp:var(--chantier-pure)}
-[data-b="prepa"]    {--bi:var(--prepa-ink);    --bs:var(--prepa-soft);    --bl:var(--prepa-line);    --bp:var(--prepa-pure)}
-[data-b="passif"]   {--bi:var(--passif-ink);   --bs:var(--passif-soft);   --bl:var(--passif-line);   --bp:var(--passif-pure)}
-[data-b="cloture"]  {--bi:var(--cloture-ink);  --bs:var(--cloture-soft);  --bl:var(--cloture-line);  --bp:var(--cloture-pure)}
-[data-b="reception"]{--bi:var(--reception-ink);--bs:var(--reception-soft);--bl:var(--reception-line);--bp:var(--reception-pure)}
-[data-b="visite"]   {--bi:var(--visite-ink);   --bs:var(--visite-soft);   --bl:var(--visite-line);   --bp:var(--visite-pure)}
-[data-b="preparu"]  {--bi:var(--preparu-ink);  --bs:var(--preparu-soft);  --bl:var(--preparu-line);  --bp:var(--preparu-pure)}
-[data-b="reunion"]  {--bi:var(--reunion-ink);  --bs:var(--reunion-soft);  --bl:var(--reunion-line);  --bp:var(--reunion-pure)}
+[data-b="chantier"] {--bi:var(--chantier-ink); --bs:var(--chantier-soft); --bl:var(--chantier-line); --bp:var(--chantier-pure); --br:var(--chantier-rail)}
+[data-b="prepa"]    {--bi:var(--prepa-ink);    --bs:var(--prepa-soft);    --bl:var(--prepa-line);    --bp:var(--prepa-pure); --br:var(--prepa-rail)}
+[data-b="passif"]   {--bi:var(--passif-ink);   --bs:var(--passif-soft);   --bl:var(--passif-line);   --bp:var(--passif-pure); --br:var(--passif-rail)}
+[data-b="cloture"]  {--bi:var(--cloture-ink);  --bs:var(--cloture-soft);  --bl:var(--cloture-line);  --bp:var(--cloture-pure); --br:var(--cloture-rail)}
+[data-b="reception"]{--bi:var(--reception-ink);--bs:var(--reception-soft);--bl:var(--reception-line);--bp:var(--reception-pure); --br:var(--reception-rail)}
+[data-b="visite"]   {--bi:var(--visite-ink);   --bs:var(--visite-soft);   --bl:var(--visite-line);   --bp:var(--visite-pure); --br:var(--visite-rail)}
+[data-b="preparu"]  {--bi:var(--preparu-ink);  --bs:var(--preparu-soft);  --bl:var(--preparu-line);  --bp:var(--preparu-pure); --br:var(--preparu-rail)}
+[data-b="reunion"]  {--bi:var(--reunion-ink);  --bs:var(--reunion-soft);  --bl:var(--reunion-line);  --bp:var(--reunion-pure); --br:var(--reunion-rail)}
 html,body{margin:0;padding:0}
 body{
   background:var(--ground); color:var(--ink); min-height:100vh;
@@ -122,7 +131,14 @@ input{font:inherit; color:inherit}
 .ghost[aria-pressed="true"]{background:var(--accent); border-color:var(--accent); color:#fff}
 
 /* ================= bandeau bilan ================= */
-.bilan{border-bottom:1px solid var(--line); background:var(--surface-2)}
+.bilan, .railZone{
+  --surface:#252E40; --surface-2:#1F2736;
+  --line:#2C3549; --line-2:#3E4A66;
+  --ink:#F2F5FA; --ink-2:#C3CBDC; --ink-3:#8A94A9;
+  --accent:#7B9AE8; --accent-soft:#20293C;
+  background:var(--zone-rail); color:var(--ink);
+}
+.bilan{box-shadow:inset 0 7px 11px -9px rgba(0,0,0,.55)}
 .bilan .wrap{display:flex; align-items:center; gap:22px; padding-block:10px; flex-wrap:wrap}
 .stat{display:flex; flex-direction:column; gap:1px; min-width:0}
 .stat .k{
@@ -132,8 +148,8 @@ input{font:inherit; color:inherit}
 .stat .v{font-family:"IBM Plex Mono",monospace; font-variant-numeric:tabular-nums; font-size:17px; font-weight:500; line-height:1.2}
 .stat .v em{font-style:normal; font-size:12px; color:var(--ink-3)}
 .trend{display:flex; align-items:flex-end; gap:3px; height:30px}
-.trend .b{width:11px; background:var(--passif-line); border-radius:2px 2px 0 0; min-height:2px; position:relative}
-.trend .b.now{background:var(--passif-pure)}
+.trend .b{width:11px; background:#3E4560; border-radius:2px 2px 0 0; min-height:2px; position:relative}
+.trend .b.now{background:var(--passif-rail)}
 .trend .b::after{
   content:attr(data-l); position:absolute; top:100%; left:50%; transform:translateX(-50%);
   font-family:"IBM Plex Mono",monospace; font-size:8.5px; color:var(--ink-3); padding-top:2px;
@@ -142,7 +158,16 @@ input{font:inherit; color:inherit}
 .delta.down{color:var(--good)} .delta.up{color:var(--warn)} .delta.flat{color:var(--ink-3)}
 
 /* ================= le rail (la semaine) ================= */
-.railZone{padding-block:16px 4px}
+.railZone{
+  padding-block:6px 0;
+  border-bottom:1px solid var(--zone-sep);
+  box-shadow:0 9px 17px -9px rgba(10,14,22,.5);
+  position:relative; z-index:1;
+}
+.zoneLbl{
+  font-family:"Barlow Condensed",sans-serif; text-transform:uppercase; letter-spacing:.15em;
+  font-size:11.5px; font-weight:600; color:var(--ink-3); padding-bottom:5px;
+}
 .scrollx{overflow-x:auto; overflow-y:hidden; min-width:0; max-width:100%; padding-bottom:5px}
 .rail{min-width:780px}
 .railHead{display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); padding:0 5px; margin-bottom:4px}
@@ -152,7 +177,7 @@ input{font:inherit; color:inherit}
 }
 .rHead:first-child{border-left:0}
 .rHead:hover{background:var(--surface-2)}
-.rHead[aria-pressed="true"]{background:var(--accent-soft)}
+.rHead[aria-pressed="true"]{background:var(--zone-jour); border-radius:9px 9px 0 0}
 .rHead .d{font-family:"Barlow Condensed",sans-serif; text-transform:uppercase; letter-spacing:.09em; font-size:14px; font-weight:600; color:var(--ink-2); line-height:1.2}
 .rHead[aria-pressed="true"] .d{color:var(--accent)}
 .rHead .dt{font-family:"IBM Plex Mono",monospace; font-size:10.5px; color:var(--ink-3); line-height:1.3}
@@ -160,20 +185,26 @@ input{font:inherit; color:inherit}
 .rHead .ch.over{color:var(--warn); font-weight:600}
 .railBody{
   display:flex; flex-direction:column; gap:4px; padding:5px;
-  background:var(--surface-2); border:1px solid var(--line); border-radius:11px;
+  background:transparent; border:1px solid var(--line-2); border-radius:11px;
   background-image:repeating-linear-gradient(90deg,transparent 0,transparent calc(20% - 1px),var(--line) calc(20% - 1px),var(--line) 20%);
   background-position:5px 0; background-clip:content-box;
 }
 .railLane{display:grid; grid-template-columns:repeat(50,minmax(0,1fr)); min-height:28px; align-items:stretch}
 .railBlk{
-  grid-row:1; margin:0 1px; background:var(--bs); border:1px solid var(--bl); border-left:3px solid var(--bp);
-  border-radius:6px; padding:2px 7px; font-size:11.5px; font-weight:600; color:var(--bi); cursor:pointer;
+  grid-row:1; margin:0 1px; background:var(--br); border:1px solid var(--br);
+  border-radius:6px; padding:2px 7px; font-size:11.5px; font-weight:600; color:var(--railInk); cursor:pointer;
   overflow:hidden; white-space:nowrap; text-overflow:ellipsis; display:flex; align-items:center; gap:7px; text-align:left;
 }
-.railBlk:hover{border-color:var(--bp)}
-.railBlk .h{font-family:"IBM Plex Mono",monospace; font-size:9.5px; font-weight:400; opacity:.7}
-.railFond{opacity:.62}
-.railBlk.court{padding:2px; background:var(--bp); border-color:var(--bp); overflow:visible; position:relative}
+.railBlk:hover{filter:brightness(1.12)}
+.railBlk .h{font-family:"IBM Plex Mono",monospace; font-size:9.5px; font-weight:400; opacity:.68; color:var(--railInk)}
+/* le passif reste eteint : jamais de remplissage franc, et une encre claire */
+.railBlk[data-b="passif"]{color:var(--railInkClair)}
+.railBlk[data-b="passif"] .h{color:var(--railInkClair)}
+/* la journée type n'est pas un engagement : elle se dessine, elle ne se remplit pas */
+.railFond{background:transparent; border:1px dashed #4A5573; color:var(--br)}
+.railFond .h{color:#8A94A9; opacity:1}
+.railFond:hover{background:rgba(255,255,255,.05); filter:none}
+.railBlk.court{padding:2px; overflow:visible; position:relative}
 .railBlk.court .etiq{
   position:absolute; left:100%; top:50%; transform:translateY(-50%); margin-left:6px;
   white-space:nowrap; font-size:10.5px; font-weight:600; color:var(--bi); pointer-events:none;
@@ -185,7 +216,10 @@ input{font:inherit; color:inherit}
 }
 
 /* ================= le jour ouvert ================= */
-.jour{padding-block:12px 8px}
+.jour{
+  padding-block:16px 22px; background:var(--zone-jour);
+  box-shadow:inset 0 9px 12px -11px rgba(0,0,0,.22);
+}
 .jourHead{display:flex; align-items:baseline; gap:11px; flex-wrap:wrap; margin-bottom:13px}
 .jourHead h2{font-family:"Barlow Condensed",sans-serif; font-weight:700; font-size:clamp(24px,4.5vw,32px); text-transform:uppercase; letter-spacing:.01em; line-height:1}
 .jourHead .dt{font-family:"IBM Plex Mono",monospace; font-size:13px; color:var(--ink-3)}
@@ -215,14 +249,20 @@ input{font:inherit; color:inherit}
 .cols{display:grid; grid-template-columns:repeat(auto-fit,minmax(212px,1fr)); gap:11px; align-items:start}
 @media (min-width:1500px){ .cols{grid-template-columns:repeat(auto-fit,minmax(260px,1fr))} }
 .cols > *{min-width:0}
-.col{border:1px solid var(--bl); background:var(--surface); border-radius:11px; overflow:hidden; display:flex; flex-direction:column}
-.col .hd{background:var(--bs); border-bottom:1px solid var(--bl); padding:9px 10px 10px; display:flex; flex-direction:column; gap:4px}
+.col{
+  border:1px solid var(--line); border-top:3px solid var(--bp);
+  background:var(--surface); border-radius:11px;
+  overflow:hidden; display:flex; flex-direction:column;
+  box-shadow:0 1px 2px rgba(16,22,38,.07), 0 4px 10px -6px rgba(16,22,38,.16);
+}
+.col .hd{background:var(--surface-2); border-bottom:1px solid var(--line); padding:9px 10px 10px; display:flex; flex-direction:column; gap:4px}
 .col .hd .top{display:flex; align-items:center; gap:4px}
-.col .hd .nm{font-weight:600; font-size:14px; color:var(--bi); flex:1; min-width:0; line-height:1.25}
+.col .hd .nm{font-weight:600; font-size:14px; color:var(--ink); flex:1; min-width:0; line-height:1.25; display:flex; align-items:center; gap:7px}
+.col .hd .nm::before{content:""; width:9px; height:9px; border-radius:50%; background:var(--bp); flex:none}
 .kill{border:0; background:transparent; color:var(--ink-3); cursor:pointer; width:23px; height:23px; border-radius:6px; display:grid; place-items:center; font-size:16px; line-height:1; flex:none}
-.kill:hover{background:var(--bl); color:var(--bi)}
+.kill:hover{background:var(--line); color:var(--ink)}
 .titre{
-  border:0; background:transparent; border-bottom:1px dashed var(--bl); width:100%;
+  border:0; background:transparent; border-bottom:1px dashed var(--line-2); width:100%;
   font-size:12.5px; color:var(--ink-2); padding:2px 0;
 }
 .titre::placeholder{color:var(--ink-3); font-style:italic}
@@ -234,7 +274,7 @@ input{font:inherit; color:inherit}
   font-size:11.5px; color:var(--bi); cursor:pointer;
   flex:0 1 auto; width:auto; min-width:64px; max-width:112px;
 }
-.heures input:hover{border-color:var(--bl); background:var(--surface)}
+.heures input:hover{border-color:var(--line-2); background:var(--surface)}
 .heures input:focus{border-color:var(--bp); background:var(--surface); outline:none; cursor:text}
 .heures .dd{font-family:"IBM Plex Mono",monospace; font-size:11px; color:var(--ink-3)}
 .heures .dur{font-family:"IBM Plex Mono",monospace; font-size:11px; color:var(--bi); opacity:.8; margin-left:auto}
@@ -245,7 +285,7 @@ input{font:inherit; color:inherit}
 .tache{display:flex; gap:7px; align-items:flex-start; flex:1; min-width:0; cursor:pointer}
 .tache input{position:absolute; opacity:0; width:0; height:0}
 .tache .box{
-  width:15px; height:15px; border:1.5px solid var(--bl); border-radius:4px; flex:none;
+  width:15px; height:15px; border:1.5px solid var(--line-2); border-radius:4px; flex:none;
   margin-top:1px; display:grid; place-items:center; background:var(--surface);
 }
 .tache input:checked + .box{background:var(--bp); border-color:var(--bp)}
@@ -256,7 +296,7 @@ input{font:inherit; color:inherit}
 .liAct{display:flex; gap:0; flex:none; opacity:0; transition:opacity .12s}
 li:hover .liAct, li:focus-within .liAct{opacity:1}
 .liAct button{border:0; background:transparent; cursor:pointer; color:var(--ink-3); width:21px; height:21px; border-radius:5px; display:grid; place-items:center; font-size:12px; line-height:1}
-.liAct button:hover{background:var(--bl); color:var(--bi)}
+.liAct button:hover{background:var(--line); color:var(--ink)}
 .liAct .pin.on{color:var(--bp); opacity:1}
 .addTache{
   border:0; background:transparent; color:var(--ink-3); cursor:pointer; text-align:left;
@@ -322,11 +362,11 @@ footer.pied p{max-width:80ch}
   font-family:"IBM Plex Mono",monospace; font-variant-numeric:tabular-nums;
   font-size:11px; color:var(--bi); cursor:pointer; flex:0 1 auto; min-width:104px; max-width:134px;
 }
-.dates input[type="date"]:hover{border-color:var(--bl); background:var(--surface)}
+.dates input[type="date"]:hover{border-color:var(--line-2); background:var(--surface)}
 .dates input[type="date"]:focus{border-color:var(--bp); background:var(--surface); outline:none}
 .dates .reste{
   font-family:"IBM Plex Mono",monospace; font-size:10.5px; color:var(--bi);
-  background:var(--surface); border:1px solid var(--bl); border-radius:20px; padding:0 7px;
+  background:var(--surface); border:1px solid var(--line-2); border-radius:20px; padding:0 7px;
 }
 .dates .reste.fini{color:var(--ink-3); border-color:var(--line)}
 
@@ -334,12 +374,12 @@ footer.pied p{max-width:80ch}
   border:0; background:transparent; color:var(--ink-3); cursor:pointer; flex:none;
   width:23px; height:23px; border-radius:6px; display:grid; place-items:center; font-size:13px; line-height:1;
 }
-.icone:hover{background:var(--bl); color:var(--bi)}
+.icone:hover{background:var(--line); color:var(--ink)}
 .icone.on{color:var(--bp)}
 
 textarea.note{
   width:calc(100% - 20px); margin:8px 10px 2px; display:block;
-  border:1px solid var(--bl); border-radius:8px; background:var(--surface-2);
+  border:1px solid var(--line-2); border-radius:8px; background:var(--surface-2);
   padding:6px 8px; font:inherit; font-size:12.5px; line-height:1.45; color:var(--ink-2);
   resize:vertical; min-height:46px;
 }
@@ -352,20 +392,20 @@ textarea.note::placeholder{color:var(--ink-3); font-style:italic}
 .meta .qd{
   font-family:"IBM Plex Mono",monospace; font-variant-numeric:tabular-nums;
   font-size:10.5px; font-weight:600; color:var(--bi);
-  background:var(--bs); border:1px solid var(--bl); border-radius:20px; padding:0 7px;
+  background:var(--surface-2); border:1px solid var(--line-2); border-radius:20px; padding:0 7px;
 }
 .meta .nt{font-size:11.5px; font-style:italic; color:var(--ink-3); line-height:1.4; overflow-wrap:anywhere; flex:1 1 100%}
 .edit{padding:4px 4px 6px 22px; display:flex; flex-direction:column; gap:6px}
 .edit .rang{display:flex; gap:5px; align-items:center; flex-wrap:wrap}
 .edit label{font-size:10.5px; color:var(--ink-3); text-transform:uppercase; letter-spacing:.08em; font-family:"Barlow Condensed",sans-serif; font-weight:600}
 .edit input[type="time"],.edit input[type="number"],.edit input[type="date"]{
-  border:1px solid var(--bl); background:var(--surface); border-radius:6px; padding:3px 5px;
+  border:1px solid var(--line-2); background:var(--surface); border-radius:6px; padding:3px 5px;
   font-family:"IBM Plex Mono",monospace; font-variant-numeric:tabular-nums; font-size:11.5px; color:var(--ink);
 }
 .edit input[type="number"]{width:66px}
 .edit input:focus{outline:none; border-color:var(--bp)}
 .edit textarea{
-  border:1px solid var(--bl); border-radius:7px; background:var(--surface); padding:5px 7px;
+  border:1px solid var(--line-2); border-radius:7px; background:var(--surface); padding:5px 7px;
   font:inherit; font-size:12.5px; line-height:1.45; color:var(--ink-2); resize:vertical; min-height:44px; width:100%;
 }
 .edit textarea:focus{outline:none; border-color:var(--bp)}
@@ -400,17 +440,25 @@ textarea.note::placeholder{color:var(--ink-3); font-style:italic}
 .rLigne .report:hover{border-color:var(--bp)}
 
 /* ---- une sous-tâche planifiée dans le rail ---- */
-.railBlk.railTache{
-  background:var(--bp); border-color:var(--bp); color:#fff; font-weight:500; font-size:11px;
-}
-.railBlk.railTache .h{opacity:.85; color:#fff}
+/* une sous-tâche à heure fixe : même encre, forme de gélule pour la distinguer d'une séance */
+.railBlk.railTache{border-radius:20px; font-weight:500; font-size:11px}
 .railLegende{
-  display:flex; gap:14px; flex-wrap:wrap; align-items:center; padding:7px 2px 0;
+  display:flex; gap:6px 16px; flex-wrap:wrap; align-items:center; padding:7px 2px 9px;
   font-size:11.5px; color:var(--ink-3);
 }
-.railLegende i{display:inline-block; width:16px; height:9px; border-radius:3px; vertical-align:-1px; margin-right:5px}
-.railLegende .ex1{background:var(--surface-2); border:1px solid var(--line-2); border-left:3px solid var(--ink-3)}
-.railLegende .ex2{background:var(--ink-3)}
+.railLegende i{display:inline-block; width:17px; height:10px; border-radius:3px; vertical-align:-1px; margin-right:5px}
+.railLegende .ex0{background:transparent; border:1px dashed var(--line-2)}
+.railLegende .ex0{border-color:#4A5573}
+.railLegende .ex1{background:#C3CBDC}
+.railLegende .ex2{background:#C3CBDC; border-radius:20px}
+/* l'ancre : le jour choisi descend vers l'établi */
+.railAncre{display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); padding:0 5px}
+.ancre{
+  grid-row:1; justify-self:center; width:0; height:0;
+  border-left:10px solid transparent; border-right:10px solid transparent;
+  border-top:9px solid var(--zone-jour);
+  filter:drop-shadow(0 1px 0 var(--line-2));
+}
 
 
 /* ---- bandeau des périodes : ce qui court, et pour combien de temps ---- */
@@ -419,19 +467,44 @@ textarea.note::placeholder{color:var(--ink-3); font-style:italic}
   padding-bottom:5px; margin-bottom:3px; border-bottom:1px dashed var(--line-2);
 }
 .railPeriodes .railLane{min-height:21px}
+.railPeriodes{border-bottom-color:#3E4A66}
 .railPeriode{
   grid-row:1; margin:0 1px; display:flex; align-items:center; gap:6px; overflow:hidden;
-  background:var(--bs); border:1px solid var(--bl); border-radius:20px;
-  padding:1px 10px; font-size:11px; color:var(--bi); white-space:nowrap;
+  background:transparent; border:1px solid var(--br); border-radius:20px;
+  padding:1px 10px; font-size:11px; color:var(--br); white-space:nowrap;
 }
 .railPeriode .nm{font-weight:600; overflow:hidden; text-overflow:ellipsis}
 .railPeriode .bd{font-family:"IBM Plex Mono",monospace; font-size:9.5px; opacity:.75}
 .railPeriode .fl{font-size:9px; opacity:.65; flex:none}
 .railPeriode.avant{border-top-left-radius:4px; border-bottom-left-radius:4px}
 .railPeriode.apres{border-top-right-radius:4px; border-bottom-right-radius:4px}
-.railLegende .ex3{background:var(--surface-2); border:1px solid var(--line-2); border-radius:20px}
+.railLegende .ex3{background:transparent; border:1px solid #8A94A9; border-radius:20px}
 .addBtn.suggere{border-style:solid; box-shadow:inset 0 -2px 0 var(--bp)}
 .astuce{font-size:10.5px; color:var(--ink-3); font-style:italic; flex:1 1 100%; line-height:1.3}
+
+
+/* ---- matin / après-midi : la journée se lit en deux temps ---- */
+.demi + .demi{margin-top:20px; padding-top:16px; border-top:1px solid var(--line-2)}
+.demiTete{display:flex; align-items:baseline; gap:10px; flex-wrap:wrap; margin-bottom:10px; padding-left:11px; position:relative}
+.demiTete::before{
+  content:""; position:absolute; left:0; top:1px; bottom:1px; width:3px;
+  border-radius:2px; background:var(--line-2);
+}
+.demi[data-moment="matin"] .demiTete::before{background:var(--accent)}
+.demiNom{
+  font-family:"Barlow Condensed",sans-serif; text-transform:uppercase; letter-spacing:.13em;
+  font-size:14px; font-weight:600; color:var(--ink-2);
+}
+.demiH{font-family:"IBM Plex Mono",monospace; font-size:11.5px; color:var(--ink-3)}
+.demiCharge{
+  font-family:"IBM Plex Mono",monospace; font-size:11px; color:var(--ink-3);
+  border:1px solid var(--line); border-radius:20px; padding:1px 9px; background:var(--surface);
+}
+.demiVide{font-size:13px; color:var(--ink-3); font-style:italic; padding:2px 0 4px 11px}
+.deborde{
+  font-size:10px; font-family:"Barlow Condensed",sans-serif; text-transform:uppercase; letter-spacing:.08em;
+  font-weight:600; color:var(--ink-3); border:1px dashed var(--line-2); border-radius:20px; padding:0 7px;
+}
 
 /* les actions doivent rester visibles au doigt */
 @media (hover:none){ .liAct{opacity:1} }
@@ -467,11 +540,13 @@ textarea.note::placeholder{color:var(--ink-3); font-style:italic}
 </div></div>
 
 <div class="railZone"><div class="wrap">
+  <p class="zoneLbl">La semaine</p>
   <div class="scrollx"><div class="rail" id="rail"></div></div>
   <div class="railLegende">
-    <span><i class="ex1"></i>une séance — le temps que tu bloques</span>
+    <span><i class="ex0"></i>la journée type</span>
+    <span><i class="ex1"></i>une séance que tu as posée</span>
     <span><i class="ex2"></i>une sous-tâche à heure fixe</span>
-    <span><i class="ex3"></i>la période d'un dossier, d'après ses dates</span>
+    <span><i class="ex3"></i>la période d'un dossier</span>
   </div>
 </div></div>
 
@@ -483,7 +558,7 @@ textarea.note::placeholder{color:var(--ink-3); font-style:italic}
   </div>
   <div id="retard"></div>
   <div class="add" id="add"></div>
-  <div class="cols" id="cols"></div>
+  <div id="jourCorps"></div>
   <div class="repos" id="repos"></div>
 </div></main>
 
@@ -523,6 +598,7 @@ var HORS_RETARD = ["passif","reunion"];
 var JOUR_LONG = ["Lundi","Mardi","Mercredi","Jeudi","Vendredi"];
 var JOUR_COURT = ["Lun","Mar","Mer","Jeu","Ven"];
 var JOUR_RECEPTION = 3;
+var MIDI = 12.5;                      /* la bascule matin / après-midi */
 
 var MODELES_DEF = {
   prepa    :["Prise en compte","Régimes","PDS","ADR","FEP","Logistique"],
@@ -883,7 +959,8 @@ function renderRail(){
     seg.fond.forEach(bornes);
     corps = ligneRail(seg.fond, true) + paquets(seg.autres).map(function(p){ return ligneRail(p, false); }).join("");
   }
-  $("rail").innerHTML = '<div class="railHead">'+tete+'</div><div class="railBody">'+bandeau+corps+'</div>';
+  var ancre = '<div class="railAncre"><div class="ancre" style="grid-column:'+(jourSel+1)+'"></div></div>';
+  $("rail").innerHTML = '<div class="railHead">'+tete+'</div><div class="railBody">'+bandeau+corps+'</div>'+ancre;
 }
 
 /* ---------- ce qui n'a pas été fait ---------- */
@@ -1050,7 +1127,9 @@ function colHTML(c){
     + '<input type="time" step="300" data-act="de" data-c="'+c.id+'" value="'+vh(c.de)+'" aria-label="Début de séance">'
     + '<span class="dd">→</span>'
     + '<input type="time" step="300" data-act="a" data-c="'+c.id+'" value="'+vh(c.a)+'" aria-label="Fin de séance">'
-    + '<span class="dur">'+esc(dur(duree(c)))+'</span></div></div>'
+    + '<span class="dur">'+esc(dur(duree(c)))+'</span>'
+    + (c.de < MIDI && c.a > MIDI ? '<span class="deborde">franchit midi</span>' : '')
+    + '</div></div>'
     + noteHTML
     + (lignes ? '<ul>'+lignes+'</ul>' : '')
     + pied + '</div>';
@@ -1071,7 +1150,23 @@ function renderJour(){
       + (jeudi ? '<span class="jour-dit">jeudi</span>' : '') + '</button>';
   }).join("");
 
-  $("cols").innerHTML = colsTriees(j).map(colHTML).join("");
+  var triees = colsTriees(j);
+  var moities = [
+    {k:"matin", nom:"Matin",       h:"avant 12h30", liste:triees.filter(function(c){ return c.de <  MIDI; })},
+    {k:"aprem", nom:"Après-midi",  h:"à partir de 12h30", liste:triees.filter(function(c){ return c.de >= MIDI; })}
+  ];
+  $("jourCorps").innerHTML = moities.map(function(m){
+    var ch = m.liste.reduce(function(t,c){ return t + duree(c); }, 0);
+    return '<section class="demi" data-moment="'+m.k+'">'
+      + '<div class="demiTete"><span class="demiNom">'+m.nom+'</span>'
+      + '<span class="demiH">'+m.h+'</span>'
+      + (ch ? '<span class="demiCharge">'+esc(dur(ch))+'</span>' : '')
+      + '</div>'
+      + (m.liste.length
+          ? '<div class="cols">' + m.liste.map(colHTML).join("") + '</div>'
+          : '<p class="demiVide">Rien de posé' + (m.k === "matin" ? " ce matin." : " cet après-midi.") + '</p>')
+      + '</section>';
+  }).join("");
 
   majSuggestions();
 

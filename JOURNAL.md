@@ -458,3 +458,83 @@ on regardait jeudi, et il conseillait de reporter sur jeudi une fiche qui s'y tr
 déjà. Le clic était sans effet — un message disait « déjà ouverte » — mais c'était du
 bruit dans un bandeau qui doit rester court pour être lu. Une fiche présente sur le
 jour affiché n'y figure plus.
+
+---
+
+## 010 — La régie et l'établi
+*11 septembre 2026*
+
+### Les demandes
+> « J'aimerais que le rail et le détail en dessous soient plus facilement
+> différenciables. Regarde comment rendre un planning ergonomique avec les jeux de
+> couleur. »
+> « De même, je voudrais une séparation visuelle entre le matin et l'après-midi. »
+
+### Le diagnostic
+Les deux zones reposaient sur **le même plan** — ni le rail ni le jour n'avaient de
+fond propre — et partageaient **la même signature de carte** : fond clair teinté,
+bordure, bord gauche coloré. Deux zones au même niveau, dessinées pareil : l'œil
+n'avait aucune raison de les séparer.
+
+### Le principe retenu : la régie et l'établi
+Trois canaux changent en même temps, pour que la séparation survive à un écran mal
+calibré ou à un coup d'œil de biais.
+
+1. **La valeur.** Le rail devient une **régie sombre** (`#1B2130` en thème clair,
+   `#080B12` en sombre), encastrée, avec une ombre projetée vers le bas. Le détail du
+   jour devient un **établi clair** (`#EDF1F7` / `#151A23`). Règle invariante dans les
+   deux thèmes : *le rail est la surface la plus sombre de l'écran, les cartes la plus
+   claire.* Le bandeau de bilan rejoint la régie : tout ce qui parle de la semaine est
+   dans le même plan.
+2. **La couleur change de rôle, pas de teinte.** Dans le rail, un bloc peut faire 40 px
+   de large : il n'y a pas la place d'écrire, donc **la couleur est l'étiquette**. Dans
+   une carte, l'en-tête dit « Chantier en cours » en toutes lettres — la couleur y est
+   redondante. Les cartes sont donc **neutralisées** : fond et en-tête gris, la couleur
+   réduite à un **filet de 3 px en tête** et une **pastille** avant le titre.
+   Les teintes ne changent jamais d'une zone à l'autre — seul leur traitement change.
+3. **La forme dit le statut.** Dans le rail : la **journée type se dessine** (contour
+   pointillé, c'est le fond de carte, pas un engagement), une **séance se remplit**
+   (aplat plein), une **sous-tâche à heure fixe** est une gélule, une **période** est une
+   pastille en contour. Quatre poids visuels, lisibles sans lire.
+
+### Une rampe de couleurs pour fond sombre
+Les tons purs (`#C2650A`, `#75892A`…) sont en luminance moyenne : lavés sur fond clair,
+ils se séparent enfin sur fond sombre. Une **rampe « rail »** a été ajoutée, mêmes
+teintes remontées en luminosité, avec une encre de bloc à `#11151E` :
+chantier `#E08A1E`, prépa `#6E8FE0`, clôture `#26936D`, réception `#E06BB4`,
+visite `#A8C13C`, prépa réunion `#35AFC9`, réunion `#737E94`, passif `#565169`
+(seul à garder une encre claire — il reste éteint, c'est la brique qu'on veut voir
+disparaître). **Un seul jeu pour les deux thèmes**, puisque le rail est sombre partout.
+
+Clôture a été descendue de `#2FA97F` à `#26936D` pour creuser l'écart de luminance avec
+Chantier : en deutéranopie — 8 % des hommes — ocre, olive et vert se rapprochent
+dangereusement, et l'écart de valeur est ce qui les sépare encore.
+
+### Le lien entre les deux zones
+Le jour sélectionné dans le rail prend **la couleur exacte de l'établi**, et une
+**encoche descend** du rail vers lui. La colonne choisie perce littéralement la régie.
+
+### Matin / après-midi
+La journée se lit maintenant en **deux temps**, séparés par un trait et un intertitre
+portant la plage horaire et les heures engagées de la demi-journée. Bascule à **12h30**.
+Une colonne est classée par son heure de début ; celle qui franchit midi (un chantier
+8h–16h) porte la mention **« franchit midi »**.
+
+### Contraste
+`--ink-3` passe de `#737C8F` à `#6A7285` : l'ancien était à 4,19:1 sur blanc, sous le
+seuil AA pour du petit corps.
+
+### Corrigé — un bug introduit par la refonte elle-même
+La greffe des tons de rail sur les huit briques a été faite par expression régulière,
+et **le point-virgule manquait** : `--bp:var(--chantier-pure) --br:var(--chantier-rail)`.
+Les deux déclarations étaient invalides. Résultat : les blocs du rail sans aplat
+(texte sombre sur fond sombre, illisibles) **et** les filets colorés absents des cartes.
+Repéré à l'œil sur la capture, confirmé en inspectant les styles calculés plutôt qu'en
+devinant. Huit règles corrigées.
+
+### Note sur la méthode
+L'analyse d'ergonomie couleur a été confiée à un agent. Sa recommandation principale —
+régie sombre + neutralisation de l'établi, les deux étant indissociables — a été suivie.
+Deux points ont été écartés volontairement : les cases cochées gardent la couleur de
+leur brique (elle aide à savoir dans quelle colonne on descend), et les lignes faites
+restent barrées.
