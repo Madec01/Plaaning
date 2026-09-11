@@ -21,6 +21,7 @@
   --zone-rail:#333C50; --zone-jour:#EDF1F7; --onFill:#FFFFFF; --zone-sep:#1B2130;
   --tab-repos:#3C465C; --tab-bord:#4B5771; --tab-survol:#45516B;
   --tab-actif:#4C5F88; --tab-ink:#FFFFFF; --tab-ink-2:#DDE4F1; --tab-accent:#93AFF0;
+  --bande-jour:rgba(147,175,240,.17);
   /* rampe « rail » : les memes teintes, remontees en luminosite pour un fond sombre.
      Un seul jeu, valable dans les deux themes — le rail est sombre partout. */
   --chantier-rail:#E08A1E;  --prepa-rail:#6E8FE0;   --passif-rail:#8F88A6;
@@ -49,8 +50,10 @@
     --zone-rail:#2A3245; --zone-jour:#12161C; --onFill:#12141A; --zone-sep:#0A0D13;
     --tab-repos:#333C52; --tab-bord:#414C67; --tab-survol:#3B4661;
   --tab-actif:#41547C; --tab-ink:#F2F6FF; --tab-ink-2:#CBD6EC; --tab-accent:#8FAAF0;
+  --bande-jour:rgba(143,170,240,.15);
   --tab-repos:#333C52; --tab-bord:#414C67; --tab-survol:#3B4661;
   --tab-actif:#41547C; --tab-ink:#F2F6FF; --tab-ink-2:#CBD6EC; --tab-accent:#8FAAF0;
+  --bande-jour:rgba(143,170,240,.15);
 
     --chantier-ink:#EDA85A; --chantier-soft:#2E2113; --chantier-line:#5B4222; --chantier-pure:#E08A2E;
     --prepa-ink:#93ABEE;    --prepa-soft:#1A2140;    --prepa-line:#334066;    --prepa-pure:#6C8FE0;
@@ -73,6 +76,7 @@
   --zone-rail:#2A3245; --zone-jour:#12161C; --onFill:#12141A; --zone-sep:#0A0D13;
   --tab-repos:#333C52; --tab-bord:#414C67; --tab-survol:#3B4661;
   --tab-actif:#41547C; --tab-ink:#F2F6FF; --tab-ink-2:#CBD6EC; --tab-accent:#8FAAF0;
+  --bande-jour:rgba(143,170,240,.15);
 
   --chantier-ink:#EDA85A; --chantier-soft:#2E2113; --chantier-line:#5B4222; --chantier-pure:#E08A2E;
   --prepa-ink:#93ABEE;    --prepa-soft:#1A2140;    --prepa-line:#334066;    --prepa-pure:#6C8FE0;
@@ -208,7 +212,19 @@ input{font:inherit; color:inherit}
   background:transparent; border:1px solid var(--line-2); border-radius:11px;
   background-image:repeating-linear-gradient(90deg,transparent 0,transparent calc(20% - 1px),var(--line) calc(20% - 1px),var(--line) 20%);
   background-position:5px 0; background-clip:content-box;
+  position:relative;
 }
+/* la tranche verticale du jour ouvert, du haut du rail jusqu'a l'encoche */
+.bandeJour{
+  position:absolute; top:4px; bottom:4px; z-index:0; pointer-events:none;
+  left:calc(5px + (100% - 10px) * var(--i) / 5);
+  width:calc((100% - 10px) / 5);
+  background:var(--bande-jour);
+  border-left:1px solid var(--tab-actif);
+  border-right:1px solid var(--tab-actif);
+  border-radius:0 0 9px 9px;
+}
+.railLane{position:relative; z-index:1}
 .railLane{display:grid; grid-template-columns:repeat(50,minmax(0,1fr)); min-height:28px; align-items:stretch}
 .railBlk{
   grid-row:1; margin:0 1px; background:var(--br); border:1px solid var(--br);
@@ -992,7 +1008,9 @@ function renderRail(){
     corps = ligneRail(seg.fond, true) + paquets(seg.autres).map(function(p){ return ligneRail(p, false); }).join("");
   }
   var ancre = '<div class="railAncre"><div class="ancre" style="grid-column:'+(jourSel+1)+'"></div></div>';
-  $("rail").innerHTML = '<div class="railHead">'+tete+'</div><div class="railBody">'+bandeau+corps+'</div>'+ancre;
+  var bande = '<div class="bandeJour" style="--i:'+jourSel+'"></div>';
+  $("rail").innerHTML = '<div class="railHead">'+tete+'</div>'
+    + '<div class="railBody">'+bande+bandeau+corps+'</div>'+ancre;
 }
 
 /* ---------- ce qui n'a pas été fait ---------- */

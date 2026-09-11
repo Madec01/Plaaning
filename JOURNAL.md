@@ -639,3 +639,37 @@ consultant une autre semaine. Et le bouton « Cette semaine » passe par le mêm
 Vérifié en simulant l'horloge : mercredi, samedi, dimanche, et le passage de minuit sur
 un onglet resté ouvert — y compris le cas où l'on consulte une autre semaine le même
 jour, qui ne doit surtout pas bouger.
+
+---
+
+## 013 — La tranche du jour
+*11 septembre 2026*
+
+### La demande
+> « Je veux que la partie du rail concernée par le jour change de couleur aussi. »
+
+Juste : l'onglet seul marquait le jour choisi **au-dessus** du rail, mais la tranche
+verticale correspondante — là où se trouvent réellement ses blocs — restait indistincte
+des quatre autres jours.
+
+### Ajouté
+Une **bande verticale** sur la largeur du jour ouvert, courant du haut du corps du rail
+jusqu'en bas : un lavis bleuté (`rgba(147,175,240,.17)`) délimité par un trait de chaque
+côté dans l'ardoise de l'onglet, avec les coins inférieurs arrondis pour rejoindre
+l'encoche.
+
+Le jour choisi se lit désormais **d'un bout à l'autre** : onglet → bande → encoche →
+détail en dessous. Un seul geste de l'œil.
+
+Le lavis est volontairement discret : c'est un fond, pas un objet. Après la remarque sur
+le blanc criard de l'entrée 012, la règle est posée — dans le rail, ce qui signale ne
+doit jamais crier plus fort que ce qui informe.
+
+### Détail technique
+La bande est positionnée en absolu sur le corps du rail, à
+`left: 5px + (100% − 10px) × jour / 5` et de largeur `(100% − 10px) / 5`, pour tomber
+exactement sur les dix colonnes du jour dans la grille de cinquante. Elle passe **sous**
+les blocs (`z-index:0`, les couloirs à `1`) pour ne rien assombrir.
+
+Vérifié sur lundi, mercredi et vendredi : la bande se pose à 0 %, 40 % et 80 % de la
+largeur, sur 20 % à chaque fois.
