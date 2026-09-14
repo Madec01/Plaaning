@@ -721,3 +721,72 @@ l'établi » — était solide tant que les deux zones partageaient un plan. Ell
 inutile, puis nuisible, dès que le rail a changé de valeur. Appliquer les deux moitiés
 d'un conseil sans revérifier que la première rend la seconde inutile, c'est ce qui a
 produit ce défaut.
+
+---
+
+## 015 — Réunions répétées, et la journée sur l'axe du temps
+*14 septembre 2026*
+
+### Les demandes
+> « Pour les réunions je voudrais pouvoir faire comme un vrai agenda Outlook : choisir
+> si c'est journalier, hebdo, la fréquence. »
+> « Visuellement je ressens le besoin que le matin et l'après-midi soient différents. »
+> « Je verrais une vue qui met toute la journée dans l'ordre des heures que j'aurais
+> mises, avec mise en parallèle si besoin. Et cette vue regarde la date et l'heure qu'il
+> est pour afficher ce que je suis censé faire, avec une barre et un rappel. »
+
+### 1. Les réunions se répètent
+Une carte Réunion porte désormais une ligne **Répéter** : *une seule fois, chaque jour,
+chaque semaine, toutes les 2 semaines, chaque mois*, avec un **jusqu'au** facultatif.
+
+Le modèle est celui d'un agenda : une **série** (la règle) et des **occurrences** (les
+colonnes réellement posées dans les jours). Les occurrences manquantes sont créées à
+l'affichage de chaque semaine, jamais toutes d'avance.
+
+- **Chaque occurrence a sa propre fiche** : les notes du point du 16 ne polluent pas
+  celui du 23. La clé est `serie:<id>|<date>`.
+- **Le nom et les horaires valent pour la série** : les modifier depuis n'importe quelle
+  occurrence les propage partout, et l'outil le dit.
+- **Supprimer demande laquelle** : toute la série, ou ce jour seulement. Le jour retiré
+  est mémorisé comme exception, il ne reviendra pas à la prochaine matérialisation.
+- Retirer la répétition ne détruit rien : seule l'occurrence du jour est conservée.
+
+### 2. La vue Chronologie
+Une bascule **Colonnes / Chronologie** dans l'en-tête du jour. La chronologie place tout
+sur un axe vertical des heures :
+
+- Chaque séance et chaque sous-tâche planifiée est un bloc, **positionné et dimensionné
+  par son heure réelle**.
+- **Mise en parallèle** : ce qui se chevauche se partage la largeur. Le calcul se fait
+  **par groupe de chevauchement** et non globalement — deux blocs l'après-midi prennent
+  la moitié chacun, ils ne se retrouvent pas serrés en tiers parce que le matin comptait
+  trois couloirs.
+- Une **ligne pointillée « Après-midi »** à 12h30 coupe la journée en deux.
+- Cliquer un bloc renvoie à la vue Colonnes pour y travailler.
+- La vue choisie est mémorisée.
+
+### 3. La barre « maintenant »
+Au-dessus du jour, visible dans les deux vues, **uniquement quand le jour affiché est
+aujourd'hui** :
+
+> **10h20** — Tu es censé être sur **Chantier · PNPE3270** — jusqu'à 12h · encore 1 h 40
+> — Ensuite : **Réunion · Point hebdo** à 11h
+
+Une sous-tâche à heure fixe l'emporte sur la séance qui la contient, et une séance
+activée l'emporte sur la journée type : c'est le plus précis qui s'affiche. S'il ne reste
+que 15 minutes, le compteur passe en rouge. Si rien n'est posé à cette heure, la barre
+annonce la prochaine échéance. Elle se met à jour toutes les 30 secondes.
+
+Dans la chronologie, la même heure est tracée par une **ligne rouge** en travers de la
+journée. Le rouge ne sert qu'à ça — aucune brique ne l'utilise.
+
+### 4. Matin et après-midi
+Les deux moitiés deviennent **deux plateaux** aux fonds distincts : le matin plus clair,
+l'après-midi plus sourd, chacun dans son cadre arrondi avec son intertitre et ses heures
+engagées.
+
+### Corrigé — un bug latent trouvé en chemin
+`cleFiche` ignorait le champ `fk`. Or **« Reporter » s'appuie dessus** pour rattacher une
+fiche **sans nom** à un nouveau jour : au lieu de retrouver son contenu, elle créait une
+fiche vide. Le report des fiches nommées, lui, fonctionnait — d'où le fait que les tests
+de l'entrée 006 ne l'aient pas vu.
