@@ -790,3 +790,55 @@ engagées.
 fiche **sans nom** à un nouveau jour : au lieu de retrouver son contenu, elle créait une
 fiche vide. Le report des fiches nommées, lui, fonctionnait — d'où le fait que les tests
 de l'entrée 006 ne l'aient pas vu.
+
+---
+
+## 016 — Travailler directement dans la chronologie
+*14 septembre 2026*
+
+### Les demandes
+> « Dans la vue chronologique je veux pouvoir cocher les cases et mettre les commentaires
+> aussi. »
+> « Quand je fais une modification je veux que la vue chrono se mette à jour tout de
+> suite, pas au rafraîchissement. »
+> « Je veux que par défaut les horaires soient 8h00 – 17h00. Quand je crée une réunion
+> elle commence à minuit actuellement. »
+
+### 1. La chronologie devient une surface de travail
+Les blocs ne sont plus de simples étiquettes : dès qu'un bloc dépasse **84 px** de haut,
+il affiche **ses sous-tâches cochables**, leurs commentaires, et un crayon pour en
+ajouter. La note de fiche apparaît aussi quand elle existe. Un compteur `1/5` en tête du
+bloc donne l'avancement, et une flèche **↗** renvoie aux colonnes quand on veut la vue
+complète.
+
+Le bloc a cessé d'être un `<button>` — on ne peut pas mettre une case à cocher dans un
+bouton.
+
+### 2. Tout se met à jour sur-le-champ
+Plusieurs gestionnaires faisaient des mises à jour ciblées (pour ne pas voler le focus
+pendant la saisie) et **ne redessinaient pas la chronologie** : changer une heure dans
+les colonnes ne bougeait rien tant qu'on n'avait pas rechargé. Sont désormais branchés :
+les heures de séance, les cases cochées, la planification d'une sous-tâche, et
+l'ouverture d'un commentaire. La barre « maintenant » se recalcule avec.
+
+Vérifié : passer une réunion de 11h à 14h–15h30 depuis les colonnes replace
+immédiatement son bloc à 360 px de haut sur 87 px — exactement `(14−8)×60` et `1,5×60`.
+
+### 3. Le cadre de travail est 8h – 17h
+- L'axe de la chronologie va de **8h à 17h** par défaut (il s'étend seulement si quelque
+  chose déborde).
+- **Garde-fou sur les horaires** : toute colonne créée ou enregistrée avec une heure
+  aberrante — absente, non numérique, hors de 0–24, ou une fin avant le début — est
+  ramenée aux valeurs par défaut de sa brique. La réparation passe aussi sur les données
+  déjà stockées, au chargement.
+
+**Sur la réunion à minuit : je n'ai pas réussi à la reproduire.** Chez moi, une réunion
+naît à 11h–12h, y compris une fois transformée en série et matérialisée les semaines
+suivantes. Plutôt que de deviner une cause, j'ai posé le garde-fou ci-dessus : quelle que
+soit l'origine, une heure aberrante ne peut plus s'installer. Si le cas revient, il
+faudra noter la manipulation exacte.
+
+### Corrigé aussi
+Cliquer le crayon d'une sous-tâche visait le champ de l'**autre** vue — les deux existent
+dans le document, une seule est affichée. Le focus cherche maintenant dans la vue
+visible.

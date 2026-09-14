@@ -626,11 +626,31 @@ textarea.note::placeholder{color:var(--ink-3); font-style:italic}
   font-size:10.5px; font-weight:600; color:var(--ink-3);
 }
 .chronoBloc{
-  position:absolute; border-radius:8px; padding:5px 9px; overflow:hidden; cursor:pointer;
+  position:absolute; border-radius:8px; padding:5px 9px; overflow:auto;
   background:var(--bs); border:1px solid var(--bl); border-left:4px solid var(--bp);
   display:flex; flex-direction:column; gap:1px; text-align:left; font:inherit;
 }
-.chronoBloc:hover{filter:brightness(.97)}
+.cbTete{display:flex; align-items:baseline; gap:7px}
+.cbTete .cbNom{flex:1; min-width:0}
+.cbFait{font-family:"IBM Plex Mono",monospace; font-size:10px; color:var(--bi); opacity:.8; flex:none}
+.cbAller{
+  border:0; background:transparent; color:var(--bi); opacity:.5; cursor:pointer;
+  font-size:13px; line-height:1; padding:0 2px; flex:none;
+}
+.cbAller:hover{opacity:1}
+.cbNoteFiche{
+  font-size:11.5px; font-style:italic; color:var(--ink-2); line-height:1.4;
+  margin:4px 0 2px; padding-left:7px; border-left:2px solid var(--bl);
+}
+.cbListe{list-style:none; margin:5px 0 0; padding:0; display:flex; flex-direction:column; gap:1px}
+.cbListe li{display:flex; flex-wrap:wrap; align-items:flex-start; gap:5px; font-size:12.5px; line-height:1.35; border-radius:6px; padding:2px 3px}
+.cbListe li:hover{background:rgba(255,255,255,.45)}
+.cbListe .liAct{opacity:.55}
+.cbListe li:hover .liAct{opacity:1}
+.cbListe .icone{width:19px; height:19px; font-size:11px}
+.cbNote{flex:1 1 100%; font-size:11px; font-style:italic; color:var(--ink-3); padding-left:22px; line-height:1.35}
+.cbListe .edit{flex:1 1 100%; padding:3px 0 4px 22px}
+.cbListe .edit textarea{min-height:52px; font-size:12px}
 .chronoBloc .cbNom{font-size:13px; font-weight:600; color:var(--bi); line-height:1.25; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
 .chronoBloc .cbH{font-family:"IBM Plex Mono",monospace; font-size:10.5px; color:var(--ink-3)}
 .chronoBloc .cbFait{font-family:"IBM Plex Mono",monospace; font-size:10px; color:var(--bi); opacity:.8}
@@ -644,9 +664,9 @@ textarea.note::placeholder{color:var(--ink-3); font-style:italic}
   content:""; position:absolute; left:-5px; top:-6px; width:10px; height:10px;
   border-radius:50%; background:var(--bad);
 }
-.chronoNow span{
-  position:absolute; left:12px; top:-9px; background:var(--bad); color:#fff; border-radius:20px;
-  padding:1px 8px; font-family:"IBM Plex Mono",monospace; font-size:10px; font-weight:500;
+.chronoHeures .hNow{
+  right:6px; transform:translateY(-9px); background:var(--bad); color:#fff;
+  border-radius:20px; padding:1px 7px; font-size:10px; font-weight:500; z-index:2;
 }
 .chronoVide{padding:26px 16px; text-align:center; color:var(--ink-3); font-size:13.5px; font-style:italic}
 
@@ -750,6 +770,7 @@ var JOUR_COURT = ["Lun","Mar","Mer","Jeu","Ven"];
 var JOUR_RECEPTION = 3;
 var MIDI = 12.5;                      /* la bascule matin / après-midi */
 var H_PX = 60;                        /* hauteur d'une heure dans la chronologie */
+var H_MIN = 8, H_MAX = 17;            /* le cadre de travail par défaut */
 
 var MODELES_DEF = {
   prepa    :["Prise en compte","Régimes","PDS","ADR","FEP","Logistique"],
@@ -834,7 +855,20 @@ function charger(){
   Object.keys(MODELES_DEF).forEach(function(k){
     if(!Array.isArray(o.modeles[k]) || !o.modeles[k].length) o.modeles[k] = MODELES_DEF[k].slice();
   });
-  if(migre){ try{ localStorage.setItem(CLE, JSON.stringify(o)); }catch(e){} }
+  /* réparation : toute colonne enregistrée avec des heures aberrantes revient dans le cadre */
+  var repare = false;
+  Object.keys(o.semaines||{}).forEach(function(k){
+    ((o.semaines[k]||{}).jours||[]).forEach(function(j){
+      (j.cols||[]).forEach(function(c){
+        var d = H_DEF[c.b] || [H_MIN, H_MAX];
+        var de = c.de, a = c.a;
+        if(typeof de !== "number" || !isFinite(de) || de < 0 || de > 24) { c.de = d[0]; repare = true; }
+        if(typeof a  !== "number" || !isFinite(a)  || a  < 0 || a  > 24) { c.a  = d[1]; repare = true; }
+        if(c.a <= c.de){ c.a = Math.min(24, c.de + 1); repare = true; }
+      });
+    });
+  });
+  if(migre || repare){ try{ localStorage.setItem(CLE, JSON.stringify(o)); }catch(e){} }
   return o;
 }
 
@@ -878,8 +912,18 @@ function fiche(c){
   if(!etat.fiches[k]) etat.fiches[k] = ficheNeuve(c.b);
   return etat.fiches[k];
 }
+/* aucune colonne ne doit se retrouver a minuit : on ramene toute heure douteuse
+   dans le cadre de travail, avec les valeurs de sa brique */
+function bonnesHeures(b, de, a){
+  var d = H_DEF[b] || [H_MIN, H_MAX];
+  if(typeof de !== "number" || !isFinite(de) || de < 0 || de > 24) de = d[0];
+  if(typeof a  !== "number" || !isFinite(a)  || a  < 0 || a  > 24) a  = d[1];
+  if(a <= de) a = Math.min(24, de + 1);
+  return [de, a];
+}
 function colNeuve(b, de, a, nom){
-  var c = {id:uid(), b:b, nom:nom||"", de:de, a:a, fond:(b==="prepa"||b==="passif")};
+  var h = bonnesHeures(b, de, a);
+  var c = {id:uid(), b:b, nom:nom||"", de:h[0], a:h[1], fond:(b==="prepa"||b==="passif")};
   fiche(c);
   return c;
 }
@@ -926,7 +970,9 @@ function materialiseSeries(){
       if((se.sauf||[]).indexOf(di) >= 0) continue;
       var j = s.jours[i];
       if((j.cols||[]).some(function(c){ return c.serie === se.id; })) continue;
-      var c = {id:uid(), b:se.b, nom:se.nom||"", de:se.de, a:se.a, fond:false,
+      var hs = bonnesHeures(se.b, se.de, se.a);
+      se.de = hs[0]; se.a = hs[1];
+      var c = {id:uid(), b:se.b, nom:se.nom||"", de:hs[0], a:hs[1], fond:false,
                serie:se.id, fkFixe:"serie:"+se.id+"|"+di};
       if(!etat.fiches[c.fkFixe]) etat.fiches[c.fkFixe] = ficheNeuve(se.b);
       j.cols.push(c);
@@ -1340,8 +1386,8 @@ function renderChrono(){
     zone.innerHTML = '<div class="chronoVide">Rien de posé ce jour-là.</div>';
     return;
   }
-  var h0 = Math.floor(Math.min.apply(null, blocs.map(function(b){ return b.de; }).concat([8])));
-  var h1 = Math.ceil(Math.max.apply(null, blocs.map(function(b){ return b.a; }).concat([18])));
+  var h0 = Math.floor(Math.min.apply(null, blocs.map(function(b){ return b.de; }).concat([H_MIN])));
+  var h1 = Math.ceil(Math.max.apply(null, blocs.map(function(b){ return b.a; }).concat([H_MAX])));
   couloirs(blocs);
   var haut = (h1 - h0) * H_PX;
 
@@ -1360,22 +1406,51 @@ function renderChrono(){
   if(estAujourdhui()){
     var hc = heureCourante();
     if(hc >= h0 && hc <= h1){
-      maintenant = '<div class="chronoNow" style="top:'+((hc-h0)*H_PX)+'px"><span>'+esc(hh(Math.floor(hc)+Math.round((hc%1)*60)/60))+'</span></div>';
+      var lbl = esc(hh(Math.floor(hc) + Math.round((hc%1)*60)/60));
+      maintenant = '<div class="chronoNow" style="top:'+((hc-h0)*H_PX)+'px"></div>';
+      /* l'étiquette va dans la colonne des heures : elle ne doit pas couvrir le texte */
+      heures += '<span class="hNow" style="top:'+((hc-h0)*H_PX)+'px">'+lbl+'</span>';
     }
   }
   var corps = blocs.map(function(bl){
     var top = (bl.de - h0) * H_PX, ht = Math.max(20, (bl.a - bl.de) * H_PX - 3);
     var larg = 100 / (bl.total || 1), gauche = bl.couloir * larg;
+    var cid = bl.col.id;
     var f = etat.fiches[cleFiche(bl.col)];
-    var faites = f ? (f.taches||[]).filter(function(x){ return x.f; }).length : 0;
-    var total  = f ? (f.taches||[]).length : 0;
-    return '<button type="button" class="chronoBloc'+(bl.tache?" tache":"")+(ht<40?" court":"")+'" data-b="'+bl.b+'" '
-      + 'data-act="versColonnes" style="top:'+top+'px; height:'+ht+'px; left:calc('+gauche+'% + 4px); width:calc('+larg+'% - 8px)" '
-      + 'title="'+esc(bl.nom+" — "+hh(bl.de)+" à "+hh(bl.a))+'">'
+    var taches = (f && f.taches) || [];
+    var faites = taches.filter(function(x){ return x.f; }).length;
+
+    /* on coche et on commente directement ici : plus besoin de repasser par les colonnes */
+    var liste = "";
+    if(!bl.tache && taches.length && ht >= 84){
+      liste = '<ul class="cbListe">' + taches.map(function(t){
+        var enEd = edition && edition.cle === cid+"|"+t.id;
+        return '<li>'
+          + '<label class="tache"><input type="checkbox" data-act="check" data-c="'+cid+'" data-t="'+t.id+'"'+(t.f?' checked':'')+'>'
+          + '<span class="box"></span><span class="tx">'+esc(t.t)+'</span></label>'
+          + '<span class="liAct"><button type="button" class="icone'+(t.note?' on':'')+'" data-act="noteT" '
+          + 'data-c="'+cid+'" data-t="'+t.id+'" title="Commentaire" aria-label="Commentaire">✎︎</button></span>'
+          + (t.note && !enEd ? '<div class="cbNote">'+esc(t.note)+'</div>' : '')
+          + (enEd ? '<div class="edit"><textarea data-act="noteTache" data-c="'+cid+'" data-t="'+t.id+'" '
+                  + 'placeholder="Un commentaire sur cette ligne…">'+esc(t.note)+'</textarea>'
+                  + '<div class="rang"><button type="button" class="mini" data-act="fermer">Fermer</button></div></div>' : '')
+          + '</li>';
+      }).join("") + '</ul>';
+    }
+    var noteFiche = (!bl.tache && f && f.note && ht >= 60)
+      ? '<div class="cbNoteFiche">'+esc(f.note)+'</div>' : "";
+
+    return '<div class="chronoBloc'+(bl.tache?" tache":"")+(ht<40?" court":"")+'" data-b="'+bl.b+'" '
+      + 'style="top:'+top+'px; height:'+ht+'px; left:calc('+gauche+'% + 4px); width:calc('+larg+'% - 8px)">'
+      + '<div class="cbTete" title="'+esc(bl.nom+" — "+hh(bl.de)+" à "+hh(bl.a))+'">'
       + '<span class="cbNom">'+(bl.tache?"◷ ":"")+esc(bl.nom)+'</span>'
+      + (!bl.tache && taches.length && ht >= 40
+          ? '<span class="cbFait">'+faites+'/'+taches.length+'</span>' : '')
+      + (!bl.tache ? '<button type="button" class="cbAller" data-act="versColonnes" title="Ouvrir dans les colonnes" aria-label="Ouvrir dans les colonnes">↗</button>' : '')
+      + '</div>'
       + (ht >= 40 ? '<span class="cbH">'+esc(hh(bl.de))+' – '+esc(hh(bl.a))+'</span>' : '')
-      + (!bl.tache && total && ht >= 58 ? '<span class="cbFait">'+faites+'/'+total+' fait'+(faites>1?"s":"")+'</span>' : '')
-      + '</button>';
+      + noteFiche + liste
+      + '</div>';
   }).join("");
 
   zone.innerHTML = '<div class="chrono">'
@@ -1781,8 +1856,10 @@ document.addEventListener("click", function(e){
     var mode = (act === "quand") ? "quand" : "note";
     var cle = el.dataset.c+"|"+el.dataset.t;
     edition = (edition && edition.cle === cle && edition.mode === mode) ? null : {cle:cle, mode:mode};
-    renderJour();
-    var champ = document.querySelector(".edit textarea, .edit input");
+    renderJour(); renderChrono();
+    /* le champ a viser est celui de la vue affichee, pas celui de l'autre */
+    var zone = (vue === "chrono") ? $("chrono") : $("jourCorps");
+    var champ = zone.querySelector(".edit textarea, .edit input");
     if(champ && edition) champ.focus();
 
   } else if(act === "noteF"){
@@ -1909,11 +1986,11 @@ document.addEventListener("change", function(e){
       var s4 = serieParId(c.serie);
       if(s4){ s4.de = c.de; s4.a = c.a; colonnesDeSerie(s4.id, function(x){ x.de = c.de; x.a = c.a; }); }
     }
-    sauver(); majSeance(c, el); renderRail(); renderBilan(); majMaintenant();
+    sauver(); majSeance(c, el); renderRail(); renderBilan(); renderChrono(); majMaintenant();
 
   } else if(act === "check"){
     t = tacheParId(c, el.dataset.t);
-    if(t){ t.f = el.checked; sauver(); renderRetard(); }
+    if(t){ t.f = el.checked; sauver(); renderRetard(); renderChrono(); majMaintenant(); }
 
   } else if(act === "debut" || act === "fin"){
     fiche(c)[act === "debut" ? "debut" : "fin"] = el.value || "";
@@ -1925,7 +2002,7 @@ document.addEventListener("change", function(e){
     if(act === "pDate"){ if(!el.value){ tout(); return; } p.d = el.value; }
     else if(act === "pHeure"){ v = hv(el.value); if(v === null){ tout(); return; } p.h = v; }
     else { v = parseInt(el.value,10); p.m = (isNaN(v) || v < 5) ? 5 : Math.min(600, v); }
-    sauver(); renderRail();
+    sauver(); renderRail(); renderChrono(); majMaintenant();
 
   } else if(act === "noteFiche" || act === "noteTache"){
     sauver();
