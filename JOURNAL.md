@@ -842,3 +842,39 @@ faudra noter la manipulation exacte.
 Cliquer le crayon d'une sous-tâche visait le champ de l'**autre** vue — les deux existent
 dans le document, une seule est affichée. Le focus cherche maintenant dans la vue
 visible.
+
+---
+
+## 017 — Une interface plus claire et des sauvegardes portables
+*16 septembre 2026*
+
+Refonte de l'interface personnelle : palette sobre, thèmes clair et sombre, cartes
+récapitulatives, navigation hebdomadaire plus lisible et matin/après-midi côte à côte
+sur grand écran. Sur téléphone, les cartes se suivent et le jour sélectionné est
+recentré dans la semaine défilante. Les polices externes ont été retirées : la page
+reste autonome, y compris hors ligne.
+
+### Ajouts
+- Navigation directe par date ; un week-end ouvre le lundi suivant.
+- Avancement des sous-tâches du jour, sans compter deux fois une même fiche.
+- Export JSON complet et restauration avec validation et confirmation avant remplacement.
+- Indication explicite des erreurs d'enregistrement ; l'export reste disponible.
+- Libellés accessibles, focus conservé après une coche et styles d'impression.
+
+### Corrections
+- Cases synchronisées entre Colonnes et Chronologie.
+- Modèles volontairement vidés conservés au rechargement.
+- Notes et tâches conservées quand une réunion devient récurrente.
+- Annuler la suppression d'une série ne supprime plus son occurrence.
+
+### Vérifications
+Tests réels Chromium/Playwright : ajout et renommage de réunion, notes conservées
+en série, annulation de suppression, synchronisation et focus des cases, export,
+restauration, import annulé et refus des fichiers invalides sans mutation.
+Aucune erreur JavaScript sur ces parcours. Affichage vérifié à 320, 390 et 1440 px,
+en clair et sombre, sans débordement horizontal de la page.
+
+Le format de stockage existant et sa clé `plaaning.v1` sont conservés. Les données
+restent propres au navigateur et à l'emplacement de la page : utiliser Exporter /
+Restaurer pour déplacer le planning. Le volume des séances est un cumul, qui peut
+inclure des horaires qui se chevauchent.

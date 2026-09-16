@@ -21,3 +21,19 @@ dossier ne part sur GitHub, et le dépôt ne contient jamais de données réelle
 
 Le [journal de bord](JOURNAL.md) retrace chaque décision, modification et ajout,
 dans l'ordre, avec sa raison.
+
+## Utilisation et sauvegardes
+
+Ouvrir `index.html` dans un navigateur récent. Aucune installation, serveur ou
+connexion Internet n'est nécessaire. Les thèmes clair/sombre et les vues Colonnes /
+Chronologie sont mémorisés.
+
+Le bouton **Sauvegarde** permet d'exporter un fichier JSON contenant les semaines,
+fiches, notes, modèles et réunions récurrentes. **Restaurer un fichier** vérifie ce
+fichier puis demande confirmation avant de remplacer les données du navigateur.
+Exporter le planning actuel avant une restauration permet de le conserver.
+
+Pour changer de navigateur, d'appareil ou d'emplacement du fichier HTML, exporter
+puis restaurer la sauvegarde : le stockage local n'est pas une synchronisation.
+Les anciennes données restent compatibles lorsque la page est remplacée au même
+emplacement dans le même navigateur.
