@@ -302,7 +302,7 @@ async function testPhasesTasksAndPlanning(browser, url) {
   await page.getByRole('button', { name: /^\+ Ajouter une action$/i }).click();
   await fill(page, [/^action/i], 'Valider le diagnostic');
   const deadlineISO = activeWorkdayISO();
-  await fill(page, [/^échéance$/i], deadlineISO);
+  await fill(page, [/^à terminer avant$/i, /^échéance$/i], deadlineISO);
   const phaseSelect = await field(page, [/^phase$/i]);
   await phaseSelect.selectOption({ label: phaseNames[0] });
   await page.getByRole('checkbox', { name: 'Prioritaire', exact: true }).check();

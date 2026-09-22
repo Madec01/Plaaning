@@ -1,4 +1,29 @@
 /* Workspace projets — fragment injecté dans la feuille principale. */
+/* La palette claire est volontairement teintée : elle sert aussi au planning historique. */
+:root[data-theme="light"]{
+  --ground:#DDE4ED;--surface:#F7F9FC;--surface-2:#E9EEF5;
+  --line:#BCC7D5;--line-2:#929FB1;
+  --ink:#182131;--ink-2:#3E4A5E;--ink-3:#556378;
+  --accent:#294F9B;--accent-soft:#DCE6F7;
+  --good:#176E55;--warn:#8B5A08;--bad:#A12F3D;
+  --zone-jour:#E5EAF2;--bande-jour:rgba(78,111,179,.16);
+  --plateau-matin:#F2F5F9;--plateau-aprem:#D7DFE9;
+  --panel-surface:#E5EAF2;--panel-soft:#D7DFE9;--panel-line:#AEBACA;--panel-line2:#8795A9;
+  --panel-ink:#182131;--panel-ink2:#3E4A5E;--panel-ink3:#556378;--panel-accent:#294F9B;--panel-accentsoft:#D3DFF2;
+}
+@media(prefers-color-scheme:light){
+  :root:not([data-theme]){
+    --ground:#DDE4ED;--surface:#F7F9FC;--surface-2:#E9EEF5;
+    --line:#BCC7D5;--line-2:#929FB1;
+    --ink:#182131;--ink-2:#3E4A5E;--ink-3:#556378;
+    --accent:#294F9B;--accent-soft:#DCE6F7;
+    --good:#176E55;--warn:#8B5A08;--bad:#A12F3D;
+    --zone-jour:#E5EAF2;--bande-jour:rgba(78,111,179,.16);
+    --plateau-matin:#F2F5F9;--plateau-aprem:#D7DFE9;
+    --panel-surface:#E5EAF2;--panel-soft:#D7DFE9;--panel-line:#AEBACA;--panel-line2:#8795A9;
+    --panel-ink:#182131;--panel-ink2:#3E4A5E;--panel-ink3:#556378;--panel-accent:#294F9B;--panel-accentsoft:#D3DFF2;
+  }
+}
 .appNavShell{position:sticky;top:var(--pm-header-height,82px);z-index:35;background:color-mix(in srgb,var(--surface) 94%,transparent);border-bottom:1px solid var(--line);backdrop-filter:blur(12px)}
 .appNav{max-width:1600px;margin:auto;padding:9px clamp(16px,3vw,48px);display:flex;align-items:center;gap:5px;overflow-x:auto}
 .appNav button{min-height:40px;border:0;background:transparent;color:var(--ink-2);border-radius:9px;padding:8px 14px;white-space:nowrap;font-weight:600;cursor:pointer}
@@ -22,7 +47,7 @@ body:not([data-pm-view="planning"]) #planningWorkspace{display:none}
 .pmBtnPrimary:hover{background:var(--accent);color:#fff;filter:brightness(.96)}
 .pmBtnDanger{color:var(--bad)}
 .pmBtnIcon{width:38px;padding:0;font-size:16px}
-.pmCard{background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:0 4px 18px rgba(28,43,72,.045)}
+.pmCard{background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:0 4px 18px rgba(28,43,72,.075)}
 .pmKpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px;margin-bottom:25px}
 .pmKpi{padding:19px 20px;min-height:112px;display:flex;flex-direction:column;justify-content:space-between}
 .pmKpiTop{display:flex;align-items:center;justify-content:space-between;gap:8px;color:var(--ink-3);font-size:11px;font-weight:650;text-transform:uppercase;letter-spacing:.55px}
@@ -74,7 +99,7 @@ body:not([data-pm-view="planning"]) #planningWorkspace{display:none}
 .pmProjectsGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));gap:13px}
 .pmProjectCard{padding:17px;display:flex;flex-direction:column;min-height:190px;cursor:pointer;text-align:left;color:inherit}
 button.pmProjectCard{font:inherit}
-.pmProjectCard:hover{border-color:var(--line-2);box-shadow:0 7px 22px rgba(28,43,72,.075)}
+.pmProjectCard:hover{border-color:var(--line-2);box-shadow:0 7px 22px rgba(28,43,72,.12)}
 .pmProjectCardTop{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
 .pmProjectCard h2{font-size:15px;line-height:1.3;overflow-wrap:anywhere}
 .pmProjectCard p{font-size:12px;color:var(--ink-3);margin-top:5px;line-height:1.45;overflow-wrap:anywhere}
@@ -90,13 +115,14 @@ button.pmProjectCard{font:inherit}
 .pmDetailActions{display:flex;gap:7px;flex-wrap:wrap}
 .pmDetailGrid{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:17px;align-items:start}
 .pmPhases{display:flex;flex-direction:column;gap:11px}
-.pmPhase{overflow:hidden}
-.pmPhase summary{list-style:none;display:flex;align-items:center;gap:11px;padding:14px 16px;cursor:pointer;background:var(--surface)}
-.pmPhase summary::-webkit-details-marker{display:none}
-.pmPhase summary::before{content:"›";color:var(--ink-3);font-size:20px;transition:transform .15s}
-.pmPhase[open] summary::before{transform:rotate(90deg)}
+.pmPhase{--pm-phase:#5B78AD;overflow:hidden;box-shadow:inset 4px 0 0 var(--pm-phase),0 4px 18px rgba(28,43,72,.075)}
+.pmPhase:nth-child(4n+2){--pm-phase:#2F7D73}.pmPhase:nth-child(4n+3){--pm-phase:#8A6332}.pmPhase:nth-child(4n){--pm-phase:#725D91}
+.pmPhase>summary{list-style:none;display:flex;align-items:center;gap:11px;padding:14px 16px 14px 19px;cursor:pointer;background:color-mix(in srgb,var(--pm-phase) 8%,var(--surface))}
+.pmPhase>summary::-webkit-details-marker{display:none}
+.pmPhase>summary::before{content:"›";color:var(--ink-3);font-size:20px;transition:transform .15s}
+.pmPhase[open]>summary::before{transform:rotate(90deg)}
 .pmPhaseTitle{font-size:14px;font-weight:680;flex:1}
-.pmPhaseCount{font-size:10.5px;color:var(--ink-3);border:1px solid var(--line);border-radius:20px;padding:2px 8px}
+.pmPhaseCount{font-size:10.5px;color:var(--ink-2);border:1px solid color-mix(in srgb,var(--pm-phase) 35%,var(--line));background:color-mix(in srgb,var(--pm-phase) 7%,var(--surface));border-radius:20px;padding:2px 8px}
 .pmPhaseBody{border-top:1px solid var(--line);padding:8px 12px 12px}
 .pmTaskRow{display:grid;grid-template-columns:25px minmax(120px,1fr) 116px auto;gap:8px;align-items:center;padding:8px 3px;border-top:1px solid var(--line)}
 .pmTaskRow:first-child{border-top:0}
@@ -104,14 +130,27 @@ button.pmProjectCard{font:inherit}
 .pmTaskMain{min-width:0}
 .pmTaskTitle{border:0;background:transparent;padding:4px 2px;width:100%;font:inherit;font-size:12.5px;color:var(--ink);border-bottom:1px solid transparent}
 .pmTaskTitle:hover,.pmTaskTitle:focus{border-bottom-color:var(--line-2);outline:0}
-.pmTaskInfo{display:flex;gap:7px;align-items:center;flex-wrap:wrap;margin:3px 2px 0}
+.pmTaskInfo{display:flex;gap:7px;align-items:center;flex-wrap:wrap;margin:3px 2px 0;min-width:0}.pmTaskInfo .pmPill{max-width:100%;white-space:normal;overflow-wrap:anywhere}
 .pmTaskRow select{min-height:33px;border:1px solid var(--line);border-radius:7px;background:var(--surface-2);color:var(--ink-2);font:inherit;font-size:11px;padding:5px 7px}
 .pmTaskActions{display:flex;gap:3px}
 .pmTaskActions button{width:34px;height:34px;border:0;border-radius:7px;background:transparent;color:var(--ink-3);cursor:pointer}
 .pmTaskActions button:hover{background:var(--surface-2);color:var(--ink)}
 .pmTaskActions .pmScheduleBtn{width:auto;padding-inline:8px;font-size:10.5px;font-weight:650;color:var(--accent)}
 .pmTaskRow[data-status="done"] .pmTaskTitle{text-decoration:line-through;color:var(--ink-3)}
+.pmTaskRow[data-urgency="watch"]{box-shadow:inset 3px 0 0 color-mix(in srgb,var(--warn) 58%,var(--line))}
+.pmTaskRow[data-urgency="urgent"]{box-shadow:inset 3px 0 0 color-mix(in srgb,var(--warn) 82%,#C74F24);padding-left:8px}
+.pmTaskRow[data-urgency="critical"]{box-shadow:inset 3px 0 0 var(--bad);padding-left:8px}
+.pmUrgency{font-weight:680;max-width:100%;white-space:normal;overflow-wrap:anywhere}
+.pmUrgency-normal{color:var(--ink-3);background:var(--surface-2)}
+.pmUrgency-watch{color:var(--warn);border-color:color-mix(in srgb,var(--warn) 45%,var(--line));background:color-mix(in srgb,var(--warn) 8%,var(--surface))}
+.pmUrgency-urgent{color:color-mix(in srgb,var(--warn) 66%,var(--bad));border-color:color-mix(in srgb,var(--warn) 50%,var(--bad));background:color-mix(in srgb,var(--warn) 11%,var(--surface))}
+.pmUrgency-critical{color:var(--bad);border-color:color-mix(in srgb,var(--bad) 48%,var(--line));background:color-mix(in srgb,var(--bad) 9%,var(--surface))}
+.pmTaskFields{display:grid;grid-template-columns:repeat(auto-fit,minmax(125px,1fr));gap:6px 8px;margin:8px 2px 2px}
+.pmTaskFields label{min-width:0;display:flex;align-items:center;gap:6px;color:var(--ink-3);font-size:10.5px}
+.pmTaskFields label span{min-width:0;max-width:45%;overflow-wrap:anywhere}.pmTaskFields input{min-width:0;width:100%;height:29px;border:1px solid var(--line);border-radius:6px;background:var(--surface-2);color:var(--ink);padding:4px 7px;font:inherit;font-size:11px}
+.pmTaskFields input:focus{outline:2px solid var(--accent);outline-offset:1px;border-color:var(--accent)}
 .pmAddTask{width:100%;border:0;background:transparent;color:var(--accent);padding:10px 4px 4px;text-align:left;font-size:12px;font-weight:650;cursor:pointer}
+.pmCompletedTasks{margin-top:7px;border-top:1px solid var(--line)}.pmCompletedTasks>summary{list-style:none;cursor:pointer;padding:10px 4px;color:var(--ink-3);font-size:11px;font-weight:650}.pmCompletedTasks>summary::-webkit-details-marker{display:none}.pmCompletedTasks>summary::before{content:"+";display:inline-block;width:18px;color:var(--accent)}.pmCompletedTasks[open]>summary::before{content:"−"}
 .pmSide{display:flex;flex-direction:column;gap:12px;position:sticky;top:148px}
 .pmSideCard{padding:17px}
 .pmSideCard h2{font-size:13px;margin-bottom:12px}
@@ -126,6 +165,7 @@ button.pmSlotWhen{width:auto;height:auto;text-align:left;padding:5px;border-radi
 .pmPhaseTools{display:flex;gap:4px}.pmPhaseTools button{width:31px;height:31px;border:0;background:transparent;border-radius:7px;color:var(--ink-3);cursor:pointer}.pmPhaseTools button:hover{background:var(--surface-2);color:var(--ink)}
 
 .pmSettingsGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}
+.pmReviewSection+.pmReviewSection{margin-top:13px}.pmPriorityRow{padding-left:6px;padding-right:6px}
 .pmSetting{padding:20px}.pmSetting h2{font-size:15px;margin-bottom:5px}.pmSetting>p{font-size:12px;color:var(--ink-3);margin-bottom:15px}
 .pmTokenList{display:flex;flex-direction:column;gap:7px}.pmToken{min-height:40px;border:1px solid var(--line);border-radius:9px;padding:7px 9px;display:flex;align-items:center;gap:9px;font-size:12.5px}.pmToken>span:nth-child(2){flex:1;overflow-wrap:anywhere}.pmToken button{border:0;background:transparent;color:var(--ink-3);cursor:pointer;width:29px;height:29px;border-radius:6px}.pmToken button:hover{background:var(--surface-2);color:var(--bad)}
 .pmInlineAdd{display:flex;gap:7px;margin-top:11px}.pmInlineAdd input{min-width:0;flex:1}.pmColor{width:18px;height:18px;border-radius:50%;background:var(--label-color);flex:none}
@@ -150,11 +190,24 @@ button.pmSlotWhen{width:auto;height:auto;text-align:left;padding:5px;border-radi
 
 @media(max-width:900px){.appNavShell{top:82px}.pmDashGrid,.pmDetailGrid,.pmDashActions{grid-template-columns:1fr}.pmSide{position:static;display:grid;grid-template-columns:1fr 1fr}.pmSettingsGrid{grid-template-columns:1fr}.pmTemplates{grid-column:auto}}
 @media(max-width:680px){.appNavShell{top:var(--pm-header-height,74px)}.appNav{padding-block:7px}.appNav button{padding-inline:10px}.appNav .pmNew{position:sticky;right:8px;box-shadow:-9px 0 12px var(--surface)}#projectWorkspace{padding-top:22px}.pmPageHead{align-items:flex-start}.pmPageHead .pmBtn{display:none}.pmKpis{grid-template-columns:1fr 1fr}.pmKpi:last-child{grid-column:1/-1}.pmDashGrid{gap:12px}.pmSection{padding:16px}.pmProjectRow{grid-template-columns:1fr}.pmProjectMeta{justify-content:flex-start}.pmDetailHead{flex-wrap:wrap}.pmDetailActions{width:100%}.pmDetailActions .pmBtn{flex:1}.pmSide{grid-template-columns:1fr}.pmTaskRow{grid-template-columns:25px minmax(0,1fr) auto}.pmTaskRow select{grid-column:2}.pmTaskActions{grid-column:3;grid-row:1/3}.pmFields{grid-template-columns:1fr}.pmFieldFull{grid-column:auto}.pmDialogHead,.pmForm{padding-left:17px;padding-right:17px}.pmToolbar>*{flex:1 1 130px}.pmSearch{flex-basis:100%}}
-@media(max-width:430px){.appNav button{font-size:12px;padding-inline:8px}.appNav .pmNew{font-size:0;width:40px;padding:0}.appNav .pmNew::before{content:"+";font-size:20px}.pmKpis{grid-template-columns:1fr}.pmKpi:last-child{grid-column:auto}.pmProjectMeta{display:none}.pmDetailActions{display:grid;grid-template-columns:1fr 1fr}.pmDetailActions .pmBtn:first-child{grid-column:1/-1}}
-@media(prefers-reduced-motion:reduce){.pmPhase summary::before{transition:none}}
+@media(max-width:430px){.appNav button{font-size:12px;padding-inline:8px}.appNav .pmNew{font-size:0;width:40px;padding:0}.appNav .pmNew::before{content:"+";font-size:20px}.pmKpis{grid-template-columns:1fr}.pmKpi:last-child{grid-column:auto}.pmProjectMeta{display:none}.pmDetailActions{display:grid;grid-template-columns:1fr 1fr}.pmDetailActions .pmBtn:first-child{grid-column:1/-1}.pmTaskRow{grid-template-columns:22px minmax(0,1fr)}.pmTaskRow select{grid-column:2;max-width:100%}.pmTaskActions{grid-column:2;grid-row:auto;justify-content:flex-end}.pmTaskFields{grid-template-columns:1fr}.pmQuickRow{flex-wrap:wrap}.pmQuickRow>.pmBtn{margin-left:auto}}
+@media(prefers-reduced-motion:reduce){.pmPhase>summary::before{transition:none}}
 @media print{.appNavShell,#projectWorkspace{display:none!important}}
 
 .pmPhaseCount{white-space:nowrap;flex:none}
-@media(max-width:360px){.pmPhase summary{flex-wrap:wrap}.pmPhaseTools{width:100%;justify-content:flex-end}.pmPhaseTools button{min-width:36px;min-height:36px}}
+@media(max-width:360px){.pmPhase>summary{flex-wrap:wrap}.pmPhaseTools{width:100%;justify-content:flex-end}.pmPhaseTools button{min-width:36px;min-height:36px}}
 @media(max-width:900px){.appNavShell{top:var(--pm-header-height,82px)}}
-@media(max-width:360px){.appNav{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));overflow:visible;gap:4px}.appNav button{min-width:0;width:100%;padding-inline:4px}.appNav button:nth-child(4){grid-column:span 2}.appNav .pmNew{position:static;width:100%;font-size:12px;margin:0;box-shadow:none}.appNav .pmNew::before{content:none}}
+@media(max-width:480px){.appNav{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));overflow:visible;gap:4px}.appNav button{min-width:0;width:100%;padding-inline:4px}.appNav .pmNew{position:static;width:100%;font-size:12px;margin:0;box-shadow:none}.appNav .pmNew::before{content:none}}
+
+.pmProjectOverview{margin-top:18px}
+.pmTaskFields label{flex-direction:column;align-items:stretch;gap:3px}
+.pmTaskFields label span{max-width:100%;flex:none}
+.pmRuleGrid{display:grid;gap:12px;min-width:0}
+.pmRuleGrid fieldset{min-width:0;border:1px solid var(--line);border-radius:9px;padding:10px 12px;background:var(--surface-2)}
+.pmRuleGrid legend{padding-inline:5px;font-size:12px;font-weight:650;color:var(--ink-2)}
+.pmRuleGrid label{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:12px;margin:6px 0}
+.pmRuleGrid input{width:85px;min-width:0;min-height:35px;padding:6px 8px;border:1px solid var(--line);border-radius:7px;background:var(--surface);color:var(--ink);font:inherit}
+.pmRuleGrid input:focus{outline:2px solid var(--accent);outline-offset:1px}
+.pmRuleGrid input:disabled{color:var(--ink-3);background:transparent}
+.pmSetting{min-width:0}
+@media(max-width:900px){.pmSettingsGrid{grid-template-columns:minmax(0,1fr)}}
