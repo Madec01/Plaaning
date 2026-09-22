@@ -190,14 +190,15 @@ async function testFormsAndTabs(browser, url) {
   await projectForm.locator('[name="tranche"]').selectOption('both');
   await projectForm.getByRole('button', { name: /Créer le projet/i }).click();
   await page.waitForSelector('[data-pm-action="tranche-tab"]');
-  assert.deepEqual(await page.locator('[data-pm-action="tranche-tab"]').evaluateAll(buttons => buttons.map(b => b.dataset.tranche)), ['all', 'common', '1', '2'], 'la fiche expose les quatre vues de tranche');
+  assert.deepEqual(await page.locator('[data-pm-action="tranche-tab"]').evaluateAll(buttons => buttons.map(b => b.dataset.tranche)), ['all', '1', '2'], 'la fiche expose la vue globale et les deux tranches sans onglet commun');
 
   await page.getByRole('button', { name: /Ajouter une action/i }).first().click();
   const taskForm = page.locator('#pmTaskForm');
   const tranche = taskForm.locator('select[name="tranche"]');
   await tranche.waitFor({ state: 'visible' });
-  assert.equal(await tranche.inputValue(), 'common', 'une nouvelle action est commune par défaut');
-  assert.deepEqual(await tranche.locator('option').evaluateAll(options => options.map(o => o.textContent.trim())), ['Commun', 'T1', 'T2']);
+  assert.equal(await tranche.inputValue(), '', 'la vue globale demande de choisir une tranche');
+  assert.equal(await tranche.getAttribute('required') !== null, true);
+  assert.deepEqual(await tranche.locator('option').evaluateAll(options => options.map(o => o.value)), ['', '1', '2']);
   await taskForm.locator('[name="title"]').fill('Action UI T2');
   await tranche.selectOption('2');
   await taskForm.getByRole('button', { name: /^Enregistrer$/ }).click();
@@ -224,7 +225,41 @@ async function testFormsAndTabs(browser, url) {
   const sessionTranche = sessionForm.locator('select[name="tranche"]');
   await sessionTranche.waitFor({ state: 'visible' });
   assert.equal(await sessionTranche.inputValue(), '2', 'le formulaire de séance reprend la tranche de l’action');
-  assert.deepEqual(await sessionTranche.locator('option').evaluateAll(options => options.map(o => o.textContent.trim())), ['Commun', 'T1', 'T2']);
+  assert.deepEqual(await sessionTranche.locator('option').evaluateAll(options => options.map(o => o.textContent.trim())), ['T1', 'T2']);
+  await context.close();
+}
+
+async function testLegacyCommonWithoutTab(browser, url) {
+  const { context, page } = await fresh(browser, url);
+  const ids = await page.evaluate(() => {
+    const p = PM.create({ name: 'Ancien projet commun', tranche: 'both' });
+    const task = PM.addTask(p.id, { title: 'Action à rattacher', tranche: 'common', phaseId: p.phases[0].id, note: 'Référence préservée', deadline: '2026-10-12' });
+    const planned = PM.addTask(p.id, { title: 'Action déjà planifiée', tranche: 'common', phaseId: p.phases[0].id });
+    const slot = PM.scheduleSession(p.id, { tranche: 'common', phaseId: p.phases[0].id, taskIds: [planned.id], date: '2026-10-08', start: '09:00', end: '10:00' });
+    projectNavigate('project', p.id);
+    const oldTab = document.querySelector('[data-pm-action="tranche-tab"]');
+    oldTab.dataset.tranche = 'common';
+    oldTab.click();
+    return { pid: p.id, tid: task.id, planned: planned.id, sid: slot.id };
+  });
+  assert.equal(await page.locator('[data-pm-action="tranche-tab"][data-tranche="common"]').count(), 0);
+  assert.equal(await page.locator('.pmPhase').count(), 0, 'la vue globale ne réintroduit aucune phase commune');
+  assert.ok(await page.getByText('Actions à affecter à une tranche', { exact: true }).isVisible());
+  assert.ok(await page.locator(`[data-pm-action="edit-task"][data-tid="${ids.tid}"]`).isVisible());
+  await page.locator(`[data-pm-action="edit-task"][data-tid="${ids.tid}"]`).click();
+  await page.locator('#pmTaskForm [name="tranche"]').selectOption('2');
+  await page.locator('#pmTaskForm').getByRole('button', { name: /^Enregistrer$/ }).click();
+  const moved = await page.evaluate(ids => PM.get(ids.pid).tasks.find(t => t.id === ids.tid), ids);
+  assert.equal(moved.tranche, '2');
+  assert.equal(moved.note, 'Référence préservée');
+  assert.equal(moved.deadline, '2026-10-12');
+  await page.evaluate(ids => openPlanningSession({ slotId: ids.sid }), ids);
+  assert.equal(await page.locator('#psSessionForm [name="tranche"]').inputValue(), 'common', 'une séance historique reste éditable');
+  await page.locator('#psSessionForm [name="end"]').fill('10:30');
+  await page.locator('#psSessionForm').getByRole('button', { name: /^Enregistrer$/ }).click();
+  assert.equal(await page.evaluate(ids => PM.session(ids.sid).end, ids), '10:30');
+  await page.evaluate(ids => openPlanningSession({ projectId: ids.pid }), ids);
+  assert.deepEqual(await page.locator('#psSessionForm [name="tranche"] option').evaluateAll(o => o.map(x => x.value)), ['', '1', '2'], 'aucune nouvelle séance commune');
   await context.close();
 }
 
@@ -278,6 +313,7 @@ async function run() {
     ['copie T1 vers T2', testCopyTranche],
     ['formulaires et onglets de tranche', testFormsAndTabs],
     ['modèle UI à deux tranches', testBothProjectTemplateUI],
+    ['actions communes historiques sans onglet commun', testLegacyCommonWithoutTab],
   ];
   try {
     for (const [name, test] of tests) {
