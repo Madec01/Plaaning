@@ -1208,3 +1208,66 @@ deadlines dans le rail existant, avec un point et le détail au survol.
   et quatre affichages. Le test des repères vérifie survol, focus, flèches,
   Tabulation, Échap, clic sans sélection du jour, ouverture de fiche, week-end,
   absence de doublons et fermeture au changement de semaine.
+
+---
+
+## 023 — Un projet commun, deux tranches indépendantes
+*22 septembre 2026*
+
+### Demande
+Permettre à un projet de concerner T1 et T2, avec des préparations et travaux à
+noter à des dates différentes. Solution retenue : fiche unique avec vue globale,
+volet Commun et volets Tranche 1 / Tranche 2 ; identification explicite au planning.
+
+### Réalisé
+- Choix « Tranches 1 et 2 » à la création et à la modification. Les projets doubles
+  apparaissent dans les filtres T1 comme T2.
+- Une tâche appartient à Commun, T1 ou T2. Des intitulés identiques ne créent aucun
+  lien entre les coches : chaque tâche garde son identifiant et son état.
+- Vue globale comparant les tranches ; volets filtrés avec phases, actions,
+  avancement, séances, phase actuelle et deadline propres à chaque tranche.
+- Documents, contacts, codes, description et informations générales partagés.
+- Création d'une action dans le contexte de la tranche ouverte ; indication de
+  tranche dans les lignes, formulaires, priorités et créneaux.
+- Copie des actions vers l'autre tranche : nouveaux identifiants, statut À faire,
+  deadlines et relances vides, urgence manuelle automatique, blocages effacés.
+  Les notes, champs et niveaux d'importance sont conservés. Les dépendances
+  internes sont remappées ; les prérequis communs restent communs. Aucun créneau
+  n'est copié et aucune tâche d'origine n'est modifiée.
+- Sélection obligatoire de la tranche pour une séance d'un projet double, avant
+  les tâches ; aucun mélange implicite des actions T1, T2 ou Commun.
+- Libellés de tranche dans le rail, les colonnes et la chronologie ; filtre du
+  planning par tranche, en conservant les autres activités sans projet.
+- Deadlines de tranche ajoutées aux repères du rail. Chaque détail affiche T1,
+  T2 ou Commun et ouvre la fiche correspondante. Les échéances restent distinctes
+  des créneaux de travail.
+- Migration additive du format v3 : les tâches des anciens projets T1/T2 gardent
+  leur rattachement et leurs identifiants. Passer en projet double ne duplique
+  pas les tâches. Les anciens créneaux conservent leurs liens.
+- Refus des données incohérentes ou des suppressions de tranche contenant des
+  informations ; vérifications avant mutation pour préserver les sauvegardes.
+- README et consignes du dépôt mis à jour.
+
+### Organisation
+Sous-agents Sol en parallèle pour le moteur/planning, la fiche projet, le
+sélecteur de séances et les tests. L'agent principal assure les deadlines,
+l'intégration, la revue des données et les contrôles visuels.
+
+### Vérifications et corrections d'intégration
+- Suite projets historique : cinq parcours et quatre configurations d'affichage
+  réussis. Suite priorités/suivi : quinze groupes réussis.
+- Nouvelle suite tranches : six groupes réussis couvrant migration, indépendance
+  des statuts/deadlines, séances et rejets atomiques, copie des dépendances,
+  formulaires/onglets et création d'un projet double à partir d'un modèle.
+- Le filtre masque l'autre tranche sans supprimer ses séances. Les changements
+  de tranche d'une tâche déjà planifiée sont refusés, y compris par édition globale.
+- Douze captures contrôlées : vue globale, volet T2 et planning, à 1440 et 390 px,
+  en clair et sombre, sans erreur JavaScript ni débordement horizontal.
+- Corrections issues de la revue : une coche fraîche reste visible pour permettre
+  de l'annuler ; un enregistrement d'action ouvre son bon volet ; les badges restent
+  lisibles en sombre ; les phases des modèles sont remappées avec les nouveaux IDs.
+- Les petits créneaux du rail gardent T1/T2 visible à l'intérieur de la barre,
+  sans texte superposé ; le libellé complet reste au survol et accessible au clavier.
+- Contrôles de syntaxe JavaScript, build autonome et diff sans erreur.
+
+Livraison par demande de fusion GitHub, sans modification automatique de main.

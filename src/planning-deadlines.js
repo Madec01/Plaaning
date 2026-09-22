@@ -8,27 +8,25 @@ function planningDeadlineDate(value){
 
 function planningDeadlinesForWeek(){
   var first=iso(lundi),last=iso(plusJours(lundi,6)),days={};
+  var filter=PM.planningTrancheFilter?PM.planningTrancheFilter():"all";
   for(var i=0;i<7;i++)days[iso(plusJours(lundi,i))]=[];
+  function add(date,item){date=planningDeadlineDate(date);if(date>=first&&date<=last&&(filter==="all"||item.tranche===filter))days[date].push(item);}
   pmProjects().filter(function(p){return p&&!p.archived;}).forEach(function(p){
-    var projectDate=planningDeadlineDate(p.deadline);
-    if(projectDate>=first&&projectDate<=last)days[projectDate].push({kind:"project",pid:p.id,project:p.name||"Projet sans nom",title:p.title||"Échéance du projet",done:false});
-    pmArray(p.tasks).forEach(function(t){
-      var taskDate=planningDeadlineDate(t.deadline);
-      if(taskDate>=first&&taskDate<=last)days[taskDate].push({kind:"task",pid:p.id,tid:t.id,project:p.name||"Projet sans nom",title:t.title||"Action sans titre",done:t.status==="done"});
-    });
-    pmArray(p.milestones).forEach(function(m){
-      var milestoneDate=planningDeadlineDate(m.date);
-      if(milestoneDate>=first&&milestoneDate<=last)days[milestoneDate].push({kind:"milestone",pid:p.id,project:p.name||"Projet sans nom",title:m.title||"Jalon sans titre",done:!!m.done});
-    });
+    var name=p.name||"Projet sans nom",scope=p.tranche==="1"||p.tranche==="2"?p.tranche:"common";
+    add(p.deadline,{kind:"project",pid:p.id,project:name,title:p.title||"Échéance du projet",tranche:scope,done:false});
+    ["1","2"].forEach(function(tranche){var detail=p.trancheDetails&&p.trancheDetails[tranche];if(detail)add(detail.deadline,{kind:"tranche",pid:p.id,project:name,title:"Échéance de la tranche "+tranche,tranche:tranche,done:false});});
+    pmArray(p.tasks).forEach(function(t){add(t.deadline,{kind:"task",pid:p.id,tid:t.id,project:name,title:t.title||"Action sans titre",tranche:t.tranche||scope,done:t.status==="done"});});
+    pmArray(p.milestones).forEach(function(m){add(m.date,{kind:"milestone",pid:p.id,project:name,title:m.title||"Jalon sans titre",tranche:scope,done:!!m.done});});
   });
-  Object.keys(days).forEach(function(date){days[date].sort(function(a,b){return a.project.localeCompare(b.project,"fr")||a.title.localeCompare(b.title,"fr");});});
+  Object.keys(days).forEach(function(date){days[date].sort(function(a,b){return a.project.localeCompare(b.project,"fr")||a.tranche.localeCompare(b.tranche)||a.title.localeCompare(b.title,"fr");});});
   return days;
 }
 
 function planningDeadlineItem(item){
   var action=item.kind==="task"?"edit-task":"open-project";
   var type=item.kind==="task"?"Action":item.kind==="milestone"?"Jalon":"Projet";
-  return '<li><button type="button" class="pdItem'+(item.done?' isDone':'')+'" data-pm-action="'+action+'" data-pid="'+pmE(item.pid)+'" data-id="'+pmE(item.pid)+'"'+(item.tid?' data-tid="'+pmE(item.tid)+'"':'')+' title="Ouvrir '+pmE(type.toLowerCase())+' : '+pmE(item.title)+'"><span class="pdType">'+pmE(type)+(item.done?' · Fait':'')+'</span><strong>'+pmE(item.title)+'</strong><small>'+pmE(item.project)+'</small></button></li>';
+  var label=PM.trancheLabel?PM.trancheLabel(item.tranche):(item.tranche==="common"?"Commun":"T"+item.tranche);
+  return '<li><button type="button" class="pdItem'+(item.done?' isDone':'')+'" data-pm-action="'+action+'" data-tranche="'+pmE(item.tranche)+'" data-pid="'+pmE(item.pid)+'" data-id="'+pmE(item.pid)+'"'+(item.tid?' data-tid="'+pmE(item.tid)+'"':'')+' title="Ouvrir '+pmE(type.toLowerCase())+' : '+pmE(item.title)+'"><span class="pdContext"><span class="pdType">'+pmE(type)+(item.done?' · Fait':'')+'</span><span class="pdScope" data-tranche="'+pmE(item.tranche)+'">'+pmE(label)+'</span></span><strong>'+pmE(item.title)+'</strong><small>'+pmE(item.project)+'</small></button></li>';
 }
 
 function pdClose(restoreFocus){
