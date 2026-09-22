@@ -69,9 +69,11 @@ actions restantes à réaliser pendant un créneau. Une action cochée devient t
 partout et reste visible dans les séances où elle figurait ; elle n'est plus proposée
 pour une nouvelle séance. Les références et commentaires sont partagés avec le projet.
 
-Les deadlines des projets, actions et jalons apparaissent avec un trait rouge et
-leur intitulé sur le jour concerné, même sans séance planifiée. Le bandeau des
-échéances couvre les sept jours ; les séances restent organisées du lundi au vendredi.
+Les deadlines des projets, actions et jalons sont signalées par un point rouge
+directement dans le rail, même sans séance planifiée. Le survol, le focus clavier
+ou le clic affiche les intitulés et permet d’ouvrir leur fiche. Un repère
+« Week-end » près du vendredi donne accès aux échéances du samedi et du dimanche,
+avec leurs dates exactes ; les séances restent organisées du lundi au vendredi.
 Les réunions récurrentes et les vues Colonnes / Chronologie sont conservées.
 Les anciens blocs vierges générés automatiquement sont retirés ; les blocs qui
 contiennent des informations saisies sont conservés.
