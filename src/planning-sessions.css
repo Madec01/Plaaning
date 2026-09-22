@@ -1,0 +1,35 @@
+/* Sélecteur de séances chantier */
+.psPlanningToolbar{display:flex;justify-content:flex-end;padding-block:0 13px}
+.psNewSession{border:0;border-radius:10px;background:var(--accent);color:#fff;padding:10px 16px;font-family:inherit;font-size:14px;font-weight:600;box-shadow:0 5px 14px rgba(30,48,100,.2);cursor:pointer}
+.psNewSession:hover{filter:brightness(1.07)}
+.psNewSession:focus-visible{outline:3px solid color-mix(in srgb,var(--accent) 45%,transparent);outline-offset:3px}
+.psSessionDialog{width:min(680px,calc(100vw - 24px));max-height:min(88vh,820px)}
+.psSessionForm{overflow:auto;overscroll-behavior:contain}
+.psSessionGrid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.psSessionGrid .psFull,.psTasks{grid-column:1/-1}
+.psSessionGrid .pmField{display:flex;flex-direction:column;gap:6px}
+.psSessionGrid .pmField>span,.psTasks legend{font-weight:650;color:var(--ink)}
+.psTasks{border:0;margin:2px 0 0;padding:0;min-width:0}
+.psTasks legend{display:block;float:none;margin-bottom:4px}
+.psSelectionCount{display:block;color:var(--ink-3);font-size:12px;margin-top:0}
+.psTaskChoices{display:grid;grid-template-columns:minmax(0,1fr);gap:7px;max-height:280px;overflow:auto;padding:2px;margin-top:8px}
+.psTaskChoice{display:flex;min-width:0;gap:10px;align-items:flex-start;border:1px solid var(--line);border-radius:9px;padding:10px;background:var(--surface);cursor:pointer}
+.psTaskChoice:hover{border-color:var(--accent)}
+.psTaskChoice:has(input:checked){border-color:var(--accent);background:var(--accent-soft)}
+.psTaskChoice input{margin-top:3px;accent-color:var(--accent);flex:none}
+.psTaskChoiceBody{display:flex;flex-direction:column;gap:4px;min-width:0;flex:1}
+.psTaskTitle{display:flex;align-items:center;gap:8px;font-weight:600;color:var(--ink);overflow-wrap:anywhere}
+.psTaskNote{font-size:12px;line-height:1.35;color:var(--ink-3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.psTaskBadges{display:flex;flex-wrap:wrap;gap:5px}
+.psDone{border-radius:12px;background:var(--surface-2);border:1px solid var(--line);color:var(--ink-3);padding:1px 7px;font-size:10px;font-weight:600;white-space:nowrap}
+.psTaskChoice.isDone{opacity:.78}
+.psEmpty{display:flex;flex-direction:column;align-items:flex-start;gap:7px;border:1px dashed var(--line);border-radius:9px;padding:18px;color:var(--ink-3)}
+.psTextButton{border:0;background:transparent;color:var(--accent);padding:0;text-decoration:underline;cursor:pointer;font:inherit}
+.psFormError{min-height:20px}
+@media(max-width:620px){
+  .psPlanningToolbar{justify-content:stretch;padding-inline:16px}.psNewSession{width:100%;min-height:44px}
+  .psSessionDialog{width:calc(100vw - 12px);max-height:94vh;margin:auto;padding:16px}
+  .psSessionGrid{grid-template-columns:1fr}.psSessionGrid .pmField,.psTasks{grid-column:1}
+  .psTaskChoices{max-height:34vh}.psTaskTitle{align-items:flex-start;flex-direction:column;gap:4px}
+  .psSessionForm .pmFormActions{position:sticky;bottom:0;background:var(--surface);padding-top:10px}
+}

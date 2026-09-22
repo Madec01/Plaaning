@@ -12,7 +12,9 @@ sans serveur et sans dépendance réseau, sur ordinateur comme sur téléphone.
 - **Projets** : création par « + », nom, titre, tranche 1 ou 2, code projet,
   labels et échéance. Chaque projet possède ses phases et ses actions.
 - **Page projet** : Préparation / En cours / Finalisation par défaut ; objets libres,
-  statuts À faire / En cours / Terminé, commentaires et dates limites. Des champs
+  statuts À faire / En cours / Terminé et dates limites. Chaque ligne affiche une
+  zone « Référence ou commentaire… », utilisable immédiatement et enregistrée
+  en quittant le champ. Elle partage le contenu de la note de l'action. Des champs
   texte personnalisables par projet permettent de saisir références, numéros de
   dossier et informations directement dans les lignes des actions.
 - **Planning** : une action peut avoir plusieurs créneaux. Les liens conservent
@@ -61,9 +63,18 @@ et deadline ; les actions terminées sont regroupées à part.
 Les documents sont référencés, sans être téléversés dans l'application. L'envoi
 automatique d'un récapitulatif par mail est reporté.
 
-Le planning conserve la journée type (préparation le matin, passif l'après-midi),
-les séances, les réunions récurrentes et les vues Colonnes / Chronologie. Le cadre
-hebdomadaire couvre le lundi au vendredi.
+Le planning démarre avec des journées vides, sans blocs automatiques de préparation
+ou de passif. **+ Séance chantier** permet de choisir le projet, sa phase et les
+actions restantes à réaliser pendant un créneau. Une action cochée devient terminée
+partout et reste visible dans les séances où elle figurait ; elle n'est plus proposée
+pour une nouvelle séance. Les références et commentaires sont partagés avec le projet.
+
+Les deadlines des projets, actions et jalons apparaissent avec un trait rouge et
+leur intitulé sur le jour concerné, même sans séance planifiée. Le bandeau des
+échéances couvre les sept jours ; les séances restent organisées du lundi au vendredi.
+Les réunions récurrentes et les vues Colonnes / Chronologie sont conservées.
+Les anciens blocs vierges générés automatiquement sont retirés ; les blocs qui
+contiennent des informations saisies sont conservés.
 
 ## Données et sauvegardes
 
@@ -84,7 +95,9 @@ au même emplacement dans le même navigateur conserve les données.
 
 `index.html` est le fichier autonome à distribuer. L'interface projets est éditée
 dans `src/projects-ui.js` et `src/projects.css`. Les sections complémentaires sont
-dans `src/project-details.js` et `src/project-details.css`. Ces sources sont
+dans `src/project-details.js` et `src/project-details.css`. Le sélecteur de séances
+et les échéances sont dans `src/planning-sessions-ui.js`, `src/planning-deadlines.js`
+et leurs feuilles de style. Ces sources sont
 réintégrées avec :
 
 ```sh

@@ -211,3 +211,18 @@ button.pmSlotWhen{width:auto;height:auto;text-align:left;padding:5px;border-radi
 .pmRuleGrid input:disabled{color:var(--ink-3);background:transparent}
 .pmSetting{min-width:0}
 @media(max-width:900px){.pmSettingsGrid{grid-template-columns:minmax(0,1fr)}}
+
+/* Texte immédiatement accessible dans chaque ligne, sans colonne à configurer. */
+.pmTaskRow{grid-template-columns:25px minmax(120px,.85fr) minmax(160px,1.15fr) 116px auto;grid-template-areas:"check main note status actions"}
+.pmTaskRow>.pmTaskCheck{grid-area:check}
+.pmTaskRow>.pmTaskMain{grid-area:main;min-width:0}
+.pmTaskRow>.pmInlineNote{grid-area:note}
+.pmTaskRow>select[data-pm-action="task-status"]{grid-area:status}
+.pmTaskRow>.pmTaskActions{grid-area:actions}
+.pmInlineNote{display:block;width:100%;min-width:0;min-height:38px;max-height:132px;border:1px solid var(--line);border-radius:8px;background:var(--surface-2);color:var(--ink);font:inherit;font-size:12px;line-height:1.5;padding:8px 10px;resize:vertical;overflow:auto}
+.pmInlineNote::placeholder{color:var(--ink-3);opacity:1}
+.pmInlineNote:focus{outline:2px solid var(--accent);outline-offset:1px;border-color:var(--accent);background:var(--surface)}
+@media(max-width:1150px){.pmTaskRow{grid-template-columns:25px minmax(0,1fr) 116px auto;grid-template-areas:"check main status actions" ". note note note"}}
+@media(max-width:680px){.pmTaskRow{grid-template-columns:22px minmax(0,1fr);grid-template-areas:"check main" ". note" ". status" ". actions"}}
+/* Les retours à la ligne des commentaires restent lisibles dans le planning. */
+.meta .nt,.cbNote{white-space:pre-wrap;overflow-wrap:anywhere}

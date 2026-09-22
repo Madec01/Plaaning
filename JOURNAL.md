@@ -1075,3 +1075,100 @@ lundi–vendredi ; les deadlines peuvent tomber n'importe quel jour.
 Les données restent dans le navigateur ; les documents restent à leur emplacement
 d'origine. L'envoi de mail et la synchronisation distante ne font pas partie de
 cette livraison.
+
+---
+
+## 020 — Texte directement dans chaque ligne de tâche
+*22 septembre 2026*
+
+### Demande
+La capture de l'utilisateur précise que l'espace de saisie doit apparaître
+directement dans chaque ligne, à côté du nom de la tâche. L'ajout préalable d'une
+colonne personnalisée ne répondait pas à cette attente.
+
+### Réalisé
+- Zone « Référence ou commentaire… » toujours présente pour chaque action, y
+  compris les tâches existantes et les projets sans colonne personnalisée.
+- Sur ordinateur, saisie à côté du nom, avant le statut et les boutons. Sur petit
+  écran, le champ passe sous le nom en restant dans la même ligne de tâche.
+- Texte multiligne, hauteur adaptée au contenu, redimensionnement vertical et
+  contraste adapté aux thèmes clair et sombre.
+- Réutilisation du champ `note` existant : les anciennes notes réapparaissent,
+  et les modifications restent synchronisées avec le dialogue, le planning,
+  les modèles et les sauvegardes. Aucun nouveau format de données.
+- Enregistrement à la sortie du champ sans reconstruire la ligne : le clic
+  suivant sur Planifier ou Détails fonctionne immédiatement.
+- Mise à jour du README et intégration dans le fichier HTML autonome par le build.
+
+### Vérifications
+- Test dédié de saisie directe, conservation des notes existantes, rechargement,
+  synchronisation avec le dialogue d'édition et maintien des autres données.
+- Suites de régression des projets et des priorités ; contrôle de syntaxe et du diff.
+- Captures relues à 1440, 390 et 320 px, dans les deux thèmes, sans débordement
+  horizontal ni erreur JavaScript.
+- Réalisation par l'agent principal ; sous-agent Sol pour la vérification du parcours.
+
+Fichiers : `src/projects-ui.js`, `src/projects.css`, `index.html`,
+`tests/priorities.spec.cjs`, `README.md` et `JOURNAL.md`.
+
+---
+
+## 021 — Séances chantier choisies, planning vide et échéances visibles
+*22 septembre 2026*
+
+### Demande
+Remplacer les blocs de base du planning, préparation et passif compris, par des
+séances choisies : chantier, phase, puis actions restant à faire pour ce créneau.
+Conserver les actions réalisées dans leur séance et synchroniser leur statut avec
+le projet. Afficher toutes les deadlines sur leur jour, avec un repère rouge.
+
+### Réalisé
+- Les nouvelles journées démarrent vides. Le bouton de restauration de la journée
+  type est retiré. Les réunions et autres séances restent ajoutables manuellement.
+- Les anciens blocs automatiques anonymes sont retirés seulement si leurs horaires,
+  titres de tâches, ordre, nombre et champs sont strictement ceux du modèle vierge.
+  Toute information personnalisée conserve son bloc ; les fiches restent stockées.
+- Bouton « + Séance chantier » : projet identifié par nom/code/tranche, phase,
+  actions restantes triées par urgence, date et heures de début/fin. Les notes et
+  deadlines accompagnent les choix. Les phases personnalisées sont disponibles.
+- Une séance porte les identifiants des tâches sélectionnées. Colonnes et
+  chronologie montrent uniquement ces tâches ; l'avancement du jour les compte
+  sans doublon. Les titres de phase restent visibles.
+- Le statut est partagé entre projet, colonnes et chronologie. Cocher une tâche
+  la termine partout ; elle reste dans les séances existantes et disparaît des
+  choix des nouvelles séances. Une modification de séance permet de conserver
+  les tâches déjà terminées ou déplacées dans une autre phase.
+- Une suppression de tâche retire seulement son lien dans les séances ; les
+  autres tâches restent. Une séance sans tâche est retirée. Déplacer un créneau
+  ne change aucune deadline.
+- Validation avant mutation : projet, phase, tâches uniques et connues, heures
+  et date ouvrée. Les anciens créneaux individuels restent éditables. Les séances
+  historiques portant un projet affichent désormais ses tâches canoniques.
+- Réparation des liens historiques uniquement depuis les clés de migration
+  enregistrées, uniques et compatibles avec les informations conservées.
+- Bandeau d'échéances lundi–dimanche : projets actifs, tâches et jalons, même sans
+  créneau. Trait rouge, intitulé, chantier, compteur et ouverture de la fiche.
+  Les éléments terminés portent « Fait » ; les week-ends restent au bon jour.
+- Sources dédiées pour le sélecteur et les deadlines, intégrées au HTML autonome.
+  README et consignes du dépôt mis à jour.
+
+### Vérifications et intégration
+- Relecture des captures du planning et du sélecteur à 1440, 390 et 320 px, dans
+  les thèmes clair et sombre : 12 configurations sans débordement horizontal ni
+  erreur JavaScript. Vérification du bandeau avec cinq échéances, dont deux sans
+  séance le week-end, et du compteur limité aux deux actions sélectionnées.
+- Corrections issues de la revue : rafraîchissement du bandeau après mutation,
+  décompte des tâches sélectionnées, libellés de phase, contraste selon le thème,
+  chevauchement du compteur de sélection sur téléphone et cartes du sélecteur.
+- Sous-agents Sol en parallèle : moteur et compatibilité, sélecteur de séances,
+  bandeau d'échéances, tests de parcours. Intégration et revue par l'agent principal.
+- Suite projets : cinq parcours et quatre configurations d'affichage réussis.
+  Suite priorités/suivi : quinze groupes réussis, dont les nouveaux parcours de
+  saisie directe, synchronisation, séances multi-actions, deadlines et migration.
+- Contrôle ciblé des sauvegardes de séances : sauvegarde valide acceptée,
+  référence de tâche inconnue rejetée ; cinq demandes de création invalides
+  refusées sans modifier le stockage (week-end, heures, doublon, tâche ou phase).
+- Syntaxe JavaScript, absence d'erreurs de diff et build autonome vérifiés.
+
+Livraison sur une branche de travail avec demande de fusion ; aucune fusion ni
+publication automatique de la version principale. Le mail reste reporté.

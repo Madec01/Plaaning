@@ -80,7 +80,12 @@ PM = window.PM = (function(BASE){
   function log(p,type,message,tid){var e={id:'history_'+uid(),at:new Date().toISOString(),type:type,text:message};if(tid)e.taskId=tid;p.history.push(e);}
   function replace(target,source){Object.keys(target).forEach(function(k){delete target[k];});Object.keys(source).forEach(function(k){target[k]=source[k];});}
   function columns(fn){Object.keys(etat.semaines||{}).forEach(function(w){(etat.semaines[w].jours||[]).forEach(function(day){fn(day);});});}
-  function syncSlots(p){columns(function(day){day.cols=(day.cols||[]).filter(function(c){return c.projectId!==p.id||!c.taskId||p.tasks.some(function(t){return t.id===c.taskId;});});day.cols.forEach(function(c){if(c.projectId===p.id)c.nom=p.name;});});}
+  function syncSlots(p){var known=Object.create(null);p.tasks.forEach(function(t){known[t.id]=true;});columns(function(day){day.cols=(day.cols||[]).filter(function(c){
+    if(c.projectId!==p.id)return true;
+    if(Array.isArray(c.taskIds)){c.taskIds=c.taskIds.filter(function(id){return known[id];});if(!c.taskIds.length)return false;}
+    else if(c.taskId&&!known[c.taskId])return false;
+    c.nom=p.name;return true;
+  });});}
   function commit(target,draft){replace(target,draft);syncSlots(target);if(target.code&&etat.projectCodes.indexOf(target.code)<0)etat.projectCodes.push(target.code);BASE.save();return copy(target);}
   function dayNumber(s){var v=s.split('-');return Date.UTC(+v[0],+v[1]-1,+v[2])/86400000;}
   function urgency(t,today){

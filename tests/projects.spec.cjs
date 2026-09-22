@@ -318,20 +318,21 @@ async function testPhasesTasksAndPlanning(browser, url) {
   await taskLine.getByRole('checkbox', { name: /Marquer comme terminée/i }).uncheck();
 
   await taskLine.getByRole('button', { name: /^Planifier$/i }).click();
-  const slotDate = await field(page, [/^date/i]);
+  const sessionForm = page.locator('#psSessionForm');
+  const slotDate = sessionForm.getByLabel(/^date/i);
   await slotDate.fill(activeWorkdayISO());
-  const slotStart = await field(page, [/^début/i]);
+  const slotStart = sessionForm.getByLabel(/^début/i);
   await slotStart.fill('09:00');
-  const slotEnd = await field(page, [/^fin/i]);
+  const slotEnd = sessionForm.getByLabel(/^fin/i);
   await slotEnd.fill('10:00');
-  await page.locator('#pmScheduleForm').getByRole('button', { name: /^Planifier$/i }).click();
+  await sessionForm.getByRole('button', { name: /^Planifier la séance$/i }).click();
 
   // A second slot catches implementations that silently replace the first one.
   await taskLine.getByRole('button', { name: /^Planifier$/i }).click();
-  await (await field(page, [/^date/i])).fill(activeWorkdayISO());
-  await (await field(page, [/^début/i])).fill('14:00');
-  await (await field(page, [/^fin/i])).fill('15:30');
-  await page.locator('#pmScheduleForm').getByRole('button', { name: /^Planifier$/i }).click();
+  await sessionForm.getByLabel(/^date/i).fill(activeWorkdayISO());
+  await sessionForm.getByLabel(/^début/i).fill('14:00');
+  await sessionForm.getByLabel(/^fin/i).fill('15:30');
+  await sessionForm.getByRole('button', { name: /^Planifier la séance$/i }).click();
   const slotState = await page.evaluate(() => {
     const p = PM.projects()[0]; return { pid: p.id, tid: p.tasks[0].id, slots: PM.slots(p.id, p.tasks[0].id) };
   });
@@ -346,7 +347,8 @@ async function testPhasesTasksAndPlanning(browser, url) {
   assert.equal(renamed.slots.length, 2, 'renommer le projet ne doit pas perdre ses créneaux');
   const flatColumns = Object.values(renamed.state.semaines).flatMap(week => week.jours.flatMap(day => day.cols)).filter(col => col.projectId === slotState.pid);
   assert.deepEqual(flatColumns.map(col => col.nom), [scheduledName, scheduledName], 'le nouveau nom doit être propagé aux deux créneaux');
-  assert.deepEqual(flatColumns.map(col => col.b), ['prepa', 'prepa'], 'une tâche de la phase Préparation doit apparaître en Prépa dans le planning');
+  assert.deepEqual(flatColumns.map(col => col.phaseId), ['preparation', 'preparation'], 'les créneaux conservent la phase choisie');
+  assert.deepEqual(flatColumns.map(col => col.taskIds), [[slotState.tid], [slotState.tid]], 'les créneaux conservent leurs actions choisies');
   assert.equal(renamed.project.labels.length, 1, 'renommer doit conserver les étiquettes');
 
   await page.getByRole('button', { name: /^Planning/i }).last().click();
