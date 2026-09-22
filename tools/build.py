@@ -16,9 +16,9 @@ def replace_block(text, start, end, content, anchor):
     return text.replace(anchor, block + anchor, 1)
 
 css = '\n\n'.join((ROOT / path).read_text(encoding='utf-8') for path in (
-    'src/projects.css', 'src/project-details.css'))
+    'src/projects.css', 'src/project-details.css', 'src/planning-sessions.css', 'src/planning-deadlines.css'))
 js = '\n\n'.join((ROOT / path).read_text(encoding='utf-8') for path in (
-    'src/projects-ui.js', 'src/project-details.js'))
+    'src/projects-ui.js', 'src/project-details.js', 'src/planning-sessions-ui.js', 'src/planning-deadlines.js'))
 html = replace_block(html, '<!-- PROJECT UI CSS START -->', '<!-- PROJECT UI CSS END -->', '<style>\n' + css + '\n</style>', '</head>')
 html = replace_block(html, '/* PROJECT UI JS START */', '/* PROJECT UI JS END */', js, 'vue = (etat.vue === "chrono") ? "chrono" : "colonnes";')
 engine = (ROOT / 'src/project-engine.js').read_text(encoding='utf-8')

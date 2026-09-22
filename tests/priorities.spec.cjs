@@ -332,6 +332,266 @@ async function testInlineFieldBlurKeepsClick(browser, url) {
   await context.close();
 }
 
+async function testInlineTaskNoteWithoutCustomFields(browser, url) {
+  const { context, page } = await fresh(browser, url);
+  const ids = await page.evaluate(() => {
+    const project = PM.create({
+      name: 'Note directe', title: 'Projet sans colonnes',
+    });
+    const task = PM.addTask(project.id, {
+      title: 'Vérifier la référence', status: 'doing', importance: 1,
+      note: 'Référence initiale',
+    });
+    return { project: project.id, task: task.id };
+  });
+  const projects = page.getByRole('button', { name: /projets/i }).first();
+  if (await projects.count()) await projects.click();
+  await page.getByText('Note directe', { exact: true }).first().click();
+
+  const note = page.locator(`textarea[data-pm-action="task-note"][data-tid="${ids.task}"]`);
+  assert.equal(await note.count(), 1, 'la note directe est affichée même sans colonne personnalisée');
+  assert.equal(await note.inputValue(), 'Référence initiale', 'la note existante est visible dans la ligne');
+  assert.match(await note.getAttribute('placeholder') || '', /référence|commentaire/i);
+
+  const inlineValue = 'ADR-42\nRelancer jeudi';
+  await note.fill(inlineValue);
+  await page.locator(`[data-pm-action="schedule-task"][data-tid="${ids.task}"]`).click();
+  assert.equal(await page.locator('#psSessionDialog').evaluate(el => el.open), true,
+    'un seul clic sur Planifier ouvre la fenêtre après le blur de la note');
+  const afterInline = await page.evaluate(({ project, task }) => PM.get(project).tasks.find(x => x.id === task), ids);
+  assert.equal(afterInline.note, inlineValue, 'la note multiligne est enregistrée au blur');
+  assert.equal(afterInline.title, 'Vérifier la référence');
+  assert.equal(afterInline.status, 'doing');
+  assert.equal(afterInline.importance, 1);
+  assert.deepEqual(afterInline.labels, []);
+  await page.locator('#psSessionDialog').getByRole('button', { name: 'Annuler' }).click();
+
+  await page.reload();
+  await page.waitForFunction(() => window.PM && typeof PM.get === 'function');
+  if (!(await page.locator(`textarea[data-pm-action="task-note"][data-tid="${ids.task}"]`).count())) {
+    const projectsAfterReload = page.getByRole('button', { name: /projets/i }).first();
+    if (await projectsAfterReload.count()) await projectsAfterReload.click();
+    await page.getByText('Note directe', { exact: true }).first().click();
+  }
+  const reloadedNote = page.locator(`textarea[data-pm-action="task-note"][data-tid="${ids.task}"]`);
+  assert.equal(await reloadedNote.inputValue(), inlineValue, 'la note directe survit au rechargement');
+
+  await page.locator(`[data-pm-action="edit-task"][data-tid="${ids.task}"]`).click();
+  const taskDialog = page.locator('#pmTaskDialog');
+  assert.equal(await taskDialog.getByLabel('Note').inputValue(), inlineValue,
+    'le formulaire d’édition relit la note saisie dans la ligne');
+  const modalValue = 'FEP-7\nValidation reçue';
+  await taskDialog.getByLabel('Note').fill(modalValue);
+  await taskDialog.getByRole('button', { name: 'Enregistrer' }).click();
+  assert.equal(await page.locator(`textarea[data-pm-action="task-note"][data-tid="${ids.task}"]`).inputValue(), modalValue,
+    'la ligne reflète la note mise à jour dans le formulaire');
+  const finalTask = await page.evaluate(({ project, task }) => PM.get(project).tasks.find(x => x.id === task), ids);
+  assert.equal(finalTask.title, 'Vérifier la référence');
+  assert.equal(finalTask.status, 'doing');
+  assert.equal(finalTask.importance, 1);
+  assert.deepEqual(finalTask.labels, []);
+  await context.close();
+}
+
+async function testTaskSyncAcrossProjectAndPlanning(browser, url) {
+  const { context, page } = await fresh(browser, url);
+  const fixture = await page.evaluate(() => {
+    const project = PM.create({ name: 'Synchronisation chantier', title: 'Une source commune' });
+    const task = PM.addTask(project.id, { title: 'Contrôler le PDS', status: 'todo', note: 'PDS-18\nVisa attendu' });
+    const date = '2026-09-23';
+    PM.schedule(project.id, task.id, { date, start: '09:00', end: '10:00' });
+    PM.schedule(project.id, task.id, { date, start: '11:00', end: '12:00' });
+    return { project: project.id, task: task.id, date };
+  });
+  const projects = page.getByRole('button', { name: /projets/i }).first();
+  if (await projects.count()) await projects.click();
+  await page.getByText('Synchronisation chantier', { exact: true }).first().click();
+
+  const projectCheck = page.locator(`[data-pm-action="toggle-task"][data-tid="${fixture.task}"]`);
+  await projectCheck.check();
+  assert.equal((await page.evaluate(({ project, task }) => PM.get(project).tasks.find(x => x.id === task).status, fixture)), 'done');
+  assert.equal((await page.evaluate(({ project, task }) => PM.slots(project, task).length, fixture)), 2,
+    'le changement de statut conserve les deux occurrences planifiées');
+
+  await page.evaluate(date => PM.openDate(date), fixture.date);
+  const columnChecks = page.locator(`#jourCorps [data-act="pmCheck"][data-p="${fixture.project}"][data-t="${fixture.task}"]`);
+  assert.equal(await columnChecks.count(), 2, 'les deux occurrences affichent la même tâche dans les colonnes');
+  assert.equal(await columnChecks.evaluateAll(boxes => boxes.every(box => box.checked)), true,
+    'le statut coché depuis le projet est reflété dans chaque occurrence');
+  assert.equal(await page.locator('#jourCorps .col[data-project-id]').filter({ hasText: 'PDS-18' }).count(), 2,
+    'la note canonique apparaît dans chaque colonne planifiée');
+
+  await page.locator('#vues [data-vue="chrono"]').click();
+  const chronoChecks = page.locator(`#chrono [data-act="pmCheck"][data-p="${fixture.project}"][data-t="${fixture.task}"]`);
+  assert.equal(await chronoChecks.count(), 2, 'les deux occurrences apparaissent dans la chronologie');
+  assert.equal(await chronoChecks.evaluateAll(boxes => boxes.every(box => box.checked)), true);
+  assert.equal(await page.locator('#chrono .chronoBloc').filter({ hasText: 'PDS-18' }).count(), 2,
+    'la chronologie affiche le même texte de note pour chaque occurrence');
+
+  await chronoChecks.first().evaluate(box => box.click());
+  assert.equal((await page.evaluate(({ project, task }) => PM.get(project).tasks.find(x => x.id === task).status, fixture)), 'todo',
+    'décocher depuis le planning met à jour la tâche canonique');
+  assert.equal(await page.locator(`#chrono [data-act="pmCheck"][data-t="${fixture.task}"]`).evaluateAll(boxes => boxes.every(box => !box.checked)), true,
+    'toutes les occurrences reflètent aussitôt le statut modifié');
+
+  await page.evaluate(id => projectNavigate('project', id), fixture.project);
+  assert.equal(await page.locator(`[data-pm-action="toggle-task"][data-tid="${fixture.task}"]`).isChecked(), false,
+    'la ligne projet reflète le statut modifié depuis le planning');
+  assert.equal(await page.locator(`[data-pm-action="task-note"][data-tid="${fixture.task}"]`).inputValue(), 'PDS-18\nVisa attendu');
+  await context.close();
+}
+
+async function testMultiTaskPlanningSessionContract(browser, url) {
+  const { context, page } = await fresh(browser, url);
+  const result = await page.evaluate(() => {
+    const project = PM.create({
+      name: 'Session de phase', title: 'Choix explicite des actions',
+      phases: [{ id: 'study', title: 'Études' }, { id: 'works', title: 'Chantier' }],
+    });
+    const first = PM.addTask(project.id, { title: 'Régimes', phaseId: 'study', status: 'todo', importance: 1 });
+    const second = PM.addTask(project.id, { title: 'ADR', phaseId: 'study', status: 'doing', importance: 2 });
+    const done = PM.addTask(project.id, { title: 'FEP terminé', phaseId: 'study', status: 'done' });
+    const otherPhase = PM.addTask(project.id, { title: 'PDS chantier', phaseId: 'works', status: 'todo' });
+    const available = PM.availableTasks(project.id, 'study');
+    const slot = PM.scheduleSession(project.id, {
+      phaseId: 'study', taskIds: [first.id, second.id], date: '2026-09-24', start: '09:00', end: '11:00',
+    });
+    const full = PM.session(slot.id);
+    let rejectsDone = '';
+    try {
+      PM.scheduleSession(project.id, { phaseId: 'study', taskIds: [done.id], date: '2026-09-24', start: '13:00', end: '14:00' });
+    } catch (error) { rejectsDone = error.message; }
+    let rejectsOtherPhase = '';
+    try {
+      PM.scheduleSession(project.id, { phaseId: 'study', taskIds: [otherPhase.id], date: '2026-09-24', start: '14:00', end: '15:00' });
+    } catch (error) { rejectsOtherPhase = error.message; }
+    PM.updateTask(project.id, first.id, { status: 'done' });
+    const edited = PM.scheduleSession(project.id, {
+      phaseId: 'study', taskIds: [first.id, second.id], date: '2026-09-25', start: '10:00', end: '12:00',
+    }, slot.id);
+    PM.removeTask(project.id, first.id);
+    const afterOneRemoval = PM.session(slot.id);
+    PM.removeTask(project.id, second.id);
+    const afterAllRemoval = PM.session(slot.id);
+    return {
+      ids: { first: first.id, second: second.id, done: done.id }, available, slot, full,
+      rejectsDone, rejectsOtherPhase, edited, afterOneRemoval, afterAllRemoval,
+      remainingSlots: PM.slots(project.id),
+    };
+  });
+  assert.deepEqual(result.available.map(t => t.id), [result.ids.first, result.ids.second],
+    'les choix proposent les actions restantes de la phase et excluent les terminées');
+  assert.equal(result.slot.phaseId, 'study');
+  assert.deepEqual(result.slot.taskIds, [result.ids.first, result.ids.second]);
+  assert.equal(result.full.id, result.slot.id);
+  assert.deepEqual(result.full.taskIds, result.slot.taskIds);
+  assert.match(result.rejectsDone, /termin|disponible|action/i, 'une nouvelle session refuse une action terminée');
+  assert.match(result.rejectsOtherPhase, /phase|action/i, 'une session refuse une action d’une autre phase');
+  assert.equal(result.edited.date, '2026-09-25');
+  assert.deepEqual(result.edited.taskIds, [result.ids.first, result.ids.second],
+    'modifier la session peut conserver une action devenue terminée');
+  assert.deepEqual(result.afterOneRemoval.taskIds, [result.ids.second],
+    'supprimer une action la retire de la session sans supprimer les autres membres');
+  assert.equal(result.afterAllRemoval, null, 'la session vide disparaît après suppression de son dernier membre');
+  assert.deepEqual(result.remainingSlots, []);
+  await context.close();
+}
+
+async function testMultiTaskPlanningSessionUI(browser, url) {
+  const { context, page } = await fresh(browser, url);
+  const ids = await page.evaluate(() => {
+    const project = PM.create({ name: 'Séance chantier UI', title: 'Regroupement visible' });
+    const first = PM.addTask(project.id, { title: 'Régimes UI', phaseId: project.phases[0].id });
+    const second = PM.addTask(project.id, { title: 'ADR UI', phaseId: project.phases[0].id });
+    return { project: project.id, first: first.id, second: second.id };
+  });
+  const projects = page.getByRole('button', { name: /projets/i }).first();
+  if (await projects.count()) await projects.click();
+  await page.getByText('Séance chantier UI', { exact: true }).first().click();
+  await page.locator(`[data-pm-action="schedule-task"][data-tid="${ids.first}"]`).click();
+  const form = page.locator('#psSessionForm');
+  assert.equal(await form.getByLabel('Régimes UI').isChecked(), true, 'Planifier depuis une ligne présélectionne son action');
+  await form.getByLabel('ADR UI').check();
+  await form.getByLabel(/^date/i).fill('2026-09-24');
+  await form.getByLabel(/^début/i).fill('08:30');
+  await form.getByLabel(/^fin/i).fill('10:30');
+  await form.getByRole('button', { name: /Planifier la séance/i }).click();
+  const slot = await page.evaluate(id => PM.slots(id)[0], ids.project);
+  assert.deepEqual(slot.taskIds, [ids.first, ids.second], 'le formulaire planifie plusieurs actions de la même phase');
+
+  await page.evaluate(date => PM.openDate(date), slot.date);
+  assert.equal(await page.locator('#dailyProgress').textContent(), '0 / 2', 'l’avancement du jour compte uniquement les membres choisis');
+  await page.locator(`#jourCorps [data-act="pmCheck"][data-t="${ids.first}"]`).first().evaluate(box => box.click());
+  assert.equal(await page.locator('#dailyProgress').textContent(), '1 / 2');
+  await page.evaluate(id => projectNavigate('project', id), ids.project);
+  await page.locator(`[data-pm-action="edit-slot"][data-slot="${slot.id}"]`).click();
+  assert.equal(await form.getByLabel('Régimes UI').isChecked(), true,
+    'une action terminée déjà membre reste visible pendant l’édition');
+  assert.equal(await form.getByLabel('ADR UI').isChecked(), true);
+  await form.getByLabel(/^fin/i).fill('11:00');
+  await form.getByRole('button', { name: /^Enregistrer$/i }).click();
+  const edited = await page.evaluate(id => PM.slots(id)[0], ids.project);
+  assert.equal(edited.end, '11:00');
+  assert.deepEqual(edited.taskIds, [ids.first, ids.second]);
+  await context.close();
+}
+
+async function testPlanningDeadlineMarkersWithoutSlots(browser, url) {
+  const { context, page } = await fresh(browser, url);
+  await page.evaluate(() => {
+    const date = '2026-09-23';
+    const project = PM.create({
+      name: 'Échéances seules', title: 'Sans créneau', deadline: date,
+      milestones: [{ id: 'deadline-milestone', title: 'Jalon ADR', date, done: false }],
+    });
+    PM.addTask(project.id, { title: 'Remettre le PDS', deadline: date });
+    PM.openDate(date);
+  });
+  assert.equal(await page.locator('#planningDeadlines .pdTotal').textContent(), '3',
+    'projet, action et jalon apparaissent sans aucun créneau planifié');
+  const day = page.locator('#planningDeadlines time[datetime="2026-09-23"]').locator('xpath=../../..');
+  assert.equal(await day.locator('.pdCount').textContent(), '3');
+  assert.equal(await day.locator('.pdItem').count(), 3);
+  assert.equal(await page.locator('#rail .pdRailDeadline[aria-label="3 échéances ce jour"]').count(), 1,
+    'le rail porte le repère rouge du jour concerné');
+  await context.close();
+}
+
+async function testGeneratedBackgroundCleanupPreservesEditedTitles(browser, url) {
+  const { context, page } = await fresh(browser, url);
+  await page.evaluate(() => {
+    PM.create({ name: 'Amorce nettoyage', title: 'Amorce nettoyage' });
+    const state = JSON.parse(localStorage.getItem('plaaning.v1'));
+    const titles = state.modeles.prepa.slice();
+    const tasks = prefix => titles.map((title, index) => ({ id: `${prefix}-${index}`, t: title, f: false, note: '', p: null }));
+    const pristineId = 'qa-pristine-prepa';
+    const editedId = 'qa-edited-prepa';
+    const editedTasks = tasks('edited');
+    editedTasks[0].t += ' personnalisé';
+    state.fiches[`local|${pristineId}`] = { taches: tasks('pristine'), note: '', debut: '', fin: '' };
+    state.fiches[`local|${editedId}`] = { taches: editedTasks, note: '', debut: '', fin: '' };
+    state.semaines['2026-10-05'] = { jours: [
+      { cols: [
+        { id: pristineId, b: 'prepa', nom: '', de: 8, a: 12, fond: true },
+        { id: editedId, b: 'prepa', nom: '', de: 8, a: 12, fond: true },
+      ] }, { cols: [] }, { cols: [] }, { cols: [] }, { cols: [] },
+    ] };
+    localStorage.setItem('plaaning.v1', JSON.stringify(state));
+  });
+  await page.reload();
+  await page.waitForFunction(() => window.PM && typeof PM.projects === 'function');
+  const repaired = await page.evaluate(() => {
+    const state = JSON.parse(localStorage.getItem('plaaning.v1'));
+    const ids = state.semaines['2026-10-05'].jours[0].cols.map(col => col.id);
+    return { ids, pristineFiche: state.fiches['local|qa-pristine-prepa'], editedFiche: state.fiches['local|qa-edited-prepa'] };
+  });
+  assert.equal(repaired.ids.includes('qa-pristine-prepa'), false, 'un fond géné strictement vierge est nettoyé');
+  assert.equal(repaired.ids.includes('qa-edited-prepa'), true, 'modifier seulement un titre protège le bloc du nettoyage');
+  assert.ok(repaired.pristineFiche, 'le nettoyage du bloc ne supprime pas sa fiche potentiellement partagée');
+  assert.match(repaired.editedFiche.taches[0].t, /personnalisé$/);
+  await context.close();
+}
+
 async function run() {
   const local = process.env.PLAANING_URL ? null : await server();
   const url = process.env.PLAANING_URL || local.url;
@@ -348,6 +608,12 @@ async function run() {
     ['formulaires de suivi et assignation', testDetailFormsAndAssignment],
     ['clonage de modèle et relations', testTemplateCloneRemapsRelations],
     ['champs personnalisés au blur', testInlineFieldBlurKeepsClick],
+    ['note directe sans colonnes personnalisées', testInlineTaskNoteWithoutCustomFields],
+    ['synchronisation projet et planning', testTaskSyncAcrossProjectAndPlanning],
+    ['contrat des sessions de phase', testMultiTaskPlanningSessionContract],
+    ['formulaire de séance multi-actions', testMultiTaskPlanningSessionUI],
+    ['repères d’échéances sans créneau', testPlanningDeadlineMarkersWithoutSlots],
+    ['nettoyage prudent des fonds générés', testGeneratedBackgroundCleanupPreservesEditedTitles],
     ['interface étroite claire et sombre', testNarrowLayouts],
   ];
   try {

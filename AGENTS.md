@@ -24,6 +24,8 @@
   l'on déplace un créneau. Une action terminée ne génère plus d'alerte.
 - Les champs texte des tâches sont définis par projet et liés à des identifiants
   stables ; renommer leur titre ne doit pas perdre les valeurs saisies.
+- Les journées nouvelles sont vides. Une séance garde ses identifiants de tâches
+  sélectionnées ; terminer une tâche ne la retire pas des séances existantes.
 - Les relations projets/actions/planning reposent sur des identifiants stables,
   jamais uniquement sur les libellés modifiables.
 
@@ -32,6 +34,8 @@
 - L'interface projets est dans `src/projects-ui.js` et `src/projects.css`.
   Les sections jalons, préparatifs, documents, contacts et historique sont dans
   `src/project-details.js` et `src/project-details.css`.
+  Les séances et échéances du planning sont dans `src/planning-sessions-ui.js`,
+  `src/planning-deadlines.js` et leurs feuilles de style.
   Exécuter `python3 tools/build.py` après modification pour mettre à jour les
   blocs générés de `index.html`.
 - Le moteur historique et le planning se trouvent dans `index.html`, hors blocs
@@ -40,6 +44,6 @@
 - Pour une modification de données ou de parcours, vérifier les scénarios
   concernés avec `node tests/projects.spec.cjs` (Playwright + Chromium).
   Les priorités et les nouveaux suivis sont couverts par
-  `node tests/priorities.spec.cjs`.
+  `node tests/priorities.spec.cjs`, ainsi que les séances et échéances du planning.
 - Pour une modification visuelle, vérifier sur ordinateur et téléphone, dans
   les thèmes clair et sombre.
