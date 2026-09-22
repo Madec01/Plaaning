@@ -15,10 +15,14 @@ def replace_block(text, start, end, content, anchor):
         raise SystemExit('Missing integration anchor: ' + anchor)
     return text.replace(anchor, block + anchor, 1)
 
-css = (ROOT / 'src/projects.css').read_text(encoding='utf-8')
-js = (ROOT / 'src/projects-ui.js').read_text(encoding='utf-8')
+css = '\n\n'.join((ROOT / path).read_text(encoding='utf-8') for path in (
+    'src/projects.css', 'src/project-details.css'))
+js = '\n\n'.join((ROOT / path).read_text(encoding='utf-8') for path in (
+    'src/projects-ui.js', 'src/project-details.js'))
 html = replace_block(html, '<!-- PROJECT UI CSS START -->', '<!-- PROJECT UI CSS END -->', '<style>\n' + css + '\n</style>', '</head>')
 html = replace_block(html, '/* PROJECT UI JS START */', '/* PROJECT UI JS END */', js, 'vue = (etat.vue === "chrono") ? "chrono" : "colonnes";')
+engine = (ROOT / 'src/project-engine.js').read_text(encoding='utf-8')
+html = replace_block(html, '/* PROJECT ENGINE JS START */', '/* PROJECT ENGINE JS END */', engine, '/* PROJECT UI JS START */')
 anchor = 'setInterval(majMaintenant, 30000);'
 if 'initProjectsUI();\n' not in html:
     html = html.replace(anchor, 'initProjectsUI();\n' + anchor, 1)

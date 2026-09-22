@@ -974,3 +974,104 @@ pour chaque projet, planning partagé.
 
 Le suivi reste personnel et local. Le planning hebdomadaire conserve son cadre
 lundi–vendredi ; les deadlines peuvent tomber n'importe quel jour.
+
+---
+
+## 019 — Urgences, suivi détaillé et champs texte personnalisables
+*22 septembre 2026*
+
+### Demande et périmètre
+- Rendre le thème clair moins blanc et plus lisible.
+- Distinguer la deadline du créneau de travail, combiner urgence automatique et
+  manuelle, puis faire remonter les actions les plus urgentes.
+- Ajouter les fonctionnalités retenues : dépendances, attentes/relances, jalons,
+  checklist avant démarrage, documents, contacts/responsabilités, historique et
+  revue hebdomadaire. Les estimations de charge et les nouvelles tâches
+  récurrentes ne sont pas ajoutées ; les réunions récurrentes existantes restent.
+- Ajout demandé pendant la session : champs texte dans les lignes des actions,
+  par exemple Référence, Commentaire et N° de dossier.
+- Le récapitulatif par mail est explicitement reporté.
+
+### Organisation
+- Travail depuis la version fusionnée de la PR #2, sur la branche
+  `codex/priorites-suivi-projets`.
+- Sous-agent Terra pour une première version du moteur ; sous-agents Sol pour
+  l'interface, les sections de suivi, le contraste, les essais et une revue du
+  moteur. Intégration et corrections finales par l'agent principal.
+
+### Réalisé
+1. **Contraste** : fond gris bleuté, surfaces teintées, bordures et textes renforcés,
+   repères colorés des phases. La palette s'applique aussi au planning. Les
+   alertes utilisent un badge et un liseré. Navigation mobile sur deux rangées.
+2. **Deadlines** : champ « À terminer avant » distinct de la date de séance.
+   Importance 1 Impératif / 2 Important / 3 Souple, avec niveau 2 par défaut.
+3. **Urgence** : Normale / À surveiller / Urgente / Critique. Calcul par jours
+   calendaires ; niveau effectif égal au maximum du calcul automatique et du
+   choix manuel. L'origine de l'alerte est expliquée. Seuils réglables :
+   N1 J−10 / J−5 / J−2, N2 J+1 / J+3 / J+7, N3 J+7 / J+21 sans critique automatique.
+4. **Tri** : urgence, importance, deadline, puis ordre stable. Actions terminées
+   sans alerte, regroupées dans une section repliable. Une action fraîchement
+   cochée reste visible pour permettre de revenir sur la coche.
+5. **Accueil et revue** : priorités de tous les projets, projets actifs, actions
+   sans créneau futur, prochains créneaux. La revue réunit retards, blocages,
+   relances dues, actions à planifier, dates absentes et sept prochains jours.
+6. **Dépendances et attentes** : choix des prérequis dans le même projet, refus des
+   cycles et des références inconnues. Démarrage/fin soumis à des prérequis
+   terminés. Motif de blocage et date de relance indépendants du statut.
+7. **Jalons et préparation** : création, modification, suppression et cases de
+   réalisation. La date d'un jalon reste facultative. La checklist « Prêt à
+   démarrer » indique les éléments restant à vérifier.
+8. **Documents** : références HTTP(S), dont OneDrive, ouvertes dans un nouvel
+   onglet ; chemins sur PC copiables avec solution de repli si le presse-papiers
+   est indisponible. Aucun téléversement ou accès arbitraire au disque.
+9. **Contacts** : répertoire par projet, rôle et coordonnées ; responsable et
+   validateur sélectionnables sur chaque action.
+10. **Historique** : décisions libres, changements de deadline, statut, priorité,
+    blocage, relance, affectations et informations complémentaires. Les événements
+    indiquent l'action concernée. Historique repliable et liste défilante.
+11. **Champs texte** : colonnes librement créées, renommées et supprimées par
+    projet, avec saisie directe dans les lignes. Le titre d'une colonne peut
+    changer sans perdre les valeurs. Références aussi visibles dans le planning.
+12. **Modèles** : conservation des colonnes/valeurs, dépendances, importance,
+    contacts et documents ; identifiants remappés. Statuts, dates, jalons et
+    checklist sont réinitialisés. Les créneaux et l'historique ne sont pas copiés.
+
+### Intégration et corrections
+- Format v3 étendu de façon additive, compatible avec les anciennes sauvegardes.
+  Les nouveaux champs reçoivent des valeurs par défaut sans changer les données
+  historiques. Les références invalides sont refusées avant import.
+- Moteur complémentaire dans `src/project-engine.js`. Réutilisation des fonctions
+  de normalisation historiques ; validation complète sur une copie avant une
+  mutation et une sauvegarde uniques, sans état intermédiaire incomplet.
+- Refus des identifiants de tâches dupliqués, des champs texte orphelins et des
+  documents aux protocoles non autorisés. Nettoyage des liens dépendants et des
+  séances lorsqu'une tâche est supprimée.
+- Conservation des champs supplémentaires lors d'une édition partielle, d'un
+  renommage ou d'un changement de statut ; renommage des séances liées au projet.
+- Saisie de texte sans reconstruire sa ligne au changement de champ : les clics
+  suivants et la navigation clavier restent utilisables.
+- Libellés accessibles des dialogues, textes longs repliés sur téléphone, styles
+  isolés des sous-sections et de la liste d'actions terminées.
+- Sources des sections complémentaires dans `src/project-details.js` et CSS
+  associé ; build déterministe intégrant tous les fragments dans `index.html`.
+- README et consignes AGENTS mis à jour avec les règles et l'emplacement des sources.
+
+### Vérifications
+- Suite historique : **5 parcours réussis** (migration, moteur/planning, édition,
+  synchronisation des tâches/créneaux, export/restauration) et **4 configurations
+  d'affichage** (390/1440 px, clair/sombre).
+- Nouvelle suite : **8 parcours réussis**, plus un groupe de **4 configurations
+  d'affichage** (320/390 px, clair/sombre). Seuils et changement d'heure, tri,
+  réglages persistants, dépendances, données enrichies, rejets atomiques, valeurs
+  par défaut, vrais formulaires, modèles et saisie de champs sont couverts.
+- Captures relues sur ordinateur et téléphone, sans erreur JavaScript ni
+  débordement horizontal. Derniers ajustements : intitulés au-dessus des champs
+  texte, navigation mobile complète, historique moins envahissant.
+- Syntaxe JavaScript, build et `git diff --check` vérifiés.
+- Vérification des réglages sur téléphone : formulaire des seuils contrasté,
+  niveau critique N3 désactivé, saisie et sauvegarde réelles, absence de débordement
+  à 320 et 390 px dans les deux thèmes.
+
+Les données restent dans le navigateur ; les documents restent à leur emplacement
+d'origine. L'envoi de mail et la synchronisation distante ne font pas partie de
+cette livraison.
