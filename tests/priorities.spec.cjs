@@ -538,23 +538,108 @@ async function testMultiTaskPlanningSessionUI(browser, url) {
 
 async function testPlanningDeadlineMarkersWithoutSlots(browser, url) {
   const { context, page } = await fresh(browser, url);
-  await page.evaluate(() => {
+  const fixture = await page.evaluate(() => {
     const date = '2026-09-23';
     const project = PM.create({
       name: 'Échéances seules', title: 'Sans créneau', deadline: date,
-      milestones: [{ id: 'deadline-milestone', title: 'Jalon ADR', date, done: false }],
+      milestones: [
+        { id: 'deadline-milestone', title: 'Jalon ADR', date, done: false },
+        { id: 'weekend-milestone', title: 'Jalon samedi', date: '2026-09-26', done: false },
+      ],
     });
-    PM.addTask(project.id, { title: 'Remettre le PDS', deadline: date });
+    const task = PM.addTask(project.id, { title: 'Remettre le PDS', deadline: date });
+    PM.addTask(project.id, { title: 'Contrôle dimanche', deadline: '2026-09-27' });
     PM.openDate(date);
+    return { project: project.id, task: task.id, date };
   });
-  assert.equal(await page.locator('#planningDeadlines .pdTotal').textContent(), '3',
-    'projet, action et jalon apparaissent sans aucun créneau planifié');
-  const day = page.locator('#planningDeadlines time[datetime="2026-09-23"]').locator('xpath=../../..');
-  assert.equal(await day.locator('.pdCount').textContent(), '3');
-  assert.equal(await day.locator('.pdItem').count(), 3);
-  assert.equal(await page.locator('#rail .pdRailDeadline[aria-label="3 échéances ce jour"]').count(), 1,
-    'le rail porte le repère rouge du jour concerné');
+
+  assert.equal(await page.locator('#planningDeadlines').count(), 0,
+    'le bandeau d’échéances séparé a disparu');
+  const marker = page.locator('#rail button.pdRailDeadline[data-date="2026-09-23"]');
+  assert.equal(await marker.count(), 1, 'le rail contient un seul repère pour la date');
+  assert.match(await marker.getAttribute('aria-label'), /3.*23.*septembre|23.*septembre.*3/i,
+    'le libellé accessible expose la date et le nombre d’échéances');
+  assert.equal(await page.locator('#rail button.pdRailDeadline[data-date="2026-09-23"]').count(), 1,
+    'un jour daté ne reçoit jamais plusieurs repères');
+
+  const popover = page.locator('#pdPopover');
+  await marker.hover();
+  assert.equal(await popover.isVisible(), true, 'survoler un repère ouvre le détail');
+  assert.equal(await popover.locator('.pdItem').count(), 3, 'le détail regroupe projet, action et jalon');
+  assert.deepEqual(await popover.locator('.pdItem').evaluateAll(items => items.map(item => ({
+    type: item.querySelector('.pdType').textContent.trim(),
+    title: item.querySelector('strong').textContent.trim(),
+    project: item.querySelector('small').textContent.trim(),
+  }))), [
+    { type: 'Jalon', title: 'Jalon ADR', project: 'Échéances seules' },
+    { type: 'Action', title: 'Remettre le PDS', project: 'Échéances seules' },
+    { type: 'Projet', title: 'Sans créneau', project: 'Échéances seules' },
+  ], 'les trois types de détail sont présents avec leurs libellés');
+
+  await page.keyboard.press('Escape');
+  assert.equal(await popover.isHidden(), true, 'Échap ferme le détail');
+  assert.equal(await marker.evaluate(node => document.activeElement === node), true,
+    'Échap rend le focus au repère');
+  await page.locator('#today').focus();
+  await marker.focus();
+  assert.equal(await popover.isVisible(), true, 'le focus clavier ouvre le détail');
+  await page.keyboard.press('ArrowDown');
+  assert.equal(await popover.locator('.pdItem').first().evaluate(node => document.activeElement === node), true,
+    'Flèche bas entre dans le premier détail');
+  await page.keyboard.press('Escape');
+  assert.equal(await popover.isHidden(), true, 'Échap referme le détail ouvert au clavier');
+  await page.locator('#today').focus();
+  await marker.focus();
+  await page.keyboard.press('Tab');
+  assert.equal(await popover.locator('[data-pd-close]').evaluate(node => document.activeElement === node), true,
+    'Tab rejoint le bouton de fermeture du détail');
+  await page.keyboard.press('Escape');
+
+  const selectedBefore = await page.locator('#rail .rHead[aria-pressed="true"]').getAttribute('data-j');
+  await marker.click();
+  assert.equal(await popover.isVisible(), true, 'cliquer ouvre le détail');
+  assert.equal(await page.locator('#rail .rHead[aria-pressed="true"]').getAttribute('data-j'), selectedBefore,
+    'cliquer le repère ne sélectionne pas son jour');
+
+  const taskDetail = popover.locator('.pdItem').filter({ hasText: 'Remettre le PDS' });
+  await taskDetail.click();
+  assert.equal(await page.locator('#pmTaskDialog').isVisible(), true,
+    'cliquer une action ouvre directement sa fiche');
+  assert.equal(await page.locator('#pmTaskDialog input[name="tid"]').inputValue(), fixture.task);
+  await page.locator('#pmTaskDialog [data-pm-action="close-dialog"]').first().click();
+
+  await page.evaluate(date => PM.openDate(date), fixture.date);
+  const weekend = page.locator('#rail .railHead button.pdRailDeadline.pdWeekend[data-date="weekend"]');
+  assert.equal(await weekend.count(), 1, 'les échéances du week-end restent compactes dans l’en-tête du rail');
+  assert.match((await weekend.textContent()).trim(), /week-end/i);
+  await weekend.click();
+  assert.deepEqual(await popover.locator('.pdDateGroup').evaluateAll(groups => groups.map(group => ({
+    date: group.querySelector('h3').textContent.trim(),
+    items: Array.from(group.querySelectorAll('.pdItem strong'), node => node.textContent.trim()),
+  }))), [
+    { date: 'samedi 26 septembre', items: ['Jalon samedi'] },
+    { date: 'dimanche 27 septembre', items: ['Contrôle dimanche'] },
+  ], 'le détail du week-end conserve les groupes datés exacts');
+
+  await page.evaluate(() => { renderPlanningDeadlinesUI(); renderPlanningDeadlinesUI(); });
+  assert.equal(await page.locator('#rail button.pdRailDeadline[data-date="2026-09-23"]').count(), 1,
+    'des rendus répétés ne dupliquent pas les repères');
+  await page.evaluate(() => PM.openDate('2026-09-30'));
+  assert.equal(await popover.isHidden(), true, 'changer de semaine ferme le détail devenu obsolète');
+  assert.equal(await page.locator('#rail .pdRailDeadline').count(), 0,
+    'la nouvelle semaine n’affiche aucun ancien repère');
   await context.close();
+
+  const mobile = await fresh(browser, url, { viewport: { width: 390, height: 844 } });
+  await mobile.page.evaluate(() => {
+    const project = PM.create({ name: 'Échéance mobile', title: 'Ouverture tactile' });
+    PM.addTask(project.id, { title: 'Action tactile', deadline: '2026-09-23' });
+    PM.openDate('2026-09-23');
+  });
+  await mobile.page.locator('#rail button.pdRailDeadline[data-date="2026-09-23"]').click();
+  assert.equal(await mobile.page.locator('#pdPopover').isVisible(), true, 'le repère reste actionnable sur mobile');
+  assert.equal(await mobile.page.locator('#pdPopover .pdItem').count(), 1);
+  await mobile.context.close();
 }
 
 async function testGeneratedBackgroundCleanupPreservesEditedTitles(browser, url) {

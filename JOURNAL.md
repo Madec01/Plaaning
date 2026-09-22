@@ -1172,3 +1172,39 @@ le projet. Afficher toutes les deadlines sur leur jour, avec un repère rouge.
 
 Livraison sur une branche de travail avec demande de fusion ; aucune fusion ni
 publication automatique de la version principale. Le mail reste reporté.
+
+---
+
+## 022 — Échéances discrètes intégrées au rail
+*22 septembre 2026*
+
+### Demande
+Retirer le bandeau « Dates à tenir / Échéances de la semaine » et afficher les
+deadlines dans le rail existant, avec un point et le détail au survol.
+
+### Réalisé
+- Suppression du calendrier d'échéances séparé et de ses sept cases.
+- Point rouge discret sur le jour du rail ayant une ou plusieurs échéances.
+  Le bouton du repère est indépendant du bouton de sélection du jour.
+- Détail au survol et au focus clavier ; le clic maintient la bulle ouverte,
+  notamment sur téléphone. Liste des intitulés, type et chantier concernés ;
+  ouverture de la tâche ou du projet depuis chaque élément.
+- Fermeture par Échap, bouton ou clic extérieur. Accès clavier au contenu par
+  Tabulation ou flèche bas. La bulle est placée dans la fenêtre, hors du conteneur
+  défilant du rail pour ne pas être coupée.
+- Les deadlines sans séance restent visibles. Un repère compact « Week-end »
+  apparaît près du vendredi uniquement si nécessaire, avec samedi et dimanche
+  séparés et leurs vraies dates dans la bulle.
+- Rafraîchissement lors d'une modification ou d'un changement de semaine ; pas
+  de repère dupliqué ni de détail d'une ancienne semaine laissé ouvert.
+- README actualisé et HTML autonome reconstruit. Aucun changement du stockage.
+
+### Vérifications
+- Captures relues à 1440 et 390 px, clair/sombre : quatre configurations sans
+  erreur JavaScript ni débordement, bulle entièrement dans la fenêtre.
+- Sous-agent Sol chargé de l'adaptation du test de parcours des échéances ;
+  implémentation et vérification visuelle par l'agent principal.
+- Suites complètes réussies : 15 groupes priorités/suivi, cinq parcours projets
+  et quatre affichages. Le test des repères vérifie survol, focus, flèches,
+  Tabulation, Échap, clic sans sélection du jour, ouverture de fiche, week-end,
+  absence de doublons et fermeture au changement de semaine.
