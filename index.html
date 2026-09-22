@@ -1027,6 +1027,36 @@ button.pmSlotWhen{width:auto;height:auto;text-align:left;padding:5px;border-radi
 /* Les retours à la ligne des commentaires restent lisibles dans le planning. */
 .meta .nt,.cbNote{white-space:pre-wrap;overflow-wrap:anywhere}
 
+/* Navigation et pilotage des projets à deux tranches. */
+.pmScope{font-weight:700;letter-spacing:.02em}
+.pmScope-common{color:var(--ink-2);background:var(--surface-2)}
+.pmScope-1{color:#315f9c;border-color:color-mix(in srgb,#315f9c 35%,var(--line));background:color-mix(in srgb,#315f9c 8%,var(--surface))}
+.pmScope-2{color:#277565;border-color:color-mix(in srgb,#277565 35%,var(--line));background:color-mix(in srgb,#277565 8%,var(--surface))}
+.pmScope-both{color:var(--accent);border-color:color-mix(in srgb,var(--accent) 35%,var(--line));background:var(--accent-soft)}
+:root[data-theme="dark"] .pmScope-1{color:#9dbdf0;border-color:#5279b5;background:rgba(74,116,181,.2)}
+:root[data-theme="dark"] .pmScope-2{color:#82d8c6;border-color:#3c8d7c;background:rgba(42,124,106,.2)}
+@media(prefers-color-scheme:dark){:root:not([data-theme]) .pmScope-1{color:#9dbdf0;border-color:#5279b5;background:rgba(74,116,181,.2)}:root:not([data-theme]) .pmScope-2{color:#82d8c6;border-color:#3c8d7c;background:rgba(42,124,106,.2)}}
+.pmTrancheTabs{display:flex;gap:5px;padding:5px;margin:0 0 18px;border:1px solid var(--line);border-radius:12px;background:var(--surface-2);overflow-x:auto}
+.pmTrancheTabs button{min-height:38px;padding:7px 15px;border:0;border-radius:8px;background:transparent;color:var(--ink-3);font:inherit;font-size:12px;font-weight:650;cursor:pointer;white-space:nowrap}
+.pmTrancheTabs button:hover{color:var(--ink);background:var(--surface)}
+.pmTrancheTabs button[aria-current="page"]{color:var(--accent);background:var(--surface);box-shadow:0 2px 8px rgba(28,43,72,.09)}
+.pmBranchOverview{display:flex;flex-direction:column;gap:14px}
+.pmBranchGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.pmBranchSummary{padding:20px}
+.pmBranchSummary .pmSideMeta{margin-top:14px}
+.pmBranchOverview>.pmBranchSummary{max-width:calc(50% - 7px)}
+.pmBranchControls{display:grid;grid-template-columns:minmax(160px,1fr) minmax(145px,.7fr) minmax(145px,.7fr) auto;align-items:end;gap:12px;padding:16px;margin-bottom:2px}
+.pmBranchControls h2{font-size:15px;margin-top:2px}
+.pmBranchControls label{display:flex;flex-direction:column;gap:5px;font-size:11px;font-weight:650;color:var(--ink-2)}
+.pmBranchControls select,.pmBranchControls input{min-height:38px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink);padding:7px 9px;font:inherit;font-size:12px}
+.pmSharedHeading{display:flex;align-items:center;gap:9px;margin:24px 0 10px;color:var(--ink-3);font-size:11.5px}
+@media(max-width:1050px){.pmBranchControls{grid-template-columns:1fr 1fr}.pmBranchControls>div,.pmBranchControls>.pmBtn{grid-column:1/-1}.pmBranchControls>.pmBtn{justify-self:start}}
+@media(max-width:680px){.pmTrancheTabs{margin-inline:-3px}.pmTrancheTabs button{flex:1;padding-inline:11px}.pmBranchGrid{grid-template-columns:1fr}.pmBranchOverview>.pmBranchSummary{max-width:none}.pmBranchControls{grid-template-columns:1fr}.pmBranchControls>div,.pmBranchControls>.pmBtn{grid-column:auto}.pmSharedHeading{align-items:flex-start}}
+
+/* Les créneaux courts gardent une tranche lisible, sans libellés superposés. */
+.railBlk.railScoped{min-width:0;overflow:hidden;gap:5px}.railBlk.railScoped.court{justify-content:center}
+.railScope{flex:none;font-size:10px;font-weight:800}.railProjectName{min-width:0;overflow:hidden;text-overflow:ellipsis}
+
 
 .pmDetails{margin-top:24px}.pmDetailsGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.pmDetailSection{overflow:hidden}.pmDetailSection>summary{cursor:pointer;list-style:none;padding:18px 20px;display:flex;align-items:center;justify-content:space-between}.pmDetailSection>summary::-webkit-details-marker{display:none}.pmDetailSection>summary span{display:grid;gap:3px;min-width:0}.pmDetailSection>summary strong{font-size:15px;overflow-wrap:anywhere}.pmDetailSection>summary small,.pmDetailRow small{color:var(--ink-3);font-size:12px}.pmDetailSection>summary:after{content:"⌄";font-size:18px;flex-shrink:0}.pmDetailSection:not([open])>summary:after{transform:rotate(-90deg)}.pmDetailSectionBody{border-top:1px solid var(--line);padding:10px 16px 16px}.pmDetailSection:last-child{grid-column:1/-1}.pmDetailList{display:grid}.pmDetailRow{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid var(--line)}.pmDetailRow:last-child{border-bottom:0}.pmDetailRowMain,.pmDetailCheck span{display:grid;gap:3px;min-width:0;overflow-wrap:anywhere}.pmDetailRow>.pmBtn,.pmDetailCheck+.pmBtn{flex-shrink:0}.pmDetailCheck{display:flex;align-items:flex-start;gap:10px;min-width:0;overflow-wrap:anywhere}.pmDetailCheck input{margin-top:3px;flex-shrink:0}.pmDocumentActions{display:flex;align-items:center;gap:7px;flex-wrap:wrap;justify-content:flex-end;flex-shrink:0}.pmDocumentActions .pmBtn{flex-shrink:0}.pmDetailAdd{margin-top:12px}.pmDetailEmpty{padding:20px 4px;color:var(--ink-3);font-size:13px;text-align:center}.pmDetailInvalid{font-size:12px;color:var(--danger,#b42318)}.pmDecisionForm{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;padding:8px 0 16px}.pmDecisionForm textarea{min-height:74px;width:100%;resize:vertical}.pmDecisionForm .pmFormError{grid-column:1/-1}.pmDetailHistory{list-style:none;margin:0;padding:0;display:grid;gap:0}.pmDetailHistory li{display:grid;grid-template-columns:150px minmax(0,1fr);gap:16px;padding:12px 0;border-top:1px solid var(--line)}.pmDetailHistory li>div,.pmDetailHistory p{min-width:0;overflow-wrap:anywhere}.pmDetailHistory time{font-size:12px;color:var(--ink-3)}.pmDetailHistory p{margin:3px 0 0;white-space:pre-wrap}.pmCopyFallback{max-width:260px}.pmDetailDeleteDialog{max-width:480px}
 @media(max-width:760px){.pmDetailsGrid{grid-template-columns:1fr}.pmDetailSection:last-child{grid-column:auto}.pmDetailRow{align-items:flex-start}.pmDocumentRow{flex-wrap:wrap}.pmDocumentActions{justify-content:flex-start;width:100%}.pmDecisionForm{grid-template-columns:1fr}.pmDetailHistory li{grid-template-columns:1fr;gap:4px}}
@@ -1036,7 +1066,9 @@ button.pmSlotWhen{width:auto;height:auto;text-align:left;padding:5px;border-radi
 
 
 /* Sélecteur de séances chantier */
-.psPlanningToolbar{display:flex;justify-content:flex-end;padding-block:0 13px}
+.psPlanningToolbar{display:flex;justify-content:space-between;align-items:end;gap:12px;padding-block:0 13px}
+.psPlanningFilter{display:flex;flex-direction:column;gap:5px;color:var(--ink-3);font-size:12px;font-weight:650}
+.psPlanningFilter select{min-height:40px;border:1px solid var(--line);border-radius:9px;background:var(--surface);color:var(--ink);padding:7px 34px 7px 10px;font:inherit;font-size:14px}
 .psNewSession{border:0;border-radius:10px;background:var(--accent);color:#fff;padding:10px 16px;font-family:inherit;font-size:14px;font-weight:600;box-shadow:0 5px 14px rgba(30,48,100,.2);cursor:pointer}
 .psNewSession:hover{filter:brightness(1.07)}
 .psNewSession:focus-visible{outline:3px solid color-mix(in srgb,var(--accent) 45%,transparent);outline-offset:3px}
@@ -1046,6 +1078,8 @@ button.pmSlotWhen{width:auto;height:auto;text-align:left;padding:5px;border-radi
 .psSessionGrid .psFull,.psTasks{grid-column:1/-1}
 .psSessionGrid .pmField{display:flex;flex-direction:column;gap:6px}
 .psSessionGrid .pmField>span,.psTasks legend{font-weight:650;color:var(--ink)}
+.psTrancheField select:invalid{color:var(--ink-3)}
+.psTrancheField option{color:var(--ink)}
 .psTasks{border:0;margin:2px 0 0;padding:0;min-width:0}
 .psTasks legend{display:block;float:none;margin-bottom:4px}
 .psSelectionCount{display:block;color:var(--ink-3);font-size:12px;margin-top:0}
@@ -1064,7 +1098,7 @@ button.pmSlotWhen{width:auto;height:auto;text-align:left;padding:5px;border-radi
 .psTextButton{border:0;background:transparent;color:var(--accent);padding:0;text-decoration:underline;cursor:pointer;font:inherit}
 .psFormError{min-height:20px}
 @media(max-width:620px){
-  .psPlanningToolbar{justify-content:stretch;padding-inline:16px}.psNewSession{width:100%;min-height:44px}
+  .psPlanningToolbar{align-items:stretch;padding-inline:16px}.psPlanningFilter{flex:1}.psPlanningFilter select{width:100%;min-height:44px}.psNewSession{flex:1;min-height:44px}
   .psSessionDialog{width:calc(100vw - 12px);max-height:94vh;margin:auto;padding:16px}
   .psSessionGrid{grid-template-columns:1fr}.psSessionGrid .pmField,.psTasks{grid-column:1}
   .psTaskChoices{max-height:34vh}.psTaskTitle{align-items:flex-start;flex-direction:column;gap:4px}
@@ -1093,6 +1127,10 @@ button.pmSlotWhen{width:auto;height:auto;text-align:left;padding:5px;border-radi
 .pdType{color:var(--ink-3);font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.4px}
 .pdItem.isDone strong{text-decoration:line-through}.pdItem.isDone{opacity:.72}
 @media(pointer:coarse){.pdRailDeadline{min-width:32px;min-height:32px}.pdItem{min-height:48px}}
+
+.pdContext{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.pdScope{font-size:10px;font-weight:750;color:var(--ink-2);padding:2px 6px;border:1px solid var(--line-2);border-radius:5px;background:var(--surface)}
+.pdScope[data-tranche="1"]{border-color:#6283c6}.pdScope[data-tranche="2"]{border-color:#65a193}
 
 </style>
 <!-- PROJECT UI CSS END -->
@@ -1561,14 +1599,15 @@ function colonnesDeSerie(id, action){
 }
 function leJour(){ return sem().jours[jourSel]; }
 function dateDuJour(){ return plusJours(lundi, jourSel); }
+function planningColumnVisible(c){if(!c.projectId||!window.PM||!PM.planningTrancheFilter)return true;var filter=PM.planningTrancheFilter();if(filter==="all")return true;var slot=PM.session&&PM.session(c.id);return !!slot&&slot.tranche===filter;}
 function colsTriees(j){
-  return (j.cols||[]).slice().sort(function(x,y){
+  return (j.cols||[]).filter(planningColumnVisible).slice().sort(function(x,y){
     if(x.de !== y.de) return x.de - y.de;
     if(x.fond !== y.fond) return x.fond ? -1 : 1;
     return 0;
   });
 }
-function heuresJour(j){ return (j.cols||[]).reduce(function(t,c){ return t + duree(c); }, 0); }
+function heuresJour(j){ return (j.cols||[]).filter(planningColumnVisible).reduce(function(t,c){ return t + duree(c); }, 0); }
 function heuresBrique(cleLundi, b){
   var s = etat.semaines[cleLundi];
   if(!s || !Array.isArray(s.jours)) return 0;
@@ -1662,7 +1701,7 @@ function renderBarre(){
 
 function renderProgress(){
   var seen = new Set(), total = 0, done = 0;
-  leJour().cols.forEach(function(c){
+  leJour().cols.filter(planningColumnVisible).forEach(function(c){
     var project = c.projectId && window.PM ? PM.get(c.projectId) : null;
     var tasks = project ? project.tasks.filter(function(t){ return Array.isArray(c.taskIds)?c.taskIds.indexOf(t.id)>=0:(!c.taskId || t.id === c.taskId); }) : (fiche(c).taches || []);
     tasks.forEach(function(t){
@@ -1710,7 +1749,8 @@ function segmentsRail(s){
   s.jours.forEach(function(j,i){
     var dj = iso(plusJours(lundi,i));
     colsTriees(j).forEach(function(c){
-      (c.fond ? fond : seances).push({b:c.b, t:c.nom, j0:i, j1:i, de:c.de, a:c.a, n:1});
+      var railTitle=c.nom,rs=null;if(c.projectId&&window.PM){var rp=PM.get(c.projectId),rs=PM.session&&PM.session(c.id);railTitle=(rp?(rp.code||rp.name):c.nom)+(rs&&PM.trancheLabel?" · "+PM.trancheLabel(rs.tranche):"")+(rp&&c.phaseId?" · "+(((rp.phases||[]).find(function(ph){return ph.id===c.phaseId;})||{}).title||""):"");}
+      (c.fond ? fond : seances).push({b:c.b, t:railTitle, j0:i, j1:i, de:c.de, a:c.a, n:1, scope:rs&&PM.trancheLabel?PM.trancheLabel(rs.tranche):""});
       if(c.projectId) return;
       var f = etat.fiches[cleFiche(c)];
       if(!f) return;
@@ -1730,7 +1770,7 @@ function segmentsRail(s){
     var cur = null;
     parCle[k].sort(function(a,b){ return a.j0-b.j0; }).forEach(function(sg){
       if(cur && sg.j0 === cur.j1+1){ cur.j1 = sg.j0; cur.a = sg.a; cur.n++; }
-      else { cur = {b:sg.b, t:sg.t, j0:sg.j0, j1:sg.j0, de:sg.de, a:sg.a, n:1}; fusion.push(cur); }
+      else { cur = {b:sg.b, t:sg.t, j0:sg.j0, j1:sg.j0, de:sg.de, a:sg.a, n:1, scope:sg.scope}; fusion.push(cur); }
     });
   });
   return {fond:fond, autres:fusion.concat(taches)};
@@ -1762,11 +1802,11 @@ function ligneRail(items, estFond){
       ? sg.t + " — " + hh(sg.de) + ", " + dur(sg.a-sg.de)
       : B[sg.b].nom + (sg.t ? " · "+sg.t : "") + " — " + hh(sg.de) + " à " + hh(sg.a);
     var texte = sg.tache ? "◷ "+esc(sg.t) : esc(B[sg.b].court) + (sg.t ? " · "+esc(sg.t) : "");
-    return '<button type="button" class="railBlk'+(estFond?" railFond":"")+(sg.tache?" railTache":"")+(large?"":" court")+'" '
+    return '<button type="button" class="railBlk'+(estFond?" railFond":"")+(sg.tache?" railTache":"")+(large?"":" court")+(sg.scope?" railScoped":"")+'" '
       + 'data-b="'+sg.b+'" data-act="allerJour" data-j="'+sg.j0+'" style="grid-column:'+c0+'/'+c1+'" '
-      + 'title="'+esc(titre)+'">'
-      + (large ? texte + '<span class="h">'+esc(det)+'</span>'
-               : '<span class="etiq">'+texte+' <span class="h">'+esc(hh(sg.de))+'</span></span>')
+      + 'title="'+esc(titre)+'" aria-label="'+esc(titre)+'">'
+      + (sg.scope ? '<span class="railScope">'+esc(sg.scope)+'</span>'+(large?'<span class="railProjectName">'+esc(sg.t.replace(' · '+sg.scope,''))+'</span>':'') : (large ? texte + '<span class="h">'+esc(det)+'</span>'
+               : '<span class="etiq">'+texte+' <span class="h">'+esc(hh(sg.de))+'</span></span>'))
       + '</button>';
   }).join("") + '</div>';
 }
@@ -1891,7 +1931,8 @@ function blocsChrono(j){
     var projectTask = project && (project.tasks||[]).filter(function(t){ return t.id === c.taskId; })[0];
     var projectTasks = project && Array.isArray(c.taskIds) ? (project.tasks||[]).filter(function(t){return c.taskIds.indexOf(t.id)>=0;}) : null;
     var projectPhase=project && (project.phases||[]).find(function(ph){return ph.id===c.phaseId;});
-    var projectLabel=projectTask ? project.name+" · "+projectTask.title : (project ? (projectPhase?projectPhase.title+" · ":"")+project.name+((projectTasks&&projectTasks.length)?" · "+projectTasks.length+" actions":"") : B[c.b].court + (c.nom ? " · " + c.nom : ""));
+    var projectScope=project&&PM.session?PM.session(c.id):null,scopeLabel=project&&PM.trancheLabel?PM.trancheLabel(projectScope?projectScope.tranche:(projectTask?projectTask.tranche:project.tranche)):"";
+    var projectLabel=projectTask ? project.name+(scopeLabel?" · "+scopeLabel:"")+" · "+projectTask.title : (project ? project.name+(scopeLabel?" · "+scopeLabel:"")+(projectPhase?" · "+projectPhase.title:"")+((projectTasks&&projectTasks.length)?" · "+projectTasks.length+" actions":"") : B[c.b].court + (c.nom ? " · " + c.nom : ""));
     out.push({tache:false, b:c.b, nom:projectLabel, de:c.de, a:c.a, col:c, project:project, projectTask:projectTask, projectTasks:projectTasks});
     if(project) return;
     var f = etat.fiches[cleFiche(c)]; if(!f) return;
@@ -2131,8 +2172,9 @@ function projectColumnHTML(c){
       + '<span class="liAct"><button type="button" class="icone'+(t.note?' on':'')+'" data-act="pmEditTask" data-p="'+esc(p.id)+'" data-t="'+esc(t.id)+'" title="Modifier la tâche" aria-label="Modifier la tâche">✎︎</button></span></div>'
       + '<div class="meta"><span class="qd">'+esc(status)+(t.deadline?' · échéance '+esc(t.deadline):'')+esc(priority)+'</span>'+(custom?'<span class="nt">'+esc(custom)+'</span>':'')+(t.note?'<span class="nt">'+esc(t.note)+'</span>':'')+'</div></li>';
   }).join('');
+  var slot=PM.session&&PM.session(c.id),scopeLabel=PM.trancheLabel?PM.trancheLabel(slot?slot.tranche:(selected?selected.tranche:p.tranche)):"";
   return '<div class="col" data-b="'+esc(c.b)+'" data-project-id="'+esc(p.id)+'">'
-    + '<div class="hd"><div class="top"><span class="nm">'+esc(p.name)+'</span>'
+    + '<div class="hd"><div class="top"><span class="nm">'+esc(p.name)+(scopeLabel?' · '+esc(scopeLabel):'')+'</span>'
     + '<button type="button" class="icone" data-act="projectOpen" data-p="'+esc(p.id)+'" title="Ouvrir le projet" aria-label="Ouvrir le projet">↗</button>'
     + (Array.isArray(c.taskIds)?'<button type="button" class="icone" data-act="pmEditSession" data-c="'+esc(c.id)+'" title="Modifier la séance" aria-label="Modifier la séance">✎</button>':'')
     + '<button type="button" class="kill" data-act="kill" data-c="'+esc(c.id)+'" title="Retirer cette séance" aria-label="Retirer cette séance">×</button></div>'
@@ -2801,6 +2843,8 @@ var PM = window.PM = (function(){
     var p=null; (etat.projects||[]).forEach(function(x){ if(x && x.id===id) p=x; }); return p;
   }
   function taskOf(p, tid){ var out=null; (p.tasks||[]).forEach(function(t){ if(t.id===tid) out=t; }); return out; }
+  function taskScope(p,t){return t&&t.tranche!=null?t.tranche:((p.tranche==="1"||p.tranche==="2")?p.tranche:"common");}
+  function columnScope(p,c){if(c.tranche!=null)return c.tranche;var ids=Array.isArray(c.taskIds)?c.taskIds:(c.taskId?[c.taskId]:[]),scopes=[];ids.forEach(function(id){var t=taskOf(p,id),s=taskScope(p,t);if(scopes.indexOf(s)<0)scopes.push(s);});return scopes.length===1?scopes[0]:(ids.length?"":(p.tranche==="both"?"both":((p.tranche==="1"||p.tranche==="2")?p.tranche:"common")));}
   function newId(prefix, collection){ var id; do { id=prefix+"_"+uid(); } while((collection||[]).some(function(x){ return x && x.id===id; })); return id; }
   function normalLabels(x){
     if(x == null) return []; if(!Array.isArray(x) || !x.every(function(v){return typeof v==="string";})) fail("Les étiquettes sont invalides.");
@@ -2830,8 +2874,10 @@ var PM = window.PM = (function(){
     var status=x.status == null ? "todo" : x.status;
     if(["todo","doing","done"].indexOf(status)<0) fail("Statut de tâche invalide.");
     var taskLabels=normalLabels(x.labels); if(!skipKnownLabels) labelsKnown(taskLabels);
-    return {id:(typeof x.id==="string" && x.id) || newId("task",[]), title:text(x.title,"Le titre de tâche"), phaseId:phaseId,
+    var task={id:(typeof x.id==="string" && x.id) || newId("task",[]), title:text(x.title,"Le titre de tâche"), phaseId:phaseId,
       status:status, deadline:dateOK(x.deadline,true), labels:taskLabels, note:x.note == null ? "" : text(x.note,"La note",true)};
+    if(x.tranche!=null)task.tranche=x.tranche;
+    return task;
   }
   function normalProject(values, old, skipKnownLabels){
     values=values||{}; var p=old ? clone(old) : {};
@@ -2839,7 +2885,7 @@ var PM = window.PM = (function(){
     ["name","title","code"].forEach(function(k){ if(own(values,k)) p[k]=text(values[k], k==="name" ? "Le nom" : "Le "+k, k!=="name"); });
     if(!p.name) fail("Le nom est requis.");
     if(!p.title) p.title=p.name;
-    if(own(values,"tranche")){ if(["","1","2"].indexOf(values.tranche)<0) fail("Tranche invalide."); p.tranche=values.tranche; }
+    if(own(values,"tranche")){ if(["","1","2","both"].indexOf(values.tranche)<0) fail("Tranche invalide."); p.tranche=values.tranche; }
     if(own(values,"deadline")) p.deadline=dateOK(values.deadline,true);
     if(own(values,"labels")) p.labels=normalLabels(values.labels);
     if(!skipKnownLabels) labelsKnown(p.labels);
@@ -2861,7 +2907,7 @@ var PM = window.PM = (function(){
       var members=Array.isArray(c.taskIds)?c.taskIds:(c.taskId?[c.taskId]:[]);
       if(c.projectId===pid && (!tid || members.indexOf(tid)>=0)){
         var owner=byId(pid), oldTask=c.taskId&&owner&&taskOf(owner,c.taskId);
-        var slot={id:c.id,date:iso(plusJours(deIso(ws),idx)),start:vh(c.de),end:vh(c.a),projectId:pid,phaseId:c.phaseId||(oldTask&&oldTask.phaseId)||"",taskIds:members.slice()};
+        var slot={id:c.id,date:iso(plusJours(deIso(ws),idx)),start:vh(c.de),end:vh(c.a),projectId:pid,phaseId:c.phaseId||(oldTask&&oldTask.phaseId)||"",taskIds:members.slice(),tranche:columnScope(owner,c)};
         if(c.taskId) slot.taskId=c.taskId;
         out.push(slot);
       }
@@ -2903,12 +2949,17 @@ var PM = window.PM = (function(){
         if(c.taskId!=null && c.taskIds!=null) fail("Une séance ne peut pas mélanger les anciens et nouveaux liens de tâches.");
         if(c.projectId!=null || c.taskId!=null || c.taskIds!=null){
           if(typeof c.projectId!=="string" || !pids[c.projectId]) fail("Lien projet de séance invalide.");
+          if(c.tranche!=null&&["common","1","2"].indexOf(c.tranche)<0)fail("Tranche de séance invalide.");
           /* Imported v2 sessions may be tied to a project before a single task can be identified. */
           if(c.taskId!=null && (typeof c.taskId!=="string" || !tids[c.projectId+"|"+c.taskId])) fail("Lien de tâche de séance invalide.");
+          if(c.taskId!=null){var singleProject=state.projects.filter(function(p){return p.id===c.projectId;})[0];if(c.tranche!=null&&c.tranche!==taskScope(singleProject,taskOf(singleProject,c.taskId)))fail("La tranche de séance ne correspond pas à son action.");}
           if(c.taskIds!=null){
             if(!Array.isArray(c.taskIds)||!c.taskIds.length||c.taskIds.some(function(id,i,a){return typeof id!=="string"||a.indexOf(id)!==i||!tids[c.projectId+"|"+id];})) fail("Actions de séance invalides.");
             var project=state.projects.filter(function(p){return p.id===c.projectId;})[0];
             if(typeof c.phaseId!=="string" || !project.phases.some(function(ph){return ph.id===c.phaseId;})) fail("Phase de séance invalide.");
+            var sessionScopes=[];c.taskIds.forEach(function(id){var scope=taskScope(project,taskOf(project,id));if(sessionScopes.indexOf(scope)<0)sessionScopes.push(scope);});
+            if(sessionScopes.length!==1)fail("Une séance ne peut pas mélanger plusieurs tranches.");
+            if(c.tranche!=null&&c.tranche!==sessionScopes[0])fail("La tranche de séance ne correspond pas à ses actions.");
           }
           weekday(iso(plusJours(deIso(ws),idx)));
         }
@@ -2941,7 +2992,7 @@ var PM = window.PM = (function(){
         }
       }
       if(!info){ var day=(deIso(d).getDay()+6)%7, week=iso(lundiDe(deIso(d))); info={jour:laSemaine(week,true).jours[day],week:week,index:day}; c={id:uid(),b:t.phaseId==="preparation"?"prepa":t.phaseId==="finalisation"?"cloture":"chantier",nom:p.name,de:hv(start),a:hv(end),fond:false}; info.jour.cols.push(c); }
-      c.b=c.b&&B[c.b]?c.b:"chantier"; c.nom=p.name; c.de=hv(start); c.a=hv(end); c.projectId=pid; c.taskId=tid; saveAndRender(); return {id:c.id,date:d,start:start,end:end,projectId:pid,taskId:tid};
+      c.b=c.b&&B[c.b]?c.b:"chantier"; c.nom=p.name; c.de=hv(start); c.a=hv(end); c.projectId=pid; c.taskId=tid;c.tranche=taskScope(p,t); saveAndRender(); return {id:c.id,date:d,start:start,end:end,projectId:pid,taskId:tid,tranche:c.tranche};
     },
     scheduleSession:function(pid,values,existingColumnId){
       var p=byId(pid); if(!p) fail("Projet introuvable."); values=values||{};
@@ -2951,17 +3002,18 @@ var PM = window.PM = (function(){
       var info=existingColumnId?findColumn(existingColumnId):null, previous=info&&info.col, retained=previous&&previous.projectId===pid&&Array.isArray(previous.taskIds)?previous.taskIds:[];
       if(existingColumnId&&!info) fail("Cette séance n’existe plus. Actualisez le planning.");
       if(previous && (previous.serie || previous.projectId!==pid || previous.taskId || !Array.isArray(previous.taskIds))) fail("Cette séance ne peut pas être remplacée silencieusement.");
-      ids.forEach(function(id){var t=taskOf(p,id);if(!t)fail("Action introuvable.");if(retained.indexOf(id)<0&&(t.phaseId!==phaseId||t.status==="done"))fail(t.status==="done"?"Une action terminée ne peut pas être ajoutée.":"Toutes les actions doivent appartenir à la phase choisie.");});
+      var scopes=[];ids.forEach(function(id){var t=taskOf(p,id);if(!t)fail("Action introuvable.");if(retained.indexOf(id)<0&&(t.phaseId!==phaseId||t.status==="done"))fail(t.status==="done"?"Une action terminée ne peut pas être ajoutée.":"Toutes les actions doivent appartenir à la phase choisie.");var s=taskScope(p,t);if(scopes.indexOf(s)<0)scopes.push(s);});
+      if(scopes.length!==1)fail("Une séance ne peut pas mélanger plusieurs tranches.");var tranche=values.tranche==null?scopes[0]:values.tranche;if(["common","1","2"].indexOf(tranche)<0||tranche!==scopes[0])fail("La tranche de séance ne correspond pas aux actions choisies.");
       var d=dateOK(values.date,false);weekday(d);var start=timeOK(values.start,"Heure de début"),end=timeOK(values.end,"Heure de fin");if(hv(end)<=hv(start))fail("L’heure de fin doit suivre l’heure de début.");
       var c=previous;if(!c){c={id:uid(),fond:false};}
       if(!info||columnDate(info)!==d){if(info)info.jour.cols=info.jour.cols.filter(function(x){return x.id!==c.id;});var day=(deIso(d).getDay()+6)%7,week=iso(lundiDe(deIso(d)));info={jour:laSemaine(week,true).jours[day],week:week,index:day};info.jour.cols.push(c);}
-      c.b=phaseId==="preparation"?"prepa":phaseId==="finalisation"?"cloture":"chantier";c.nom=p.name;c.de=hv(start);c.a=hv(end);c.projectId=pid;c.phaseId=phaseId;c.taskIds=ids;delete c.taskId;
+      c.b=phaseId==="preparation"?"prepa":phaseId==="finalisation"?"cloture":"chantier";c.nom=p.name;c.de=hv(start);c.a=hv(end);c.projectId=pid;c.phaseId=phaseId;c.taskIds=ids;c.tranche=tranche;delete c.taskId;
       saveAndRender();return clone(projectSlots(pid).filter(function(s){return s.id===c.id;})[0]);
     },
     unschedule:function(columnId){ var info=findColumn(columnId); if(!info) fail("Séance introuvable."); info.jour.cols=info.jour.cols.filter(function(c){return c.id!==columnId;}); saveAndRender(); },
     slots:function(pid,tid){ if(!byId(pid)) fail("Projet introuvable."); if(tid&&!taskOf(byId(pid),tid)) fail("Tâche introuvable."); return clone(projectSlots(pid,tid)); },
     session:function(id){var info=findColumn(id);if(!info||!info.col.projectId)return null;var slots=projectSlots(info.col.projectId).filter(function(s){return s.id===id;});return slots.length?clone(slots[0]):null;},
-    availableTasks:function(pid,phaseId){var p=byId(pid);if(!p)fail("Projet introuvable.");if(!p.phases.some(function(ph){return ph.id===phaseId;}))fail("Phase inconnue.");var tasks=(p.tasks||[]).filter(function(t){return t.phaseId===phaseId&&t.status!=="done";});return clone(window.PM&&PM.sortTasks?PM.sortTasks(tasks):tasks);},
+    availableTasks:function(pid,phaseId,tranche){var p=byId(pid);if(!p)fail("Projet introuvable.");if(!p.phases.some(function(ph){return ph.id===phaseId;}))fail("Phase inconnue.");if(tranche!=null&&["common","1","2"].indexOf(tranche)<0)fail("Tranche invalide.");var tasks=(p.tasks||[]).filter(function(t){return t.phaseId===phaseId&&t.status!=="done"&&(tranche==null||taskScope(p,t)===tranche);});return clone(window.PM&&PM.sortTasks?PM.sortTasks(tasks):tasks);},
     openDate:function(d){ d=dateOK(d,false); weekday(d); lundi=lundiDe(deIso(d)); jourSel=(deIso(d).getDay()+6)%7; ajoutOuvert=null; edition=null; if(typeof window.projectNavigate==="function") window.projectNavigate("planning"); if(typeof tout==="function") tout(); },
     save:function(){ saveAndRender(); return true; },
     migrate:function(state){
@@ -2983,7 +3035,7 @@ var PM = window.PM = (function(){
 PM = window.PM = (function(BASE){
   var DEFAULT_RULES={1:{watch:-10,urgent:-5,critical:-2},2:{watch:1,urgent:3,critical:7},3:{watch:7,urgent:21,critical:null}};
   var COLLECTIONS=['milestones','readiness','documents','contacts','taskFields'];
-  var TASK_EXTRA=['importance','manualUrgency','dependsOn','blockedReason','followUpDate','assigneeId','validatorId','fields'];
+  var TASK_EXTRA=['importance','manualUrgency','dependsOn','blockedReason','followUpDate','assigneeId','validatorId','fields','tranche'];
   var LEVELS=['normal','watch','urgent','critical'];
   function fail(s){throw new Error(s);}
   function own(o,k){return Object.prototype.hasOwnProperty.call(o,k);}
@@ -3021,6 +3073,8 @@ PM = window.PM = (function(BASE){
   }
   function task(raw,p,skipLabels){
     var t=BASE._normalizeTask(raw,p.phases,skipLabels);
+    t.tranche=raw.tranche==null?((p.tranche==='1'||p.tranche==='2')?p.tranche:'common'):raw.tranche;
+    if(['common','1','2'].indexOf(t.tranche)<0||((t.tranche==='1'||t.tranche==='2')&&tranchesOf(p).indexOf(t.tranche)<0))fail('Tranche d’action invalide.');
     t.importance=raw.importance==null?2:raw.importance;if([1,2,3].indexOf(t.importance)<0)fail('Importance invalide.');
     t.manualUrgency=raw.manualUrgency==null?'auto':raw.manualUrgency;if(['auto'].concat(LEVELS).indexOf(t.manualUrgency)<0)fail('Urgence manuelle invalide.');
     var dependencies=raw.dependsOn==null?[]:raw.dependsOn;if(!Array.isArray(dependencies)||!dependencies.every(function(x){return typeof x==='string'&&x;}))fail('Dépendances invalides.');
@@ -3030,6 +3084,8 @@ PM = window.PM = (function(BASE){
     Object.keys(fields).forEach(function(k){if(!p.taskFields.some(function(f){return f.id===k;}))fail('Un champ texte référence une colonne inconnue.');if(typeof fields[k]!=='string')fail('La valeur du champ doit être un texte.');t.fields[k]=fields[k];});
     return t;
   }
+  function tranchesOf(p){var out=['common'];if(p.tranche==='1'||p.tranche==='both')out.push('1');if(p.tranche==='2'||p.tranche==='both')out.push('2');return out;}
+  function details(raw,p){if(raw!=null&&!plain(raw))fail('Détails de tranche invalides.');var out={},source=raw||{};Object.keys(source).forEach(function(k){if(['1','2'].indexOf(k)<0)fail('Détails de tranche invalides.');if(!plain(source[k]))fail('Détails de tranche invalides.');if(tranchesOf(p).indexOf(k)<0&&source[k].deadline)fail('Une tranche inactive ne peut pas conserver une échéance.');});['1','2'].forEach(function(k){if(tranchesOf(p).indexOf(k)<0)return;var d=source[k]||{};var phase=d.phaseId==null?p.phases[0].id:d.phaseId;if(!p.phases.some(function(x){return x.id===phase;}))fail('Phase de tranche inconnue.');out[k]={deadline:date(d.deadline,true),phaseId:phase};});return out;}
   function graph(p){
     var map=Object.create(null),active=Object.create(null),seen=Object.create(null);
     p.tasks.forEach(function(t){identifier(t.id);if(map[t.id])fail('Identifiant de tâche dupliqué.');map[t.id]=t;});
@@ -3038,6 +3094,9 @@ PM = window.PM = (function(BASE){
     p.tasks.forEach(function(t){visit(t.id);});
   }
   function normalize(p,skipLabels){
+    if(p.tranche==null)p.tranche='';
+    if(['','1','2','both'].indexOf(p.tranche)<0)fail('Tranche invalide.');
+    p.trancheDetails=details(p.trancheDetails,p);
     COLLECTIONS.forEach(function(k){p[k]=collection(p[k],k);});p.history=history(p.history);
     if(!Array.isArray(p.tasks))fail('Liste de tâches invalide.');p.tasks=p.tasks.map(function(t){return task(t,p,skipLabels);});graph(p);return p;
   }
@@ -3048,7 +3107,10 @@ PM = window.PM = (function(BASE){
     /* Preserve extra task data alongside the core normalizer's canonical IDs/defaults. */
     p.tasks=p.tasks.map(function(t,i){var full=Object.assign({},rawTasks[i]||{},t);TASK_EXTRA.forEach(function(k){if(own(rawTasks[i]||{},k))full[k]=copy(rawTasks[i][k]);});return full;});
     if(own(values,'taskFields')&&old){var kept=(values.taskFields||[]).map(function(f){return f.id;});p.tasks.forEach(function(t){if(t.fields)Object.keys(t.fields).forEach(function(k){if(kept.indexOf(k)<0)delete t.fields[k];});});}
-    normalize(p);checkTransitions(old,p);return p;
+    if(own(values,'trancheDetails'))p.trancheDetails=copy(values.trancheDetails);
+    if(old&&old.tranche!==p.tranche){var removed=tranchesOf(old).filter(function(k){return tranchesOf(p).indexOf(k)<0;});removed.forEach(function(k){if(old.tasks.some(function(t){return (t.tranche||((old.tranche==='1'||old.tranche==='2')?old.tranche:'common'))===k;})||projectSlots(old.id).some(function(s){return slotTranche(old,s)===k;})||(old.trancheDetails&&old.trancheDetails[k]&&old.trancheDetails[k].deadline))fail('Impossible de retirer une tranche qui contient des actions, des séances ou une échéance.');});}
+    normalize(p);checkTransitions(old,p);
+    return p;
   }
   function getProject(id){var p=etat.projects.find(function(x){return x.id===id;});if(!p)fail('Projet introuvable.');return p;}
   function getTask(p,id){var t=p.tasks.find(function(x){return x.id===id;});if(!t)fail('Tâche introuvable.');return t;}
@@ -3061,13 +3123,15 @@ PM = window.PM = (function(BASE){
   function log(p,type,message,tid){var e={id:'history_'+uid(),at:new Date().toISOString(),type:type,text:message};if(tid)e.taskId=tid;p.history.push(e);}
   function replace(target,source){Object.keys(target).forEach(function(k){delete target[k];});Object.keys(source).forEach(function(k){target[k]=source[k];});}
   function columns(fn){Object.keys(etat.semaines||{}).forEach(function(w){(etat.semaines[w].jours||[]).forEach(function(day){fn(day);});});}
+  function projectSlots(pid){var out=[];columns(function(day){(day.cols||[]).forEach(function(c){if(c.projectId===pid)out.push(c);});});return out;}
+  function slotTranche(p,c){if(c.tranche)return c.tranche;var ids=Array.isArray(c.taskIds)?c.taskIds:(c.taskId?[c.taskId]:[]),found=[];ids.forEach(function(id){var t=p.tasks.find(function(x){return x.id===id;}),s=t?t.tranche:null;if(s&&found.indexOf(s)<0)found.push(s);});return found.length===1?found[0]:(ids.length?'':(p.tranche==='both'?'both':((p.tranche==='1'||p.tranche==='2')?p.tranche:'common')));}
   function syncSlots(p){var known=Object.create(null);p.tasks.forEach(function(t){known[t.id]=true;});columns(function(day){day.cols=(day.cols||[]).filter(function(c){
     if(c.projectId!==p.id)return true;
     if(Array.isArray(c.taskIds)){c.taskIds=c.taskIds.filter(function(id){return known[id];});if(!c.taskIds.length)return false;}
     else if(c.taskId&&!known[c.taskId])return false;
     c.nom=p.name;return true;
   });});}
-  function commit(target,draft){replace(target,draft);syncSlots(target);if(target.code&&etat.projectCodes.indexOf(target.code)<0)etat.projectCodes.push(target.code);BASE.save();return copy(target);}
+  function commit(target,draft){var beforeTasks=Object.create(null),afterTasks=Object.create(null);target.tasks.forEach(function(t){beforeTasks[t.id]=t;});draft.tasks.forEach(function(t){afterTasks[t.id]=t;});projectSlots(target.id).forEach(function(c){var ids=Array.isArray(c.taskIds)?c.taskIds:(c.taskId?[c.taskId]:[]);ids.forEach(function(id){if(beforeTasks[id]&&afterTasks[id]&&beforeTasks[id].tranche!==afterTasks[id].tranche)fail('Retirez d’abord cette action de ses séances avant de changer sa tranche.');});});replace(target,draft);syncSlots(target);if(target.code&&etat.projectCodes.indexOf(target.code)<0)etat.projectCodes.push(target.code);BASE.save();return copy(target);}
   function dayNumber(s){var v=s.split('-');return Date.UTC(+v[0],+v[1]-1,+v[2])/86400000;}
   function urgency(t,today){
     var manual=t.manualUrgency||'auto';if(t.status==='done')return {level:'normal',rank:0,reason:'Action terminée',daysRemaining:null,automatic:'normal',manual:manual};
@@ -3088,7 +3152,7 @@ PM = window.PM = (function(BASE){
   api.addTask=function(pid,values){var old=getProject(pid),p=copy(old),t=task(values||{},p);if(p.tasks.some(function(x){return x.id===t.id;}))fail('Identifiant de tâche déjà utilisé.');p.tasks.push(t);graph(p);checkTransitions(old,p);log(p,'task','Action créée : '+t.title+'.',t.id);commit(old,p);return copy(t);};
   api.updateTask=function(pid,tid,values){var old=getProject(pid),p=copy(old),before=getTask(p,tid),raw=Object.assign({},before,values||{},{id:tid});
     if(values&&own(values,'fields')&&plain(values.fields))raw.fields=Object.assign({},before.fields,values.fields);
-    var updated=task(raw,p);p.tasks[p.tasks.indexOf(before)]=updated;graph(p);checkTransitions(old,p);
+    var updated=task(raw,p);if(updated.tranche!==before.tranche&&projectSlots(pid).some(function(c){return c.taskId===tid||(c.taskIds||[]).indexOf(tid)>=0;}))fail('Retirez d’abord cette action de ses séances avant de changer sa tranche.');p.tasks[p.tasks.indexOf(before)]=updated;graph(p);checkTransitions(old,p);
     var names={title:'Titre',status:'Statut',deadline:'Deadline',importance:'Importance',manualUrgency:'Urgence manuelle',blockedReason:'Blocage',followUpDate:'Relance',assigneeId:'Responsable',validatorId:'Validateur'};
     var words={todo:'À faire',doing:'En cours',done:'Terminée',auto:'Automatique',normal:'Normale',watch:'À surveiller',urgent:'Urgente',critical:'Critique'};
     function show(v,k){if(v==null||v==='')return 'aucun';if(k==='assigneeId'||k==='validatorId'){var c=p.contacts.find(function(x){return x.id===v;});return c?c.name:v;}return words[v]||String(v);}
@@ -3099,6 +3163,13 @@ PM = window.PM = (function(BASE){
   };
   api.removeTask=function(pid,tid){var old=getProject(pid),p=copy(old),removed=getTask(p,tid);p.tasks=p.tasks.filter(function(t){return t.id!==tid;});p.tasks.forEach(function(t){t.dependsOn=t.dependsOn.filter(function(id){return id!==tid;});});log(p,'task','Action supprimée : '+removed.title+'.',tid);commit(old,p);};
   api.blockers=function(pid,tid){var p=getProject(pid);return copy(blockers(p,getTask(p,tid)));};
+  api.tranches=function(pid){return tranchesOf(getProject(pid));};
+  api.trancheLabel=function(scope){return {common:'Commun','1':'T1','2':'T2',both:'T1 + T2'}[scope]||'';};
+  api.planningTrancheFilter=function(){return etat.planningTrancheFilter||'all';};
+  api.setPlanningTrancheFilter=function(scope){if(['all','common','1','2'].indexOf(scope)<0)fail('Filtre de tranche invalide.');etat.planningTrancheFilter=scope;BASE.save();return scope;};
+  api.taskTranche=function(pid,tid){return getTask(getProject(pid),tid).tranche;};
+  api.updateTranche=function(pid,tranche,value){if(['1','2'].indexOf(tranche)<0)fail('Tranche invalide.');var old=getProject(pid),p=copy(old);if(tranchesOf(p).indexOf(tranche)<0)fail('Tranche inactive.');var next=Object.assign({},p.trancheDetails[tranche],value||{});p.trancheDetails[tranche]={deadline:date(next.deadline,true),phaseId:next.phaseId};if(!p.phases.some(function(ph){return ph.id===next.phaseId;}))fail('Phase de tranche inconnue.');log(p,'project','Tranche '+tranche+' mise à jour.');return commit(old,p);};
+  api.copyTrancheTasks=function(pid,from,to){if(from===to||['common','1','2'].indexOf(from)<0||['common','1','2'].indexOf(to)<0)fail('Tranches de copie invalides.');var old=getProject(pid),p=copy(old);if(tranchesOf(p).indexOf(from)<0||tranchesOf(p).indexOf(to)<0)fail('Tranche inactive.');var source=p.tasks.filter(function(t){return t.tranche===from;}),ids={},copies=[];source.forEach(function(t){ids[t.id]='task_'+uid();});source.forEach(function(t){var n=copy(t);n.id=ids[t.id];n.tranche=to;n.status='todo';n.deadline='';n.followUpDate='';n.blockedReason='';n.manualUrgency='auto';n.dependsOn=n.dependsOn.map(function(id){if(ids[id])return ids[id];var dep=getTask(p,id);if(dep.tranche==='common')return id;fail('Une dépendance vers une autre tranche empêche la copie.');});copies.push(n);});p.tasks=p.tasks.concat(copies);graph(p);copies.forEach(function(t){log(p,'task','Action copiée : '+t.title+'.',t.id);});commit(old,p);return copy(copies);};
   api.addDecision=function(pid,value){var p=getProject(pid);log(p,'decision',text(value,'La décision'));BASE.save();return copy(p.history[p.history.length-1]);};
   api.urgency=urgency;
   api.sortTasks=function(tasks,today){return tasks.map(function(t,i){return {t:copy(t),i:i};}).sort(function(a,b){return Number(a.t.status==='done')-Number(b.t.status==='done')||urgency(b.t,today).rank-urgency(a.t,today).rank||(a.t.importance||2)-(b.t.importance||2)||(a.t.deadline||'9999-12-31').localeCompare(b.t.deadline||'9999-12-31')||a.i-b.i;}).map(function(x){return x.t;});};
@@ -3114,7 +3185,7 @@ PM = window.PM = (function(BASE){
 /* Workspace projets. Ce fichier est injecté dans l'IIFE principal. */
 var projectUI = {
   view:"dashboard", projectId:null, query:"", tranche:"", code:"", label:"", archived:false,
-  collapsed:{}, completedOpen:{}, returnFocus:null, initialized:false, renderedDay:"", suspendRender:false
+  collapsed:{}, completedOpen:{}, trancheTabs:{}, returnFocus:null, initialized:false, renderedDay:"", suspendRender:false
 };
 
 function pmE(value){ return esc(value == null ? "" : value); }
@@ -3150,6 +3221,12 @@ function pmProgress(project){
   var tasks=pmArray(project.tasks), done=tasks.filter(function(t){return t.status==="done";}).length;
   return {done:done,total:tasks.length,pct:tasks.length?Math.round(done/tasks.length*100):0};
 }
+function pmTaskScope(task){return task&&["common","1","2"].indexOf(task.tranche)>=0?task.tranche:"common";}
+function pmTrancheLabel(scope){return window.PM&&PM.trancheLabel?PM.trancheLabel(scope):({common:"Commun","1":"T1","2":"T2",both:"T1 + T2"}[scope]||"");}
+function pmScopeBadge(scope){var label=pmTrancheLabel(scope);return label?'<span class="pmPill pmScope pmScope-'+pmE(scope)+'">'+pmE(label)+'</span>':"";}
+function pmProjectTrancheBadge(p){return p.tranche?pmScopeBadge(p.tranche):"";}
+function pmScopedTasks(p,scope){var tasks=pmArray(p.tasks);return scope&&scope!=="all"?tasks.filter(function(t){return pmTaskScope(t)===scope;}):tasks;}
+function pmScopedProgress(p,scope){var tasks=pmScopedTasks(p,scope),done=tasks.filter(function(t){return t.status==="done";}).length;return {done:done,total:tasks.length,pct:tasks.length?Math.round(done/tasks.length*100):0};}
 function pmProjects(){ return window.PM && PM.projects ? PM.projects() : pmArray(etat.projects); }
 function pmGet(id){ return window.PM && PM.get ? PM.get(id) : pmProjects().find(function(p){return p.id===id;}); }
 function pmSave(){ if(window.PM&&PM.save) PM.save(); else if(typeof sauver==="function") sauver(); }
@@ -3185,16 +3262,17 @@ function pmSelectOptions(items,value,placeholder){
 }
 function pmProjectCard(p,compact){
   var pr=pmProgress(p), labs=pmLabelsHtml(p.labels);
-  if(compact)return '<button type="button" class="pmProjectRow" data-pm-action="open-project" data-id="'+pmE(p.id)+'"><span><span class="pmProjectName">'+pmE(p.name)+'</span><span class="pmProjectTitle">'+pmE(p.title||"Sans description")+'</span><span class="pmProgress"><span style="width:'+pr.pct+'%"></span></span></span><span class="pmProjectMeta">'+(p.code?'<span class="pmCode">'+pmE(p.code)+'</span>':"")+pmDeadline(p.deadline)+'<span class="pmPill">'+pr.done+'/'+pr.total+'</span></span></button>';
-  return '<button type="button" class="pmCard pmProjectCard" data-pm-action="open-project" data-id="'+pmE(p.id)+'"><span class="pmProjectCardTop"><span><h2>'+pmE(p.name)+'</h2><p>'+pmE(p.title||"Sans description")+'</p></span>'+(p.code?'<span class="pmCode">'+pmE(p.code)+'</span>':"")+'</span><span class="pmLabels">'+labs+'</span><span class="pmProjectMeta" style="justify-content:flex-start;margin-top:9px">'+(p.tranche?'<span class="pmPill">Tranche '+pmE(p.tranche)+'</span>':"")+pmDeadline(p.deadline)+'</span><span class="pmProgress"><span style="width:'+pr.pct+'%"></span></span><span class="pmProjectStats"><span>'+pr.done+' sur '+pr.total+' actions</span><span>'+pr.pct+' %</span></span></button>';
+  if(compact)return '<button type="button" class="pmProjectRow" data-pm-action="open-project" data-id="'+pmE(p.id)+'"><span><span class="pmProjectName">'+pmE(p.name)+'</span><span class="pmProjectTitle">'+pmE(p.title||"Sans description")+'</span><span class="pmProgress"><span style="width:'+pr.pct+'%"></span></span></span><span class="pmProjectMeta">'+pmProjectTrancheBadge(p)+(p.code?'<span class="pmCode">'+pmE(p.code)+'</span>':"")+pmDeadline(p.deadline)+'<span class="pmPill">'+pr.done+'/'+pr.total+'</span></span></button>';
+  return '<button type="button" class="pmCard pmProjectCard" data-pm-action="open-project" data-id="'+pmE(p.id)+'"><span class="pmProjectCardTop"><span><h2>'+pmE(p.name)+'</h2><p>'+pmE(p.title||"Sans description")+'</p></span>'+(p.code?'<span class="pmCode">'+pmE(p.code)+'</span>':"")+'</span><span class="pmLabels">'+labs+'</span><span class="pmProjectMeta" style="justify-content:flex-start;margin-top:9px">'+pmProjectTrancheBadge(p)+pmDeadline(p.deadline)+'</span><span class="pmProgress"><span style="width:'+pr.pct+'%"></span></span><span class="pmProjectStats"><span>'+pr.done+' sur '+pr.total+' actions</span><span>'+pr.pct+' %</span></span></button>';
 }
 
 function pmPriorityCompare(a,b){var au=pmUrgency(a.t),bu=pmUrgency(b.t);return (bu.rank||0)-(au.rank||0)||(Number(a.t.importance||2)-Number(b.t.importance||2))||(a.t.deadline||"9999").localeCompare(b.t.deadline||"9999")||(a.p.id+a.t.id).localeCompare(b.p.id+b.t.id);}
 function pmHasFutureSlot(p,t,today){return !!(PM.slots&&PM.slots(p.id,t.id).some(function(slot){return slot.date>=today;}));}
 function pmSlotTitle(project,slot){
   var tasks=pmArray(project.tasks),task=tasks.find(function(t){return t.id===slot.taskId;});
-  if(task)return task.title;
-  if(Array.isArray(slot.taskIds)){var phase=pmArray(project.phases).find(function(p){return p.id===slot.phaseId;});return (phase?phase.title:"Séance")+" · "+slot.taskIds.length+" action"+(slot.taskIds.length>1?"s":"");}
+  var scope=slot.tranche||(task&&pmTaskScope(task)),prefix=scope?pmTrancheLabel(scope)+" · ":"";
+  if(task)return prefix+task.title;
+  if(Array.isArray(slot.taskIds)){var phase=pmArray(project.phases).find(function(p){return p.id===slot.phaseId;});return prefix+(phase?phase.title:"Séance")+" · "+slot.taskIds.length+" action"+(slot.taskIds.length>1?"s":"");}
   return project.name;
 }
 function renderPlanningExtras(){
@@ -3203,7 +3281,7 @@ function renderPlanningExtras(){
   if(typeof renderPlanningDeadlinesUI==="function")renderPlanningDeadlinesUI();
 }
 window.renderPlanningExtras=renderPlanningExtras;
-function pmPriorityItem(x,action){return '<div class="pmQuickRow pmPriorityRow"><span><b>'+pmE(x.t.title)+'</b><small>'+pmE(x.p.name)+(x.t.deadline?' · À terminer avant '+pmE(pmDate(x.t.deadline)):' · Sans date')+'</small><span class="pmTaskInfo">'+pmUrgencyHtml(x.t)+(x.t.importance?'<span class="pmPill">Importance '+pmE(x.t.importance)+'</span>':'')+'</span></span><button class="pmBtn" data-pm-action="'+(action==="schedule"?'schedule-task':'open-task')+'" data-pid="'+pmE(x.p.id)+'" data-tid="'+pmE(x.t.id)+'">'+(action==="schedule"?'Planifier':'Ouvrir')+'</button></div>';}
+function pmPriorityItem(x,action){return '<div class="pmQuickRow pmPriorityRow"><span><b>'+pmE(x.t.title)+'</b><small>'+pmE(x.p.name)+(x.t.deadline?' · À terminer avant '+pmE(pmDate(x.t.deadline)):' · Sans date')+'</small><span class="pmTaskInfo">'+pmScopeBadge(pmTaskScope(x.t))+pmUrgencyHtml(x.t)+(x.t.importance?'<span class="pmPill">Importance '+pmE(x.t.importance)+'</span>':'')+'</span></span><button class="pmBtn" data-pm-action="'+(action==="schedule"?'schedule-task':'open-task')+'" data-pid="'+pmE(x.p.id)+'" data-tid="'+pmE(x.t.id)+'">'+(action==="schedule"?'Planifier':'Ouvrir')+'</button></div>';}
 function pmDashboardHtml(){
   var all=pmProjects().filter(function(p){return !p.archived;}), today=pmToday(), priority=[], unplanned=[], nextSlots=[];
   all.forEach(function(p){pmArray(p.tasks).forEach(function(t){if(t.status!=="done"){priority.push({p:p,t:t});if(!pmHasFutureSlot(p,t,today))unplanned.push({p:p,t:t});}});if(PM.slots)PM.slots(p.id).forEach(function(s){if(s.date>=today)nextSlots.push({p:p,s:s,t:pmArray(p.tasks).find(function(t){return t.id===s.taskId;})});});});
@@ -3224,7 +3302,7 @@ function pmProjectsHtml(){
   var q=projectUI.query.toLocaleLowerCase("fr"), arr=pmProjects().filter(function(p){
     if(!projectUI.archived&&p.archived)return false;
     if(projectUI.archived&&!p.archived)return false;
-    if(projectUI.tranche&&p.tranche!==projectUI.tranche)return false;
+    if(projectUI.tranche&&p.tranche!==projectUI.tranche&&p.tranche!=="both")return false;
     if(projectUI.code&&p.code!==projectUI.code)return false;
     if(projectUI.label&&pmArray(p.labels).indexOf(projectUI.label)<0)return false;
     return !q||(p.name+" "+(p.title||"")+" "+(p.code||"")).toLocaleLowerCase("fr").indexOf(q)>=0;
@@ -3236,21 +3314,43 @@ function pmProjectsHtml(){
 
 function pmTaskRow(p,t){
  var blockers=window.PM&&PM.blockers?PM.blockers(p.id,t.id):[], fields=pmArray(p.taskFields);
- return '<div class="pmTaskRow" data-status="'+pmE(t.status)+'" data-urgency="'+pmE(pmUrgency(t).level)+'"><input class="pmTaskCheck" type="checkbox" data-pm-action="toggle-task" data-pid="'+pmE(p.id)+'" data-tid="'+pmE(t.id)+'" aria-label="Marquer comme terminée"'+(t.status==="done"?' checked':'')+'><div class="pmTaskMain"><input class="pmTaskTitle" value="'+pmE(t.title)+'" data-pm-action="rename-task" data-pid="'+pmE(p.id)+'" data-tid="'+pmE(t.id)+'" aria-label="Titre de l’action"><div class="pmTaskInfo">'+pmUrgencyHtml(t)+(t.deadline?'<span class="pmPill">À terminer avant '+pmE(pmDate(t.deadline))+'</span>':'')+(blockers.length?'<span class="pmPill pmPillBad">Bloquée par '+blockers.length+' action'+(blockers.length>1?'s':'')+'</span>':'')+(t.blockedReason?'<span class="pmPill pmPillWarn">'+pmE(t.blockedReason)+'</span>':'')+(t.assigneeId?'<span class="pmPill">Resp. '+pmE(pmContactName(p,t.assigneeId))+'</span>':'')+(t.validatorId?'<span class="pmPill">Valid. '+pmE(pmContactName(p,t.validatorId))+'</span>':'')+pmLabelsHtml(t.labels)+'</div>'+(fields.length?'<div class="pmTaskFields">'+fields.map(function(f){return '<label><span>'+pmE(f.title)+'</span><input value="'+pmE((t.fields||{})[f.id]||'')+'" data-pm-action="task-field" data-pid="'+pmE(p.id)+'" data-tid="'+pmE(t.id)+'" data-field="'+pmE(f.id)+'"></label>';}).join('')+'</div>':'')+'</div><textarea class="pmInlineNote" rows="1" maxlength="1000" data-pm-action="task-note" data-pid="'+pmE(p.id)+'" data-tid="'+pmE(t.id)+'" aria-label="Référence ou commentaire pour '+pmE(t.title)+'" placeholder="Référence ou commentaire…" spellcheck="true">'+pmE(t.note||"")+'</textarea><select data-pm-action="task-status" data-pid="'+pmE(p.id)+'" data-tid="'+pmE(t.id)+'" aria-label="État"><option value="todo"'+(t.status==="todo"?' selected':'')+'>À faire</option><option value="doing"'+(t.status==="doing"?' selected':'')+'>En cours</option><option value="done"'+(t.status==="done"?' selected':'')+'>Terminée</option></select><div class="pmTaskActions"><button class="pmScheduleBtn"'+(t.status==="done"?' disabled title="Action déjà terminée"':'')+' data-pm-action="schedule-task" data-pid="'+pmE(p.id)+'" data-tid="'+pmE(t.id)+'">Planifier</button><button data-pm-action="edit-task" data-pid="'+pmE(p.id)+'" data-tid="'+pmE(t.id)+'" aria-label="Modifier les détails">•••</button></div></div>';
+ return '<div class="pmTaskRow" data-status="'+pmE(t.status)+'" data-urgency="'+pmE(pmUrgency(t).level)+'"><input class="pmTaskCheck" type="checkbox" data-pm-action="toggle-task" data-pid="'+pmE(p.id)+'" data-tid="'+pmE(t.id)+'" aria-label="Marquer comme terminée"'+(t.status==="done"?' checked':'')+'><div class="pmTaskMain"><input class="pmTaskTitle" value="'+pmE(t.title)+'" data-pm-action="rename-task" data-pid="'+pmE(p.id)+'" data-tid="'+pmE(t.id)+'" aria-label="Titre de l’action"><div class="pmTaskInfo">'+pmScopeBadge(pmTaskScope(t))+pmUrgencyHtml(t)+(t.deadline?'<span class="pmPill">À terminer avant '+pmE(pmDate(t.deadline))+'</span>':'')+(blockers.length?'<span class="pmPill pmPillBad">Bloquée par '+blockers.length+' action'+(blockers.length>1?'s':'')+'</span>':'')+(t.blockedReason?'<span class="pmPill pmPillWarn">'+pmE(t.blockedReason)+'</span>':'')+(t.assigneeId?'<span class="pmPill">Resp. '+pmE(pmContactName(p,t.assigneeId))+'</span>':'')+(t.validatorId?'<span class="pmPill">Valid. '+pmE(pmContactName(p,t.validatorId))+'</span>':'')+pmLabelsHtml(t.labels)+'</div>'+(fields.length?'<div class="pmTaskFields">'+fields.map(function(f){return '<label><span>'+pmE(f.title)+'</span><input value="'+pmE((t.fields||{})[f.id]||'')+'" data-pm-action="task-field" data-pid="'+pmE(p.id)+'" data-tid="'+pmE(t.id)+'" data-field="'+pmE(f.id)+'"></label>';}).join('')+'</div>':'')+'</div><textarea class="pmInlineNote" rows="1" maxlength="1000" data-pm-action="task-note" data-pid="'+pmE(p.id)+'" data-tid="'+pmE(t.id)+'" aria-label="Référence ou commentaire pour '+pmE(t.title)+'" placeholder="Référence ou commentaire…" spellcheck="true">'+pmE(t.note||"")+'</textarea><select data-pm-action="task-status" data-pid="'+pmE(p.id)+'" data-tid="'+pmE(t.id)+'" aria-label="État"><option value="todo"'+(t.status==="todo"?' selected':'')+'>À faire</option><option value="doing"'+(t.status==="doing"?' selected':'')+'>En cours</option><option value="done"'+(t.status==="done"?' selected':'')+'>Terminée</option></select><div class="pmTaskActions"><button class="pmScheduleBtn"'+(t.status==="done"?' disabled title="Action déjà terminée"':'')+' data-pm-action="schedule-task" data-pid="'+pmE(p.id)+'" data-tid="'+pmE(t.id)+'">Planifier</button><button data-pm-action="edit-task" data-pid="'+pmE(p.id)+'" data-tid="'+pmE(t.id)+'" aria-label="Modifier les détails">•••</button></div></div>';
 }
 function pmLegacyForPhase(p,phaseId){
   var rows=pmArray(p.legacyFiches).filter(function(x){return x.phaseId===phaseId&&(x.note||x.debut||x.fin);});
   if(!rows.length)return "";
   return '<aside class="pmLegacy"><strong>Données héritées du planning</strong>'+rows.map(function(x){return '<div>'+(x.note?'<p>'+pmE(x.note)+'</p>':"")+((x.debut||x.fin)?'<small>Période : '+pmE(x.debut?pmDate(x.debut):"non renseignée")+' → '+pmE(x.fin?pmDate(x.fin):"non renseignée")+'</small>':"")+'</div>';}).join("")+'</aside>';
 }
+function pmPhaseListHtml(p,scope){
+  var phases=pmArray(p.phases),tasks=pmScopedTasks(p,scope);
+  return phases.map(function(ph,i){
+    var list=tasks.filter(function(t){return t.phaseId===ph.id;}),active=list.filter(function(t){return t.status!=="done";}),done=list.filter(function(t){return t.status==="done";});
+    if(PM.sortTasks)active=PM.sortTasks(active,pmToday());
+    var key=p.id+":"+(scope||"all")+":"+ph.id;
+    return '<details class="pmCard pmPhase" data-phase="'+pmE(ph.id)+'" data-scope="'+pmE(scope||"all")+'"'+(projectUI.collapsed[key]?'':' open')+'><summary><span class="pmPhaseTitle">'+pmE(ph.title)+'</span><span class="pmPhaseCount">'+done.length+' / '+list.length+'</span><span class="pmPhaseTools"><button data-pm-action="phase-up" data-pid="'+pmE(p.id)+'" data-phase="'+pmE(ph.id)+'"'+(i===0?' disabled':'')+' title="Monter" aria-label="Monter la phase">↑</button><button data-pm-action="phase-down" data-pid="'+pmE(p.id)+'" data-phase="'+pmE(ph.id)+'"'+(i===phases.length-1?' disabled':'')+' title="Descendre" aria-label="Descendre la phase">↓</button><button data-pm-action="rename-phase" data-pid="'+pmE(p.id)+'" data-phase="'+pmE(ph.id)+'" title="Renommer" aria-label="Renommer la phase">✎</button></span></summary><div class="pmPhaseBody">'+(list.length?active.map(function(t){return pmTaskRow(p,t);}).join("")+(done.length?'<details class="pmCompletedTasks" data-completed-key="'+pmE(key)+'"'+(projectUI.completedOpen[key]?' open':'')+'><summary>'+done.length+' terminée'+(done.length>1?'s':'')+'</summary>'+done.map(function(t){return pmTaskRow(p,t);}).join("")+'</details>':''):'<div class="pmEmpty" style="padding:17px">Aucune action dans cette phase.</div>')+pmLegacyForPhase(p,ph.id)+'<button class="pmAddTask" data-pm-action="add-task" data-pid="'+pmE(p.id)+'" data-phase="'+pmE(ph.id)+'" data-tranche="'+pmE(scope&&scope!=="all"?scope:"")+'">+ Ajouter une action ici</button></div></details>';
+  }).join("")+'<button class="pmBtn" data-pm-action="add-phase" data-pid="'+pmE(p.id)+'">+ Ajouter une phase</button>';
+}
+function pmBranchDetails(p,scope){return (p.trancheDetails&&p.trancheDetails[scope])||{};}
+function pmBranchSummary(p,scope){
+  var prog=pmScopedProgress(p,scope),d=scope==="common"?{deadline:p.deadline}:pmBranchDetails(p,scope),phase=pmArray(p.phases).find(function(x){return x.id===d.phaseId;});
+  return '<article class="pmCard pmBranchSummary"><div class="pmSectionHead"><h2>'+pmE(pmTrancheLabel(scope))+'</h2>'+pmScopeBadge(scope)+'</div><div class="pmProgress"><span style="width:'+prog.pct+'%"></span></div><dl class="pmSideMeta"><dt>Actions</dt><dd>'+prog.done+' / '+prog.total+'</dd>'+(scope!=="common"?'<dt>Phase actuelle</dt><dd>'+pmE(phase?phase.title:"Non définie")+'</dd>':'')+'<dt>Échéance</dt><dd>'+pmE(pmDate(d.deadline))+'</dd></dl></article>';
+}
+function pmBranchControls(p,scope){
+  var d=pmBranchDetails(p,scope),other=scope==="1"?"2":"1";
+  return '<section class="pmCard pmBranchControls"><div><div class="pmEyebrow">Pilotage '+pmE(pmTrancheLabel(scope))+'</div><h2>Repères de la tranche</h2></div><label>Phase actuelle<select data-pm-action="tranche-phase" data-pid="'+pmE(p.id)+'" data-tranche="'+scope+'">'+pmArray(p.phases).map(function(ph){return '<option value="'+pmE(ph.id)+'"'+(d.phaseId===ph.id?' selected':'')+'>'+pmE(ph.title)+'</option>';}).join('')+'</select></label><label>Échéance<input type="date" data-pm-action="tranche-deadline" data-pid="'+pmE(p.id)+'" data-tranche="'+scope+'" value="'+pmE(d.deadline||'')+'"></label><button class="pmBtn" data-pm-action="copy-tranche-tasks" data-pid="'+pmE(p.id)+'" data-from="'+scope+'" data-to="'+other+'">Copier les actions vers '+pmE(pmTrancheLabel(other))+'</button></section>';
+}
+function pmSlotsHtml(p,scope){
+  var tasks=pmArray(p.tasks),slots=PM.slots?PM.slots(p.id):[];
+  if(scope&&scope!=="all")slots=slots.filter(function(s){var t=tasks.find(function(x){return x.id===s.taskId;});return (s.tranche||pmTaskScope(t))===scope;});
+  return slots.length?slots.sort(function(a,b){return (a.date+a.start).localeCompare(b.date+b.start);}).map(function(s){var task=tasks.find(function(t){return t.id===s.taskId;});return '<div class="pmSlot"><button class="pmSlotWhen" data-pm-action="open-slot-date" data-date="'+pmE(s.date)+'"><b>'+pmE(pmSlotTitle(p,s))+'</b><small>'+pmE(pmDate(s.date))+' · '+pmE(s.start)+'–'+pmE(s.end)+'</small></button>'+(task||s.taskIds?'<button data-pm-action="edit-slot" data-pid="'+pmE(p.id)+'" data-slot="'+pmE(s.id)+'" aria-label="Modifier ce créneau" title="Modifier">✎</button>':'')+'<button data-pm-action="unschedule" data-slot="'+pmE(s.id)+'" aria-label="Retirer ce créneau" title="Retirer">×</button></div>';}).join(""):'<div class="pmEmpty" style="padding:17px"><strong>Aucun créneau</strong>Planifiez une action depuis sa ligne.</div>';
+}
 function pmProjectHtml(p){
   if(!p)return '<div class="pmWrap"><div class="pmEmpty"><strong>Projet introuvable</strong><button class="pmBtn" data-pm-action="go-projects">Retour aux projets</button></div></div>';
-  var phases=pmArray(p.phases), tasks=pmArray(p.tasks), prog=pmProgress(p), slots=PM.slots?PM.slots(p.id):[];
-  return '<div class="pmWrap"><header class="pmDetailHead"><button class="pmBtn pmBtnIcon pmBack" data-pm-action="go-projects" aria-label="Retour aux projets">←</button><div class="pmDetailIdentity"><div class="pmLabels">'+(p.code?'<span class="pmCode">'+pmE(p.code)+'</span>':"")+(p.tranche?'<span class="pmPill">Tranche '+pmE(p.tranche)+'</span>':"")+pmDeadline(p.deadline)+pmLabelsHtml(p.labels)+'</div><h1>'+pmE(p.name)+'</h1><p>'+pmE(p.title||"Sans description")+'</p></div><div class="pmDetailActions"><button class="pmBtn pmBtnPrimary" data-pm-action="add-task" data-pid="'+pmE(p.id)+'">+ Ajouter une action</button><button class="pmBtn" data-pm-action="edit-project" data-pid="'+pmE(p.id)+'">Modifier</button><button class="pmBtn" data-pm-action="archive-project" data-pid="'+pmE(p.id)+'">'+(p.archived?'Réactiver':'Archiver')+'</button></div></header>'
-   +'<div class="pmDetailGrid"><section class="pmPhases" aria-label="Phases">'+phases.map(function(ph,i){var list=tasks.filter(function(t){return t.phaseId===ph.id;}),active=list.filter(function(t){return t.status!=="done";}),done=list.filter(function(t){return t.status==="done";});if(PM.sortTasks)active=PM.sortTasks(active,pmToday());return '<details class="pmCard pmPhase" data-phase="'+pmE(ph.id)+'"'+(projectUI.collapsed[p.id+":"+ph.id]?'':' open')+'><summary><span class="pmPhaseTitle">'+pmE(ph.title)+'</span><span class="pmPhaseCount">'+list.filter(function(t){return t.status==="done";}).length+' / '+list.length+'</span><span class="pmPhaseTools"><button data-pm-action="phase-up" data-pid="'+pmE(p.id)+'" data-phase="'+pmE(ph.id)+'"'+(i===0?' disabled':'')+' title="Monter" aria-label="Monter la phase">↑</button><button data-pm-action="phase-down" data-pid="'+pmE(p.id)+'" data-phase="'+pmE(ph.id)+'"'+(i===phases.length-1?' disabled':'')+' title="Descendre" aria-label="Descendre la phase">↓</button><button data-pm-action="rename-phase" data-pid="'+pmE(p.id)+'" data-phase="'+pmE(ph.id)+'" title="Renommer" aria-label="Renommer la phase">✎</button></span></summary><div class="pmPhaseBody">'+(list.length?active.map(function(t){return pmTaskRow(p,t);}).join("")+(done.length?'<details class="pmCompletedTasks" data-completed-key="'+pmE(p.id+':'+ph.id)+'"'+(projectUI.completedOpen[p.id+':'+ph.id]?' open':'')+'><summary>'+done.length+' terminée'+(done.length>1?'s':'')+'</summary>'+done.map(function(t){return pmTaskRow(p,t);}).join("")+'</details>':''):'<div class="pmEmpty" style="padding:17px">Aucune action dans cette phase.</div>')+pmLegacyForPhase(p,ph.id)+'<button class="pmAddTask" data-pm-action="add-task" data-pid="'+pmE(p.id)+'" data-phase="'+pmE(ph.id)+'">+ Ajouter une action ici</button></div></details>';}).join("")+'<button class="pmBtn" data-pm-action="add-phase" data-pid="'+pmE(p.id)+'">+ Ajouter une phase</button></section>'
-   +'<aside class="pmSide"><section class="pmCard pmSideCard"><h2>Avancement</h2><div class="pmProgress"><span style="width:'+prog.pct+'%"></span></div><dl class="pmSideMeta" style="margin-top:13px"><dt>Actions</dt><dd>'+prog.done+' / '+prog.total+'</dd><dt>Échéance</dt><dd>'+pmE(pmDate(p.deadline))+'</dd><dt>Planifiées</dt><dd>'+slots.length+'</dd></dl></section><section class="pmCard pmSideCard"><div class="pmSectionHead"><h2>Créneaux planifiés</h2><button class="pmLink" data-pm-action="open-planning">Planning →</button></div>'+(slots.length?slots.sort(function(a,b){return (a.date+a.start).localeCompare(b.date+b.start);}).map(function(s){var task=tasks.find(function(t){return t.id===s.taskId;});return '<div class="pmSlot"><button class="pmSlotWhen" data-pm-action="open-slot-date" data-date="'+pmE(s.date)+'"><b>'+pmE(pmSlotTitle(p,s))+'</b><small>'+pmE(pmDate(s.date))+' · '+pmE(s.start)+'–'+pmE(s.end)+'</small></button>'+(task||s.taskIds?'<button data-pm-action="edit-slot" data-pid="'+pmE(p.id)+'" data-slot="'+pmE(s.id)+'" aria-label="Modifier ce créneau" title="Modifier">✎</button>':'')+'<button data-pm-action="unschedule" data-slot="'+pmE(s.id)+'" aria-label="Retirer ce créneau" title="Retirer">×</button></div>';}).join(""):'<div class="pmEmpty" style="padding:17px"><strong>Aucun créneau</strong>Planifiez une action depuis sa ligne.</div>')+'</section><section class="pmCard pmSideCard"><h2>Réutiliser</h2><p style="font-size:12px;color:var(--ink-3);margin-bottom:11px">Conservez la structure et les actions comme modèle.</p><button class="pmBtn" data-pm-action="save-template" data-pid="'+pmE(p.id)+'">Créer un modèle</button></section><section class="pmCard pmSideCard pmTaskFieldConfig"><div class="pmSectionHead"><h2>Colonnes des actions</h2><button class="pmLink" data-pm-action="add-task-field" data-pid="'+pmE(p.id)+'">+ Ajouter</button></div>'+(pmArray(p.taskFields).length?pmArray(p.taskFields).map(function(f){return '<div class="pmToken"><span>'+pmE(f.title)+'</span><button data-pm-action="rename-task-field" data-pid="'+pmE(p.id)+'" data-field="'+pmE(f.id)+'">✎</button><button data-pm-action="remove-task-field" data-pid="'+pmE(p.id)+'" data-field="'+pmE(f.id)+'">×</button></div>';}).join(''):'<p>Aucune colonne personnalisée.</p>')+'</section></aside></div>'+(typeof pmProjectDetailsHtml==="function"?pmProjectDetailsHtml(p):"")+'</div>';
+  var both=p.tranche==="both",active=both?(projectUI.trancheTabs[p.id]||"all"):"all",scope=active==="all"?"":active,prog=pmScopedProgress(p,scope),slots=PM.slots?PM.slots(p.id):[];
+  var tabs=both?'<nav class="pmTrancheTabs" aria-label="Vues du projet">'+[["all","Vue globale"],["common","Commun"],["1","T1"],["2","T2"]].map(function(x){return '<button type="button" data-pm-action="tranche-tab" data-pid="'+pmE(p.id)+'" data-tranche="'+x[0]+'" aria-current="'+(active===x[0]?'page':'false')+'">'+x[1]+'</button>';}).join('')+'</nav>':'';
+  var main=active==="all"&&both?'<section class="pmBranchOverview"><div class="pmBranchGrid">'+pmBranchSummary(p,"1")+pmBranchSummary(p,"2")+'</div>'+pmBranchSummary(p,"common")+'</section>':'<div class="pmDetailGrid"><section class="pmPhases" aria-label="Phases '+pmE(scope?pmTrancheLabel(scope):'du projet')+'">'+((scope==="1"||scope==="2")?pmBranchControls(p,scope):'')+pmPhaseListHtml(p,scope)+'</section><aside class="pmSide"><section class="pmCard pmSideCard"><h2>Avancement '+(scope?pmE(pmTrancheLabel(scope)):'')+'</h2><div class="pmProgress"><span style="width:'+prog.pct+'%"></span></div><dl class="pmSideMeta" style="margin-top:13px"><dt>Actions</dt><dd>'+prog.done+' / '+prog.total+'</dd><dt>Échéance</dt><dd>'+pmE(pmDate(scope&&scope!=="common"?pmBranchDetails(p,scope).deadline:p.deadline))+'</dd><dt>Planifiées</dt><dd>'+slots.filter(function(s){if(!scope)return true;var t=pmArray(p.tasks).find(function(x){return x.id===s.taskId;});return (s.tranche||pmTaskScope(t))===scope;}).length+'</dd></dl></section><section class="pmCard pmSideCard"><div class="pmSectionHead"><h2>Créneaux planifiés</h2><button class="pmLink" data-pm-action="open-planning">Planning →</button></div>'+pmSlotsHtml(p,scope)+'</section><section class="pmCard pmSideCard"><h2>Réutiliser</h2><p style="font-size:12px;color:var(--ink-3);margin-bottom:11px">Conservez la structure et les actions comme modèle.</p><button class="pmBtn" data-pm-action="save-template" data-pid="'+pmE(p.id)+'">Créer un modèle</button></section><section class="pmCard pmSideCard pmTaskFieldConfig"><div class="pmSectionHead"><h2>Colonnes des actions</h2><button class="pmLink" data-pm-action="add-task-field" data-pid="'+pmE(p.id)+'">+ Ajouter</button></div>'+(pmArray(p.taskFields).length?pmArray(p.taskFields).map(function(f){return '<div class="pmToken"><span>'+pmE(f.title)+'</span><button data-pm-action="rename-task-field" data-pid="'+pmE(p.id)+'" data-field="'+pmE(f.id)+'">✎</button><button data-pm-action="remove-task-field" data-pid="'+pmE(p.id)+'" data-field="'+pmE(f.id)+'">×</button></div>';}).join(''):'<p>Aucune colonne personnalisée.</p>')+'</section></aside></div>';
+  return '<div class="pmWrap"><header class="pmDetailHead"><button class="pmBtn pmBtnIcon pmBack" data-pm-action="go-projects" aria-label="Retour aux projets">←</button><div class="pmDetailIdentity"><div class="pmLabels">'+(p.code?'<span class="pmCode">'+pmE(p.code)+'</span>':'')+pmProjectTrancheBadge(p)+(p.deadline?pmScopeBadge("common"):"")+pmDeadline(p.deadline)+pmLabelsHtml(p.labels)+'</div><h1>'+pmE(p.name)+'</h1><p>'+pmE(p.title||"Sans description")+'</p></div><div class="pmDetailActions"><button class="pmBtn pmBtnPrimary" data-pm-action="add-task" data-pid="'+pmE(p.id)+'" data-tranche="'+pmE(scope)+'">+ Ajouter une action</button><button class="pmBtn" data-pm-action="edit-project" data-pid="'+pmE(p.id)+'">Modifier</button><button class="pmBtn" data-pm-action="archive-project" data-pid="'+pmE(p.id)+'">'+(p.archived?'Réactiver':'Archiver')+'</button></div></header>'+tabs+main+'<div class="pmSharedHeading"><span>'+pmScopeBadge("common")+'</span><span>Documents, contacts et informations partagés au niveau du projet</span></div>'+(typeof pmProjectDetailsHtml==="function"?pmProjectDetailsHtml(p):'')+'</div>';
 }
-
 function pmSettingsHtml(){
   var codes=pmArray(etat.projectCodes), labels=pmArray(etat.projectLabels), templates=pmArray(etat.projectTemplates);
   return '<div class="pmWrap"><header class="pmPageHead"><div><div class="pmEyebrow">Personnalisation</div><h1>Votre façon de travailler</h1><p>Adaptez les codes, étiquettes et modèles à vos projets.</p></div></header><div class="pmSettingsGrid"><section class="pmCard pmSetting"><h2>Codes projet</h2><p>Une référence courte pour retrouver et filtrer vos projets.</p><div class="pmTokenList">'+(codes.length?codes.map(function(c){return '<div class="pmToken"><span class="pmCode">'+pmE(c)+'</span><span>'+pmE(c)+'</span><button data-pm-action="edit-code" data-value="'+pmE(c)+'" aria-label="Renommer le code">✎</button><button data-pm-action="remove-code" data-value="'+pmE(c)+'" aria-label="Retirer le code">×</button></div>';}).join(""):'<div class="pmEmpty">Aucun code personnalisé.</div>')+'</div><form class="pmInlineAdd" data-pm-form="add-code"><input name="name" maxlength="30" required placeholder="Ex. PRJ-2026"><button class="pmBtn" type="submit">Ajouter</button></form></section>'
@@ -3278,14 +3378,15 @@ window.renderProjectsUI=renderProjectsUI;
 
 function pmDialogShells(){
   var labels=pmArray(etat.projectLabels);
-  return '<dialog class="pmDialog" id="pmProjectDialog"><div class="pmDialogHead"><div><h2 id="pmProjectDialogTitle">Nouveau projet</h2><p>Donnez-lui un nom clair, puis précisez ce qui aide à le piloter.</p></div><button class="pmClose" data-pm-action="close-dialog" aria-label="Fermer">×</button></div><form class="pmForm" id="pmProjectForm"><input type="hidden" name="projectId"><input type="hidden" name="templateId"><div class="pmFields"><div class="pmField pmFieldFull"><label for="pmName">Nom du projet *</label><input id="pmName" name="name" maxlength="100" required autofocus placeholder="Ex. Réhabilitation du site Nord"></div><div class="pmField pmFieldFull"><label for="pmTitle">Titre descriptif</label><input id="pmTitle" name="title" maxlength="180" placeholder="Le résultat attendu, en une phrase"></div><div class="pmField"><label for="pmTranche">Tranche</label><select id="pmTranche" name="tranche"><option value="">Non définie</option><option value="1">Tranche 1</option><option value="2">Tranche 2</option></select></div><div class="pmField"><label for="pmCode">Code</label><input id="pmCode" name="code" list="pmCodes" maxlength="30" placeholder="Choisir ou créer"><datalist id="pmCodes">'+pmArray(etat.projectCodes).map(function(c){return '<option value="'+pmE(c)+'">';}).join("")+'</datalist><small>Un nouveau code sera ajouté à votre liste.</small></div><div class="pmField"><label for="pmDeadline">Échéance</label><input id="pmDeadline" type="date" name="deadline"></div><fieldset class="pmField" style="border:0;padding:0;margin:0"><legend class="pmLegend">Étiquettes</legend><div class="pmChoiceSet">'+(labels.length?labels.map(function(l){return '<label><input type="checkbox" name="labels" value="'+pmE(l.id)+'"><span class="pmColor" style="--label-color:'+pmE(l.color)+'"></span>'+pmE(l.name)+'</label>';}).join(""):'<small>Ajoutez des étiquettes dans Personnaliser.</small>')+'</div></fieldset></div><div class="pmFormError" role="alert"></div><div class="pmFormActions"><button type="button" class="pmBtn" data-pm-action="close-dialog">Annuler</button><button type="submit" class="pmBtn pmBtnPrimary">Créer le projet</button></div></form></dialog>'
-    +'<dialog class="pmDialog" id="pmTaskDialog"><div class="pmDialogHead"><div><h2 id="pmTaskDialogTitle">Nouvelle action</h2><p>Une action concrète, rattachée à une phase.</p></div><button class="pmClose" data-pm-action="close-dialog" aria-label="Fermer">×</button></div><form class="pmForm" id="pmTaskForm"><input type="hidden" name="pid"><input type="hidden" name="tid"><div class="pmFields"><div class="pmField pmFieldFull"><label for="pmTaskTitle">Action *</label><input id="pmTaskTitle" name="title" maxlength="180" required autofocus></div><div class="pmField"><label for="pmTaskPhase">Phase</label><select id="pmTaskPhase" name="phaseId"></select></div><div class="pmField"><label for="pmTaskStatus">État</label><select id="pmTaskStatus" name="status"><option value="todo">À faire</option><option value="doing">En cours</option><option value="done">Terminée</option></select></div><div class="pmField"><label for="pmTaskDeadline">À terminer avant</label><input id="pmTaskDeadline" type="date" name="deadline"></div><div class="pmField"><label for="pmTaskImportance">Importance</label><select id="pmTaskImportance" name="importance"><option value="1">1 · Impératif — date ferme</option><option value="2">2 · Important — priorité habituelle</option><option value="3">3 · Souple — peut attendre</option></select></div><div class="pmField"><label for="pmTaskUrgency">Urgence</label><select id="pmTaskUrgency" name="manualUrgency"><option value="auto">Automatique</option><option value="normal">Normale</option><option value="watch">À surveiller</option><option value="urgent">Urgente</option><option value="critical">Critique</option></select><small>L’alerte la plus forte entre votre choix et la deadline est retenue.</small></div><div class="pmField pmFieldFull"><label for="pmTaskDepends">Dépend de</label><select id="pmTaskDepends" name="dependsOn" multiple size="4"></select><small>Plusieurs choix possibles : Ctrl ou Cmd sur ordinateur.</small></div><div class="pmField pmFieldFull"><label for="pmTaskBlocked">Motif du blocage</label><input id="pmTaskBlocked" name="blockedReason" maxlength="300"></div><div class="pmField"><label for="pmTaskFollowUp">Date de relance</label><input id="pmTaskFollowUp" type="date" name="followUpDate"></div><div class="pmField"><label for="pmTaskAssignee">Responsable</label><select id="pmTaskAssignee" name="assigneeId"></select></div><div class="pmField"><label for="pmTaskValidator">Validateur</label><select id="pmTaskValidator" name="validatorId"></select></div><fieldset class="pmField" style="border:0;padding:0;margin:0"><legend class="pmLegend">Étiquettes</legend><div class="pmChoiceSet" id="pmTaskLabels"></div></fieldset><div class="pmField pmFieldFull"><label for="pmTaskNote">Note</label><textarea id="pmTaskNote" name="note" maxlength="1000" placeholder="Informations utiles, prochain pas…"></textarea></div></div><div class="pmFormError" role="alert"></div><div class="pmFormActions"><button type="button" class="pmBtn pmBtnDanger" data-pm-action="delete-task" hidden>Supprimer</button><span style="flex:1"></span><button type="button" class="pmBtn" data-pm-action="close-dialog">Annuler</button><button type="submit" class="pmBtn pmBtnPrimary">Enregistrer</button></div></form></dialog>'
+  return '<dialog class="pmDialog" id="pmProjectDialog"><div class="pmDialogHead"><div><h2 id="pmProjectDialogTitle">Nouveau projet</h2><p>Donnez-lui un nom clair, puis précisez ce qui aide à le piloter.</p></div><button class="pmClose" data-pm-action="close-dialog" aria-label="Fermer">×</button></div><form class="pmForm" id="pmProjectForm"><input type="hidden" name="projectId"><input type="hidden" name="templateId"><div class="pmFields"><div class="pmField pmFieldFull"><label for="pmName">Nom du projet *</label><input id="pmName" name="name" maxlength="100" required autofocus placeholder="Ex. Réhabilitation du site Nord"></div><div class="pmField pmFieldFull"><label for="pmTitle">Titre descriptif</label><input id="pmTitle" name="title" maxlength="180" placeholder="Le résultat attendu, en une phrase"></div><div class="pmField"><label for="pmTranche">Tranche</label><select id="pmTranche" name="tranche"><option value="">Non définie</option><option value="1">Tranche 1</option><option value="2">Tranche 2</option><option value="both">Tranches 1 et 2</option></select></div><div class="pmField"><label for="pmCode">Code</label><input id="pmCode" name="code" list="pmCodes" maxlength="30" placeholder="Choisir ou créer"><datalist id="pmCodes">'+pmArray(etat.projectCodes).map(function(c){return '<option value="'+pmE(c)+'">';}).join("")+'</datalist><small>Un nouveau code sera ajouté à votre liste.</small></div><div class="pmField"><label for="pmDeadline">Échéance</label><input id="pmDeadline" type="date" name="deadline"></div><fieldset class="pmField" style="border:0;padding:0;margin:0"><legend class="pmLegend">Étiquettes</legend><div class="pmChoiceSet">'+(labels.length?labels.map(function(l){return '<label><input type="checkbox" name="labels" value="'+pmE(l.id)+'"><span class="pmColor" style="--label-color:'+pmE(l.color)+'"></span>'+pmE(l.name)+'</label>';}).join(""):'<small>Ajoutez des étiquettes dans Personnaliser.</small>')+'</div></fieldset></div><div class="pmFormError" role="alert"></div><div class="pmFormActions"><button type="button" class="pmBtn" data-pm-action="close-dialog">Annuler</button><button type="submit" class="pmBtn pmBtnPrimary">Créer le projet</button></div></form></dialog>'
+    +'<dialog class="pmDialog" id="pmTaskDialog"><div class="pmDialogHead"><div><h2 id="pmTaskDialogTitle">Nouvelle action</h2><p>Une action concrète, rattachée à une phase.</p></div><button class="pmClose" data-pm-action="close-dialog" aria-label="Fermer">×</button></div><form class="pmForm" id="pmTaskForm"><input type="hidden" name="pid"><input type="hidden" name="tid"><div class="pmFields"><div class="pmField pmFieldFull"><label for="pmTaskTitle">Action *</label><input id="pmTaskTitle" name="title" maxlength="180" required autofocus></div><div class="pmField"><label for="pmTaskPhase">Phase</label><select id="pmTaskPhase" name="phaseId"></select></div><div class="pmField"><label for="pmTaskTranche">Portée</label><select id="pmTaskTranche" name="tranche"><option value="common">Commun</option><option value="1">T1</option><option value="2">T2</option></select></div><div class="pmField"><label for="pmTaskStatus">État</label><select id="pmTaskStatus" name="status"><option value="todo">À faire</option><option value="doing">En cours</option><option value="done">Terminée</option></select></div><div class="pmField"><label for="pmTaskDeadline">À terminer avant</label><input id="pmTaskDeadline" type="date" name="deadline"></div><div class="pmField"><label for="pmTaskImportance">Importance</label><select id="pmTaskImportance" name="importance"><option value="1">1 · Impératif — date ferme</option><option value="2">2 · Important — priorité habituelle</option><option value="3">3 · Souple — peut attendre</option></select></div><div class="pmField"><label for="pmTaskUrgency">Urgence</label><select id="pmTaskUrgency" name="manualUrgency"><option value="auto">Automatique</option><option value="normal">Normale</option><option value="watch">À surveiller</option><option value="urgent">Urgente</option><option value="critical">Critique</option></select><small>L’alerte la plus forte entre votre choix et la deadline est retenue.</small></div><div class="pmField pmFieldFull"><label for="pmTaskDepends">Dépend de</label><select id="pmTaskDepends" name="dependsOn" multiple size="4"></select><small>Plusieurs choix possibles : Ctrl ou Cmd sur ordinateur.</small></div><div class="pmField pmFieldFull"><label for="pmTaskBlocked">Motif du blocage</label><input id="pmTaskBlocked" name="blockedReason" maxlength="300"></div><div class="pmField"><label for="pmTaskFollowUp">Date de relance</label><input id="pmTaskFollowUp" type="date" name="followUpDate"></div><div class="pmField"><label for="pmTaskAssignee">Responsable</label><select id="pmTaskAssignee" name="assigneeId"></select></div><div class="pmField"><label for="pmTaskValidator">Validateur</label><select id="pmTaskValidator" name="validatorId"></select></div><fieldset class="pmField" style="border:0;padding:0;margin:0"><legend class="pmLegend">Étiquettes</legend><div class="pmChoiceSet" id="pmTaskLabels"></div></fieldset><div class="pmField pmFieldFull"><label for="pmTaskNote">Note</label><textarea id="pmTaskNote" name="note" maxlength="1000" placeholder="Informations utiles, prochain pas…"></textarea></div></div><div class="pmFormError" role="alert"></div><div class="pmFormActions"><button type="button" class="pmBtn pmBtnDanger" data-pm-action="delete-task" hidden>Supprimer</button><span style="flex:1"></span><button type="button" class="pmBtn" data-pm-action="close-dialog">Annuler</button><button type="submit" class="pmBtn pmBtnPrimary">Enregistrer</button></div></form></dialog>'
     +'<dialog class="pmDialog" id="pmScheduleDialog"><div class="pmDialogHead"><div><h2>Planifier l’action</h2><p id="pmScheduleName"></p></div><button class="pmClose" data-pm-action="close-dialog" aria-label="Fermer">×</button></div><form class="pmForm" id="pmScheduleForm"><input type="hidden" name="slotId"><input type="hidden" name="pid"><input type="hidden" name="tid"><div class="pmFields"><div class="pmField pmFieldFull"><label for="pmScheduleDate">Date *</label><input id="pmScheduleDate" type="date" name="date" required autofocus></div><div class="pmField"><label for="pmScheduleStart">Début *</label><input id="pmScheduleStart" type="time" name="start" value="09:00" required></div><div class="pmField"><label for="pmScheduleEnd">Fin *</label><input id="pmScheduleEnd" type="time" name="end" value="10:00" required></div></div><div class="pmFormError" role="alert"></div><div class="pmFormActions"><button type="button" class="pmBtn" data-pm-action="close-dialog">Annuler</button><button type="submit" class="pmBtn pmBtnPrimary">Planifier</button></div></form></dialog>';
 }
 
 function pmCloneTemplate(template){
   var phaseIds={},taskIds={},fieldIds={},contactIds={};pmArray(template.phases).forEach(function(x){phaseIds[x.id]=uid();});pmArray(template.tasks).forEach(function(x){taskIds[x.id]=uid();});pmArray(template.taskFields).forEach(function(x){fieldIds[x.id]=uid();});pmArray(template.contacts).forEach(function(x){contactIds[x.id]=uid();});
-  return {phases:pmArray(template.phases).map(function(x){return{id:phaseIds[x.id],title:x.title};}),milestones:pmArray(template.milestones).map(function(x){return{id:uid(),title:x.title,date:"",done:false};}),readiness:pmArray(template.readiness).map(function(x){return{id:uid(),title:x.title,done:false};}),documents:pmArray(template.documents).map(function(x){return Object.assign({},x,{id:uid()});}),taskFields:pmArray(template.taskFields).map(function(x){return{id:fieldIds[x.id],title:x.title};}),contacts:pmArray(template.contacts).map(function(x){return Object.assign({},x,{id:contactIds[x.id]});}),tasks:pmArray(template.tasks).map(function(x){var fields={};Object.keys(x.fields||{}).forEach(function(k){if(fieldIds[k])fields[fieldIds[k]]=x.fields[k];});return Object.assign({},x,{id:taskIds[x.id]||uid(),phaseId:phaseIds[x.phaseId]||"",status:"todo",deadline:"",dependsOn:pmArray(x.dependsOn).map(function(id){return taskIds[id];}).filter(Boolean),blockedReason:"",followUpDate:"",assigneeId:contactIds[x.assigneeId]||"",validatorId:contactIds[x.validatorId]||"",fields:fields});})};
+  var trancheDetails={};["1","2"].forEach(function(scope){if(template.tranche!==scope&&template.tranche!=="both")return;var original=template.trancheDetails&&template.trancheDetails[scope]||{};trancheDetails[scope]={deadline:"",phaseId:phaseIds[original.phaseId]||phaseIds[(template.phases[0]||{}).id]};});
+  return {tranche:template.tranche||"",trancheDetails:trancheDetails,phases:pmArray(template.phases).map(function(x){return{id:phaseIds[x.id],title:x.title};}),milestones:pmArray(template.milestones).map(function(x){return{id:uid(),title:x.title,date:"",done:false};}),readiness:pmArray(template.readiness).map(function(x){return{id:uid(),title:x.title,done:false};}),documents:pmArray(template.documents).map(function(x){return Object.assign({},x,{id:uid()});}),taskFields:pmArray(template.taskFields).map(function(x){return{id:fieldIds[x.id],title:x.title};}),contacts:pmArray(template.contacts).map(function(x){return Object.assign({},x,{id:contactIds[x.id]});}),tasks:pmArray(template.tasks).map(function(x){var fields={};Object.keys(x.fields||{}).forEach(function(k){if(fieldIds[k])fields[fieldIds[k]]=x.fields[k];});return Object.assign({},x,{id:taskIds[x.id]||uid(),tranche:pmTaskScope(x),phaseId:phaseIds[x.phaseId]||"",status:"todo",deadline:"",dependsOn:pmArray(x.dependsOn).map(function(id){return taskIds[id];}).filter(Boolean),blockedReason:"",followUpDate:"",assigneeId:contactIds[x.assigneeId]||"",validatorId:contactIds[x.validatorId]||"",fields:fields});})};
 }
 function pmOpenProjectForm(project,templateId,opener){
   var form=document.getElementById("pmProjectForm"), dlg=document.getElementById("pmProjectDialog"); if(!form)return;
@@ -3296,14 +3397,17 @@ function pmOpenProjectForm(project,templateId,opener){
   document.getElementById("pmProjectDialogTitle").textContent=project?"Modifier le projet":"Nouveau projet";
   form.querySelector('[type="submit"]').textContent=project?"Enregistrer":"Créer le projet";
   if(project){["name","title","tranche","code","deadline"].forEach(function(k){form.elements[k].value=project[k]||"";});pmArray(project.labels).forEach(function(id){var c=Array.from(form.querySelectorAll('input[name="labels"]')).find(function(x){return x.value===id;});if(c)c.checked=true;});}
+  else if(templateId){var template=pmArray(etat.projectTemplates).find(function(x){return x.id===templateId;});if(template)form.elements.tranche.value=template.tranche||"";}
   form.querySelector(".pmFormError").textContent=""; pmOpenDialog(dlg.id,opener);
 }
-function projectEditTask(pid,tid,phaseId,opener){
+function projectEditTask(pid,tid,phaseId,opener,tranche){
   var p=pmGet(pid), t=p&&pmArray(p.tasks).find(function(x){return x.id===tid;}), form=document.getElementById("pmTaskForm");if(!p||!form)return;
   form.reset();form.elements.importance.value="2";form.elements.pid.value=pid;form.elements.tid.value=t?t.id:"";
   form.elements.phaseId.innerHTML=pmArray(p.phases).map(function(ph){return '<option value="'+pmE(ph.id)+'">'+pmE(ph.title)+'</option>';}).join("");
   form.elements.phaseId.value=(t&&t.phaseId)||phaseId||(p.phases[0]&&p.phases[0].id)||"";
-  form.elements.dependsOn.innerHTML=pmArray(p.tasks).filter(function(x){return !t||x.id!==t.id;}).map(function(x){return '<option value="'+pmE(x.id)+'">'+pmE(x.title)+'</option>';}).join("");
+  form.elements.tranche.value=(t&&pmTaskScope(t))||tranche||(p.tranche==="1"||p.tranche==="2"?p.tranche:"common");
+  Array.from(form.elements.tranche.options).forEach(function(o){o.hidden=p.tranche!=="both"&&o.value!=="common"&&o.value!==p.tranche;});
+  form.elements.dependsOn.innerHTML=pmArray(p.tasks).filter(function(x){return !t||x.id!==t.id;}).map(function(x){return '<option value="'+pmE(x.id)+'">['+pmE(pmTrancheLabel(pmTaskScope(x)))+'] '+pmE(x.title)+'</option>';}).join("");
   var contactOptions='<option value="">Non défini</option>'+pmArray(p.contacts).map(function(c){return '<option value="'+pmE(c.id)+'">'+pmE(c.name)+(c.role?' · '+pmE(c.role):'')+'</option>';}).join("");form.elements.assigneeId.innerHTML=contactOptions;form.elements.validatorId.innerHTML=contactOptions;
   document.getElementById("pmTaskDialogTitle").textContent=t?"Modifier l’action":"Nouvelle action";
   var labels=document.getElementById("pmTaskLabels");labels.innerHTML=pmArray(etat.projectLabels).map(function(l){return '<label><input type="checkbox" name="taskLabels" value="'+pmE(l.id)+'"><span class="pmColor" style="--label-color:'+pmE(l.color)+'"></span>'+pmE(l.name)+'</label>';}).join("")||'<small>Aucune étiquette disponible.</small>';
@@ -3318,13 +3422,15 @@ function pmMutateProject(pid,values){try{PM.update(pid,values);renderProjectsUI(
 
 function pmHandleClick(e){
   var b=e.target.closest("[data-pm-action]");if(!b)return;var a=b.dataset.pmAction,pid=b.dataset.pid,tid=b.dataset.tid,p,phases,i,name;
-  if(a==="weekly-review"){projectNavigate("review");return;}if(a==="go-dashboard"){projectNavigate("dashboard");return;}if(a==="open-task"){var targetProject=pmGet(pid),targetTask=targetProject&&targetProject.tasks.find(function(t){return t.id===tid;});if(targetTask)projectUI.collapsed[pid+":"+targetTask.phaseId]=false;projectNavigate("project",pid);requestAnimationFrame(function(){var x=document.querySelector('[data-pm-action="edit-task"][data-tid="'+CSS.escape(tid)+'"]');if(x){x.scrollIntoView({block:"center"});x.focus();}});return;}
-  if(a==="new-project"){pmOpenProjectForm(null,"",b);return;} if(a==="open-project"){projectNavigate("project",b.dataset.id);return;} if(a==="go-projects"){projectNavigate("projects");return;} if(a==="open-planning"){projectNavigate("planning");return;} if(a==="close-dialog"){pmCloseDialog(b.closest("dialog"));return;}
+  if(a==="weekly-review"){projectNavigate("review");return;}if(a==="go-dashboard"){projectNavigate("dashboard");return;}if(a==="open-task"){var targetProject=pmGet(pid),targetTask=targetProject&&targetProject.tasks.find(function(t){return t.id===tid;});if(targetTask){projectUI.collapsed[pid+":"+pmTaskScope(targetTask)+":"+targetTask.phaseId]=false;if(targetProject.tranche==="both")projectUI.trancheTabs[pid]=pmTaskScope(targetTask);}projectNavigate("project",pid);requestAnimationFrame(function(){var x=document.querySelector('[data-pm-action="edit-task"][data-tid="'+CSS.escape(tid)+'"]');if(x){x.scrollIntoView({block:"center"});x.focus();}});return;}
+  if(a==="new-project"){pmOpenProjectForm(null,"",b);return;} if(a==="open-project"){var openId=b.dataset.id||pid;if(b.dataset.tranche)projectUI.trancheTabs[openId]=b.dataset.tranche;projectNavigate("project",openId);return;} if(a==="go-projects"){projectNavigate("projects");return;} if(a==="open-planning"){projectNavigate("planning");return;} if(a==="close-dialog"){pmCloseDialog(b.closest("dialog"));return;}
+  if(a==="tranche-tab"){projectUI.trancheTabs[pid]=b.dataset.tranche||"all";renderProjectsUI();return;}
   if(a==="edit-project"){pmOpenProjectForm(pmGet(pid),"",b);return;} if(a==="archive-project"){p=pmGet(pid);var wasArchived=p&&p.archived;if(p&&pmMutateProject(pid,{archived:!wasArchived}))pmNotify(wasArchived?"Projet réactivé.":"Projet archivé.");return;}
   if(a==="add-task-field"){name=window.prompt("Nom de la colonne (ex. Référence, N° dossier)");if(name&&name.trim()){p=pmGet(pid);pmMutateProject(pid,{taskFields:pmArray(p.taskFields).concat([{id:uid(),title:name.trim()}])});}return;}
   if(a==="rename-task-field"){p=pmGet(pid);var field=pmArray(p.taskFields).find(function(x){return x.id===b.dataset.field;});name=window.prompt("Nom de la colonne",field?field.title:"");if(field&&name&&name.trim()){pmMutateProject(pid,{taskFields:pmArray(p.taskFields).map(function(x){return x.id===field.id?{id:x.id,title:name.trim()}:x;})});}return;}
   if(a==="remove-task-field"){p=pmGet(pid);if(window.confirm("Supprimer cette colonne et ses valeurs ?")){pmMutateProject(pid,{taskFields:pmArray(p.taskFields).filter(function(x){return x.id!==b.dataset.field;})});}return;}
-  if(a==="add-task"){projectEditTask(pid,"",b.dataset.phase,b);return;} if(a==="edit-task"){projectEditTask(pid,tid,"",b);return;} if(a==="schedule-task"){window.openPlanningSession({projectId:pid,taskId:tid});return;}
+  if(a==="add-task"){projectEditTask(pid,"",b.dataset.phase,b,b.dataset.tranche);return;} if(a==="edit-task"){projectEditTask(pid,tid,"",b);return;} if(a==="schedule-task"){p=pmGet(pid);var scheduledTask=p&&pmArray(p.tasks).find(function(x){return x.id===tid;});window.openPlanningSession({projectId:pid,taskId:tid,tranche:pmTaskScope(scheduledTask)});return;}
+  if(a==="copy-tranche-tasks"){p=pmGet(pid);var sourceCount=pmScopedTasks(p,b.dataset.from).length;if(!sourceCount){pmNotify("Aucune action à copier dans cette tranche.");return;}if(window.confirm("Copier "+sourceCount+" action"+(sourceCount>1?"s":"")+" vers "+pmTrancheLabel(b.dataset.to)+" ? Les copies seront à faire, sans date ni créneau.")){var copied=pmSafe(function(){return PM.copyTrancheTasks(pid,b.dataset.from,b.dataset.to);});if(copied===null)return;renderProjectsUI();pmNotify(sourceCount+" action"+(sourceCount>1?"s copiées.":" copiée."));}return;}
   if(a==="delete-task"){var f=document.getElementById("pmTaskForm");if(!f.elements.tid.value)return;if(window.confirm("Supprimer cette action ? Cette opération ne peut pas être annulée.")){if(pmSafe(function(){return PM.removeTask(f.elements.pid.value,f.elements.tid.value);})===null)return;pmCloseDialog(document.getElementById("pmTaskDialog"));renderProjectsUI();pmNotify("Action supprimée.");}return;}
   if(a==="unschedule"){if(pmSafe(function(){return PM.unschedule(b.dataset.slot);})===null)return;renderProjectsUI();pmNotify("Créneau retiré.");return;}
   if(a==="edit-slot"){var slot=PM.slots(pid).find(function(x){return x.id===b.dataset.slot;});if(slot){if(slot.taskId)pmOpenSchedule(pid,slot.taskId,b,slot);else window.openPlanningSession({slotId:slot.id});}return;}
@@ -3332,7 +3438,7 @@ function pmHandleClick(e){
   if(a==="add-phase"){name=window.prompt("Nom de la nouvelle phase");if(name&&name.trim()){p=pmGet(pid);phases=pmArray(p.phases).concat([{id:uid(),title:name.trim()}]);pmMutateProject(pid,{phases:phases});}return;}
   if(a==="rename-phase"){e.preventDefault();e.stopPropagation();p=pmGet(pid);phases=pmArray(p.phases).map(function(x){return {id:x.id,title:x.title};});i=phases.findIndex(function(x){return x.id===b.dataset.phase;});name=window.prompt("Nom de la phase",i>=0?phases[i].title:"");if(i>=0&&name&&name.trim()){phases[i].title=name.trim();pmMutateProject(pid,{phases:phases});}return;}
   if(a==="phase-up"||a==="phase-down"){e.preventDefault();e.stopPropagation();p=pmGet(pid);phases=pmArray(p.phases).map(function(x){return {id:x.id,title:x.title};});i=phases.findIndex(function(x){return x.id===b.dataset.phase;});var j=a==="phase-up"?i-1:i+1;if(i>=0&&j>=0&&j<phases.length){var tmp=phases[i];phases[i]=phases[j];phases[j]=tmp;pmMutateProject(pid,{phases:phases});}return;}
-  if(a==="save-template"){p=pmGet(pid);name=window.prompt("Nom du modèle",p.name);if(name&&name.trim()){etat.projectTemplates=pmArray(etat.projectTemplates);etat.projectTemplates.push({id:uid(),name:name.trim(),taskFields:pmArray(p.taskFields).map(function(x){return{id:x.id,title:x.title};}),milestones:pmArray(p.milestones).map(function(x){return{id:x.id,title:x.title,date:"",done:false};}),readiness:pmArray(p.readiness).map(function(x){return{id:x.id,title:x.title,done:false};}),documents:pmArray(p.documents).map(function(x){return Object.assign({},x);}),contacts:pmArray(p.contacts).map(function(x){return Object.assign({},x);}),phases:pmArray(p.phases).map(function(x){return{id:x.id,title:x.title};}),tasks:pmArray(p.tasks).map(function(t){return{id:t.id,title:t.title,phaseId:t.phaseId,status:"todo",deadline:"",labels:pmArray(t.labels),note:t.note||"",importance:t.importance||2,manualUrgency:t.manualUrgency||"auto",dependsOn:pmArray(t.dependsOn),blockedReason:"",followUpDate:"",assigneeId:t.assigneeId||"",validatorId:t.validatorId||"",fields:Object.assign({},t.fields||{})};})});pmSave();renderProjectsUI();pmNotify("Modèle créé.");}return;}
+  if(a==="save-template"){p=pmGet(pid);name=window.prompt("Nom du modèle",p.name);if(name&&name.trim()){etat.projectTemplates=pmArray(etat.projectTemplates);etat.projectTemplates.push({id:uid(),name:name.trim(),tranche:p.tranche||"",trancheDetails:{"1":Object.assign({},pmBranchDetails(p,"1"),{deadline:""}),"2":Object.assign({},pmBranchDetails(p,"2"),{deadline:""})},taskFields:pmArray(p.taskFields).map(function(x){return{id:x.id,title:x.title};}),milestones:pmArray(p.milestones).map(function(x){return{id:x.id,title:x.title,date:"",done:false};}),readiness:pmArray(p.readiness).map(function(x){return{id:x.id,title:x.title,done:false};}),documents:pmArray(p.documents).map(function(x){return Object.assign({},x);}),contacts:pmArray(p.contacts).map(function(x){return Object.assign({},x);}),phases:pmArray(p.phases).map(function(x){return{id:x.id,title:x.title};}),tasks:pmArray(p.tasks).map(function(t){return{id:t.id,title:t.title,tranche:pmTaskScope(t),phaseId:t.phaseId,status:"todo",deadline:"",labels:pmArray(t.labels),note:t.note||"",importance:t.importance||2,manualUrgency:t.manualUrgency||"auto",dependsOn:pmArray(t.dependsOn),blockedReason:"",followUpDate:"",assigneeId:t.assigneeId||"",validatorId:t.validatorId||"",fields:Object.assign({},t.fields||{})};})});pmSave();renderProjectsUI();pmNotify("Modèle créé.");}return;}
   if(a==="new-from-template"){pmOpenProjectForm(null,b.dataset.id,b);return;} if(a==="remove-template"){if(window.confirm("Retirer ce modèle ? Les projets existants seront conservés.")){etat.projectTemplates=pmArray(etat.projectTemplates).filter(function(x){return x.id!==b.dataset.id;});pmSave();renderProjectsUI();}return;}
   if(a==="remove-code"){if(window.confirm("Retirer ce code de la liste ? Les projets qui l’utilisent le conserveront.")){etat.projectCodes=pmArray(etat.projectCodes).filter(function(x){return x!==b.dataset.value;});pmSave();renderProjectsUI();}return;}
   if(a==="edit-code"){var oldCode=b.dataset.value,newCode=window.prompt("Nouveau code",oldCode);if(newCode&&newCode.trim()&&newCode.trim()!==oldCode){newCode=newCode.trim();if(pmArray(etat.projectCodes).indexOf(newCode)>=0){pmNotify("Ce code existe déjà.");return;}etat.projectCodes=pmArray(etat.projectCodes).map(function(x){return x===oldCode?newCode:x;});pmProjects().filter(function(x){return x.code===oldCode;}).forEach(function(x){PM.update(x.id,{code:newCode});});pmSave();renderProjectsUI();pmNotify("Code renommé.");}return;}
@@ -3344,11 +3450,12 @@ function pmRestoreTaskFocus(action,pid,tid){
   var match=Array.from(document.querySelectorAll("#projectWorkspace [data-pm-action]")).find(function(x){return x.dataset.pmAction===action&&x.dataset.pid===pid&&x.dataset.tid===tid;});
   if(match) match.focus({preventScroll:true});
 }
-function pmKeepCompletedVisible(el){var p=pmGet(el.dataset.pid),t=p&&p.tasks.find(function(x){return x.id===el.dataset.tid;});if(t)projectUI.completedOpen[p.id+":"+t.phaseId]=true;}
+function pmKeepCompletedVisible(el){var p=pmGet(el.dataset.pid),t=p&&p.tasks.find(function(x){return x.id===el.dataset.tid;});if(t){var scope=p.tranche==="both"?pmTaskScope(t):"all";projectUI.completedOpen[p.id+":"+scope+":"+t.phaseId]=true;}}
 function pmSizeTaskNote(el){el.style.height="auto";el.style.height=Math.max(38,Math.min(132,el.scrollHeight))+"px";}
 function pmHandleChange(e){
   var el=e.target,filter=el.dataset.pmFilter,a=el.dataset.pmAction;
   if(filter){projectUI[filter]=el.type==="checkbox"?el.checked:el.value;renderProjectsUI();return;}
+  if(a==="tranche-phase"||a==="tranche-deadline"){var changes={};changes[a==="tranche-phase"?"phaseId":"deadline"]=el.value;var updated=pmSafe(function(){return PM.updateTranche(el.dataset.pid,el.dataset.tranche,changes);});if(updated===null){renderProjectsUI();return;}renderProjectsUI();pmNotify("Repères de tranche enregistrés.");return;}
   if(a==="toggle-task"){pmKeepCompletedVisible(el);if(pmSafe(function(){return PM.updateTask(el.dataset.pid,el.dataset.tid,{status:el.checked?"done":"todo"});})===null){renderProjectsUI();return;}renderProjectsUI();pmRestoreTaskFocus(a,el.dataset.pid,el.dataset.tid);return;}
   if(a==="task-status"){pmKeepCompletedVisible(el);if(pmSafe(function(){return PM.updateTask(el.dataset.pid,el.dataset.tid,{status:el.value});})===null){renderProjectsUI();return;}renderProjectsUI();pmRestoreTaskFocus(a,el.dataset.pid,el.dataset.tid);return;}
   if(a==="rename-task"){var title=el.value.trim();if(title)pmSafe(function(){return PM.updateTask(el.dataset.pid,el.dataset.tid,{title:title});});else renderProjectsUI();return;}
@@ -3356,7 +3463,7 @@ function pmHandleChange(e){
   if(a==="task-field"){var project=pmGet(el.dataset.pid),task=project&&pmArray(project.tasks).find(function(x){return x.id===el.dataset.tid;}),fields=Object.assign({},task&&task.fields||{});fields[el.dataset.field]=el.value;projectUI.suspendRender=true;try{pmSafe(function(){return PM.updateTask(el.dataset.pid,el.dataset.tid,{fields:fields});});}finally{projectUI.suspendRender=false;}return;}
 }
 function pmHandleInput(e){if(e.target.dataset.pmAction==="task-note"){pmSizeTaskNote(e.target);return;}if(e.target.dataset.pmFilter==="query"){projectUI.query=e.target.value;var pos=e.target.selectionStart;renderProjectsUI();var f=document.querySelector('[data-pm-filter="query"]');if(f){f.focus();f.setSelectionRange(pos,pos);}}}
-function pmHandleToggle(e){var d=e.target;if(d.matches(".pmCompletedTasks"))projectUI.completedOpen[d.dataset.completedKey]=d.open;if(d.matches(".pmPhase")){var p=pmGet(projectUI.projectId);if(p)projectUI.collapsed[p.id+":"+d.dataset.phase]=!d.open;}}
+function pmHandleToggle(e){var d=e.target;if(d.matches(".pmCompletedTasks"))projectUI.completedOpen[d.dataset.completedKey]=d.open;if(d.matches(".pmPhase")){var p=pmGet(projectUI.projectId);if(p)projectUI.collapsed[p.id+":"+(d.dataset.scope||"all")+":"+d.dataset.phase]=!d.open;}}
 
 function pmHandleSubmit(e){
   var form=e.target;if(!form.matches("[data-pm-form],#pmProjectForm,#pmTaskForm,#pmScheduleForm"))return;e.preventDefault();var fd=new FormData(form),err=form.querySelector(".pmFormError");if(err)err.textContent="";
@@ -3366,11 +3473,11 @@ function pmHandleSubmit(e){
       var values={name:name,title:String(fd.get("title")||"").trim(),tranche:String(fd.get("tranche")||""),code:code,deadline:String(fd.get("deadline")||""),labels:pmFormDataLabels(form,"labels")};
       if(code&&pmArray(etat.projectCodes).indexOf(code)<0){etat.projectCodes=pmArray(etat.projectCodes).concat([code]);}
       var id=String(fd.get("projectId")||"");
-      if(id){PM.update(id,values);}else{var template=pmArray(etat.projectTemplates).find(function(x){return x.id===fd.get("templateId");});if(template){var cloned=pmCloneTemplate(template);values.phases=cloned.phases;values.tasks=cloned.tasks;values.taskFields=cloned.taskFields;values.milestones=cloned.milestones;values.readiness=cloned.readiness;values.documents=cloned.documents;values.contacts=cloned.contacts;}var created=PM.create(values);id=created&&created.id?created.id:created;}
+      if(id){PM.update(id,values);}else{var template=pmArray(etat.projectTemplates).find(function(x){return x.id===fd.get("templateId");});if(template){var cloned=pmCloneTemplate(template);if(!values.tranche)values.tranche=cloned.tranche;values.trancheDetails=cloned.trancheDetails;values.phases=cloned.phases;values.tasks=cloned.tasks;values.taskFields=cloned.taskFields;values.milestones=cloned.milestones;values.readiness=cloned.readiness;values.documents=cloned.documents;values.contacts=cloned.contacts;}var created=PM.create(values);id=created&&created.id?created.id:created;}
       pmCloseDialog(document.getElementById("pmProjectDialog"));projectNavigate("project",id);pmNotify(fd.get("projectId")?"Projet mis à jour.":"Projet créé.");return;
     }
     if(form.matches("#pmTaskForm")){
-      var title=String(fd.get("title")||"").trim();if(!title)throw new Error("Le titre de l’action est requis.");var v={title:title,phaseId:String(fd.get("phaseId")||""),status:String(fd.get("status")||"todo"),deadline:String(fd.get("deadline")||""),importance:Number(fd.get("importance")||2),manualUrgency:String(fd.get("manualUrgency")||"auto"),dependsOn:Array.from(form.elements.dependsOn.selectedOptions).map(function(x){return x.value;}),blockedReason:String(fd.get("blockedReason")||"").trim(),followUpDate:String(fd.get("followUpDate")||""),assigneeId:String(fd.get("assigneeId")||""),validatorId:String(fd.get("validatorId")||""),labels:pmFormDataLabels(form,"taskLabels"),note:String(fd.get("note")||"").trim()},tid=String(fd.get("tid")||""),pid=String(fd.get("pid")||"");if(tid)PM.updateTask(pid,tid,v);else PM.addTask(pid,v);pmCloseDialog(document.getElementById("pmTaskDialog"));renderProjectsUI();pmNotify(tid?"Action mise à jour.":"Action ajoutée.");return;
+      var title=String(fd.get("title")||"").trim();if(!title)throw new Error("Le titre de l’action est requis.");var v={title:title,tranche:String(fd.get("tranche")||"common"),phaseId:String(fd.get("phaseId")||""),status:String(fd.get("status")||"todo"),deadline:String(fd.get("deadline")||""),importance:Number(fd.get("importance")||2),manualUrgency:String(fd.get("manualUrgency")||"auto"),dependsOn:Array.from(form.elements.dependsOn.selectedOptions).map(function(x){return x.value;}),blockedReason:String(fd.get("blockedReason")||"").trim(),followUpDate:String(fd.get("followUpDate")||""),assigneeId:String(fd.get("assigneeId")||""),validatorId:String(fd.get("validatorId")||""),labels:pmFormDataLabels(form,"taskLabels"),note:String(fd.get("note")||"").trim()},tid=String(fd.get("tid")||""),pid=String(fd.get("pid")||"");if(tid)PM.updateTask(pid,tid,v);else PM.addTask(pid,v);var savedProject=pmGet(pid);if(savedProject&&savedProject.tranche==="both")projectUI.trancheTabs[pid]=v.tranche;pmCloseDialog(document.getElementById("pmTaskDialog"));renderProjectsUI();pmNotify(tid?"Action mise à jour.":"Action ajoutée.");return;
     }
     if(form.matches("#pmScheduleForm")){var start=String(fd.get("start")),end=String(fd.get("end"));if(start>=end)throw new Error("L’heure de fin doit être après le début.");PM.schedule(String(fd.get("pid")),String(fd.get("tid")),{date:String(fd.get("date")),start:start,end:end},String(fd.get("slotId")||"")||undefined);pmCloseDialog(document.getElementById("pmScheduleDialog"));renderProjectsUI();pmNotify("Action planifiée.");return;}
     if(form.dataset.pmForm==="urgency-rules"){var rules={};[1,2,3].forEach(function(level){rules[level]={};["watch","urgent","critical"].forEach(function(k){var raw=String(fd.get(level+"-"+k)||"").trim();rules[level][k]=raw===""?null:Number(raw);});});PM.setUrgencyRules(rules);renderProjectsUI();pmNotify("Seuils enregistrés.");return;}
@@ -3485,14 +3592,18 @@ function initProjectDetailsUI(){
 
 
 /* Sélecteur de séances chantier. Ce fichier est injecté dans l'IIFE principal. */
-var planningSessionsUI={initialized:false,returnFocus:null,slotId:"",originalTaskIds:[],seedTaskId:""};
+var planningSessionsUI={initialized:false,returnFocus:null,slotId:"",originalTaskIds:[],originalProjectId:"",originalTranche:"",seedTaskId:""};
 
 function psArray(value){return Array.isArray(value)?value:[];}
 function psEscape(value){return typeof pmE==="function"?pmE(value):String(value==null?"":value).replace(/[&<>"']/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];});}
 function psProject(id){return window.PM&&PM.get&&id?PM.get(id):null;}
 function psTask(project,id){return project&&psArray(project.tasks).find(function(task){return task.id===id;});}
 function psCurrentDate(){try{return iso(dateDuJour());}catch(e){return typeof pmToday==="function"?pmToday():new Date().toISOString().slice(0,10);}}
-function psProjectLabel(project){return project.name+(project.code?" · "+project.code:"")+(project.tranche?" · Tranche "+project.tranche:"");}
+function psProjectLabel(project){var tranche=project.tranche==="both"?"T1 + T2":project.tranche?"Tranche "+project.tranche:"";return project.name+(project.code?" · "+project.code:"")+(tranche?" · "+tranche:"");}
+function psTaskTranche(task){return task&&["1","2"].indexOf(task.tranche)>=0?task.tranche:"common";}
+function psTrancheLabel(scope){try{return window.PM&&PM.trancheLabel?PM.trancheLabel(scope):scope==="1"?"T1":scope==="2"?"T2":"Commun";}catch(e){return scope==="1"?"T1":scope==="2"?"T2":"Commun";}}
+function psProjectTranches(project){try{return window.PM&&PM.tranches?PM.tranches(project.id):["common"].concat(project.tranche==="both"?["1","2"]:["1","2"].indexOf(project.tranche)>=0?[project.tranche]:[]);}catch(e){return["common"];}}
+function psFillTranches(preferred,forceChoice){var form=document.getElementById("psSessionForm");if(!form)return"";var project=psProject(form.elements.projectId.value),scopes=project?psProjectTranches(project):[],value=scopes.indexOf(preferred)>=0?preferred:"";if(!value&&!forceChoice)value=project&&["1","2"].indexOf(project.tranche)>=0?project.tranche:"common";var placeholder=forceChoice&&!value?'<option value="">Choisir une tranche</option>':"";form.elements.tranche.innerHTML=placeholder+scopes.map(function(scope){return '<option value="'+psEscape(scope)+'"'+(scope===value?' selected':'')+'>'+psEscape(psTrancheLabel(scope))+'</option>';}).join("");form.elements.tranche.value=value;return value;}
 function psPhaseOptions(project,value){return psArray(project&&project.phases).map(function(phase){return '<option value="'+psEscape(phase.id)+'"'+(phase.id===value?' selected':'')+'>'+psEscape(phase.title)+'</option>';}).join("");}
 function psTaskMeta(task){var bits=[];if(task.deadline)bits.push("À terminer avant "+(typeof pmDate==="function"?pmDate(task.deadline):task.deadline));if(task.note)bits.push(task.note);return bits.join(" · ");}
 function psTaskChoice(task,checked,original){
@@ -3502,18 +3613,19 @@ function psTaskChoice(task,checked,original){
 function psSelected(form){return Array.from(form.querySelectorAll('input[name="taskIds"]:checked')).map(function(input){return input.value;});}
 function psRenderTasks(keep){
   var form=document.getElementById("psSessionForm"),box=document.getElementById("psTaskChoices");if(!form||!box)return;
-  var pid=form.elements.projectId.value,phaseId=form.elements.phaseId.value,project=psProject(pid),selected=keep||psSelected(form),available=[];
-  try{available=window.PM&&PM.availableTasks?PM.availableTasks(pid,phaseId):psArray(project&&project.tasks).filter(function(task){return task.phaseId===phaseId&&task.status!=="done";});}catch(e){available=[];}
+  var pid=form.elements.projectId.value,phaseId=form.elements.phaseId.value,tranche=form.elements.tranche.value,project=psProject(pid),selected=keep||psSelected(form),available=[];
+  if(!tranche){box.innerHTML='<div class="psEmpty"><strong>Choisissez une tranche pour afficher ses actions.</strong></div>';psUpdateCount();return;}
+  try{available=window.PM&&PM.availableTasks?PM.availableTasks(pid,phaseId,tranche):psArray(project&&project.tasks).filter(function(task){return task.phaseId===phaseId&&task.status!=="done"&&psTaskTranche(task)===tranche;});}catch(e){available=[];}
   var seen=Object.create(null),choices=[];
-  planningSessionsUI.originalTaskIds.forEach(function(id){var task=psTask(project,id);if(task&&!seen[id]){seen[id]=true;choices.push({task:task,original:true});}});
+  if(pid===planningSessionsUI.originalProjectId&&tranche===planningSessionsUI.originalTranche)planningSessionsUI.originalTaskIds.forEach(function(id){var task=psTask(project,id);if(task&&psTaskTranche(task)===tranche&&!seen[id]){seen[id]=true;choices.push({task:task,original:true});}});
   available.forEach(function(task){if(!seen[task.id]){seen[task.id]=true;choices.push({task:task,original:false});}});
-  box.innerHTML=choices.length?choices.map(function(item){return psTaskChoice(item.task,selected.indexOf(item.task.id)>=0,item.original);}).join(""):'<div class="psEmpty"><strong>Aucune action restante dans cette phase.</strong><button type="button" class="psTextButton" data-ps-action="open-project">Ouvrir le projet pour ajouter une action</button></div>';
+  box.innerHTML=choices.length?choices.map(function(item){return psTaskChoice(item.task,selected.indexOf(item.task.id)>=0,item.original);}).join(""):'<div class="psEmpty"><strong>Aucune action restante pour '+psEscape(psTrancheLabel(tranche))+' dans cette phase.</strong><button type="button" class="psTextButton" data-ps-action="open-project">Ouvrir le projet pour ajouter une action</button></div>';
   psUpdateCount();
 }
 function psUpdateCount(){var form=document.getElementById("psSessionForm"),count=document.getElementById("psSelectionCount");if(!form||!count)return;var n=psSelected(form).length;count.textContent=n?n+" action"+(n>1?"s":"")+" sélectionnée"+(n>1?"s":""):"Choisissez au moins une action";}
 function psFillPhases(preferred,selectedTasks){
   var form=document.getElementById("psSessionForm"),project=psProject(form&&form.elements.projectId.value);if(!form)return;
-  var phase=preferred||(selectedTasks[0]&&psTask(project,selectedTasks[0])||{}).phaseId||(project&&project.phases[0]&&project.phases[0].id)||"";
+  selectedTasks=psArray(selectedTasks);var phase=preferred||(selectedTasks[0]&&psTask(project,selectedTasks[0])||{}).phaseId||(project&&project.trancheDetails&&project.trancheDetails[form.elements.tranche.value]||{}).phaseId||(project&&project.phases[0]&&project.phases[0].id)||"";
   form.elements.phaseId.innerHTML=psPhaseOptions(project,phase);form.elements.phaseId.value=phase;psRenderTasks(selectedTasks);
 }
 function psClose(){var dialog=document.getElementById("psSessionDialog");if(dialog&&dialog.open)dialog.close();var target=planningSessionsUI.returnFocus;planningSessionsUI.returnFocus=null;if(target&&document.contains(target))requestAnimationFrame(function(){target.focus();});else{var action=document.querySelector('[data-ps-action="new-session"]');if(action)requestAnimationFrame(function(){action.focus();});}}
@@ -3525,10 +3637,12 @@ function openPlanningSession(options){
   var taskIds=psArray(session&&session.taskIds).slice();if(!taskIds.length&&session&&session.taskId)taskIds=[session.taskId];if(taskId&&taskIds.indexOf(taskId)<0)taskIds.push(taskId);
   var projects=window.PM&&PM.projects?PM.projects().filter(function(project){return !project.archived||project.id===projectId;}):[];
   if(!projectId&&projects[0])projectId=projects[0].id;
-  form.reset();planningSessionsUI.returnFocus=document.activeElement;planningSessionsUI.slotId=(session&&session.id)||options.slotId||"";planningSessionsUI.originalTaskIds=session?taskIds.slice():[];planningSessionsUI.seedTaskId=taskId;
+  var project=psProject(projectId),seedTask=psTask(project,taskId),tranche=(session&&session.tranche)||options.tranche||(seedTask&&psTaskTranche(seedTask))||"";
+  form.reset();planningSessionsUI.returnFocus=document.activeElement;planningSessionsUI.slotId=(session&&session.id)||options.slotId||"";planningSessionsUI.originalTaskIds=session?taskIds.slice():[];planningSessionsUI.originalProjectId=session?projectId:"";planningSessionsUI.originalTranche=session?tranche:"";planningSessionsUI.seedTaskId=taskId;
   form.elements.slotId.value=planningSessionsUI.slotId;
   form.elements.projectId.innerHTML=projects.map(function(project){return '<option value="'+psEscape(project.id)+'"'+(project.id===projectId?' selected':'')+'>'+psEscape(psProjectLabel(project))+'</option>';}).join("");
   form.elements.projectId.value=projectId;
+  tranche=psFillTranches(tranche,project&&project.tranche==="both"&&!tranche);
   psFillPhases((session&&session.phaseId)||options.phaseId||"",taskIds);
   form.elements.date.value=(session&&session.date)||psCurrentDate();form.elements.start.value=(session&&session.start)||"09:00";form.elements.end.value=(session&&session.end)||"10:00";
   form.querySelector(".psFormError").textContent="";document.getElementById("psSessionTitle").textContent=session?"Modifier la séance chantier":"Nouvelle séance chantier";form.querySelector('[type="submit"]').textContent=session?"Enregistrer":"Planifier la séance";
@@ -3536,24 +3650,25 @@ function openPlanningSession(options){
 }
 window.openPlanningSession=openPlanningSession;
 
-function psHandleClick(event){var button=event.target.closest("[data-ps-action]");if(!button)return;var action=button.dataset.psAction;if(action==="new-session"){openPlanningSession({});return;}if(action==="cancel"){psClose();return;}if(action==="open-project"){var form=document.getElementById("psSessionForm"),pid=form&&form.elements.projectId.value;psClose();if(pid&&typeof projectNavigate==="function")projectNavigate("project",pid);}}
-function psHandleChange(event){var form=event.target.closest("#psSessionForm");if(!form)return;if(event.target.name==="projectId"){planningSessionsUI.originalTaskIds=[];psFillPhases("",[]);}else if(event.target.name==="phaseId"){psRenderTasks(psSelected(form));}else if(event.target.name==="taskIds")psUpdateCount();}
+function psHandleClick(event){var button=event.target.closest("[data-ps-action]");if(!button)return;var action=button.dataset.psAction;if(action==="new-session"){openPlanningSession({});return;}if(action==="cancel"){psClose();return;}if(action==="open-project"){var form=document.getElementById("psSessionForm"),pid=form&&form.elements.projectId.value;if(pid&&typeof projectUI!=="undefined"&&projectUI.trancheTabs)projectUI.trancheTabs[pid]=form.elements.tranche.value;psClose();if(pid&&typeof projectNavigate==="function")projectNavigate("project",pid);}}
+function psHandleChange(event){var form=event.target.closest("#psSessionForm");if(!form)return;if(event.target.name==="projectId"){planningSessionsUI.originalTaskIds=[];planningSessionsUI.originalProjectId="";planningSessionsUI.originalTranche="";var project=psProject(form.elements.projectId.value);psFillTranches("",project&&project.tranche==="both");psFillPhases("",[]);}else if(event.target.name==="tranche"){psFillPhases("",[]);}else if(event.target.name==="phaseId"){psRenderTasks(psSelected(form));}else if(event.target.name==="taskIds")psUpdateCount();}
+function psHandlePlanningFilter(event){if(event.target.name!=="planningTrancheFilter")return;try{if(window.PM&&PM.setPlanningTrancheFilter)PM.setPlanningTrancheFilter(event.target.value);}catch(ex){if(typeof pmNotify==="function")pmNotify(ex.message||"Impossible de filtrer le planning.");}}
 function psHandleSubmit(event){
   if(event.target.id!=="psSessionForm")return;event.preventDefault();var form=event.target,error=form.querySelector(".psFormError");error.textContent="";
-  try{var pid=form.elements.projectId.value,phaseId=form.elements.phaseId.value,taskIds=psSelected(form),date=form.elements.date.value,start=form.elements.start.value,end=form.elements.end.value;if(!pid)throw new Error("Choisissez un projet.");if(!phaseId)throw new Error("Choisissez une phase.");if(!taskIds.length)throw new Error("Choisissez au moins une action pour cette séance.");if(!date)throw new Error("Choisissez une date.");if(!start||!end||start>=end)throw new Error("L’heure de fin doit être après le début.");PM.scheduleSession(pid,{phaseId:phaseId,taskIds:taskIds,date:date,start:start,end:end},form.elements.slotId.value||undefined);psClose();if(typeof tout==="function")tout();if(typeof renderProjectsUI==="function")renderProjectsUI();if(typeof pmNotify==="function")pmNotify("Séance chantier planifiée.");}
+  try{var pid=form.elements.projectId.value,tranche=form.elements.tranche.value,phaseId=form.elements.phaseId.value,taskIds=psSelected(form),date=form.elements.date.value,start=form.elements.start.value,end=form.elements.end.value;if(!pid)throw new Error("Choisissez un projet.");if(!tranche)throw new Error("Choisissez une tranche pour cette séance.");if(!phaseId)throw new Error("Choisissez une phase.");if(!taskIds.length)throw new Error("Choisissez au moins une action pour cette séance.");if(!date)throw new Error("Choisissez une date.");if(!start||!end||start>=end)throw new Error("L’heure de fin doit être après le début.");PM.scheduleSession(pid,{tranche:tranche,phaseId:phaseId,taskIds:taskIds,date:date,start:start,end:end},form.elements.slotId.value||undefined);psClose();if(typeof tout==="function")tout();if(typeof renderProjectsUI==="function")renderProjectsUI();if(typeof pmNotify==="function")pmNotify("Séance chantier planifiée.");}
   catch(ex){error.textContent=ex.message||"Impossible d’enregistrer la séance.";var invalid=form.querySelector(":invalid");if(invalid)invalid.focus();}
 }
 
 function renderPlanningSessionsUI(){
-  if(!planningSessionsUI.initialized)return;var action=document.querySelector('[data-ps-action="new-session"]');if(action)action.dataset.date=psCurrentDate();
+  if(!planningSessionsUI.initialized)return;var action=document.querySelector('[data-ps-action="new-session"]'),filter=document.querySelector('[name="planningTrancheFilter"]');if(action)action.dataset.date=psCurrentDate();if(filter&&window.PM&&PM.planningTrancheFilter){try{filter.value=PM.planningTrancheFilter()||"all";}catch(e){filter.value="all";}}
 }
 window.renderPlanningSessionsUI=renderPlanningSessionsUI;
 
 function initPlanningSessionsUI(){
   if(planningSessionsUI.initialized)return;var workspace=document.getElementById("planningWorkspace");if(!workspace||!window.PM)return;
-  var intro=workspace.querySelector(".intro"),toolbar=document.createElement("div");toolbar.className="psPlanningToolbar wrap";toolbar.innerHTML='<button type="button" class="psNewSession" data-ps-action="new-session"><span aria-hidden="true">+</span> Séance chantier</button>';(intro||workspace.firstElementChild||workspace).after(toolbar);
-  document.body.insertAdjacentHTML("beforeend",'<dialog class="pmDialog psSessionDialog" id="psSessionDialog" aria-labelledby="psSessionTitle"><div class="pmDialogHead"><div><h2 id="psSessionTitle">Nouvelle séance chantier</h2><p>Regroupez les actions d’une même phase dans un créneau.</p></div><button type="button" class="pmClose" data-ps-action="cancel" aria-label="Fermer">×</button></div><form class="pmForm psSessionForm" id="psSessionForm"><input type="hidden" name="slotId"><div class="psSessionGrid"><label class="pmField psFull" for="psProject"><span>Projet *</span><select id="psProject" name="projectId" required></select></label><label class="pmField psFull" for="psPhase"><span>Phase *</span><select id="psPhase" name="phaseId" required></select></label><fieldset class="psTasks"><legend>Actions de la séance *</legend><span class="psSelectionCount" id="psSelectionCount" aria-live="polite"></span><div class="psTaskChoices" id="psTaskChoices"></div></fieldset><label class="pmField psFull" for="psDate"><span>Date *</span><input id="psDate" type="date" name="date" required></label><label class="pmField" for="psStart"><span>Début *</span><input id="psStart" type="time" name="start" step="300" required></label><label class="pmField" for="psEnd"><span>Fin *</span><input id="psEnd" type="time" name="end" step="300" required></label></div><div class="pmFormError psFormError" role="alert"></div><div class="pmFormActions"><button type="button" class="pmBtn" data-ps-action="cancel">Annuler</button><button type="submit" class="pmBtn pmBtnPrimary">Planifier la séance</button></div></form></dialog>');
-  document.addEventListener("click",psHandleClick);document.addEventListener("change",psHandleChange);document.addEventListener("submit",psHandleSubmit);
+  var intro=workspace.querySelector(".intro"),toolbar=document.createElement("div");toolbar.className="psPlanningToolbar wrap";toolbar.innerHTML='<label class="psPlanningFilter"><span>Tranche</span><select name="planningTrancheFilter" aria-label="Filtrer le planning par tranche"><option value="all">Toutes les tranches</option><option value="1">T1</option><option value="2">T2</option><option value="common">Commun</option></select></label><button type="button" class="psNewSession" data-ps-action="new-session"><span aria-hidden="true">+</span> Séance chantier</button>';(intro||workspace.firstElementChild||workspace).after(toolbar);
+  document.body.insertAdjacentHTML("beforeend",'<dialog class="pmDialog psSessionDialog" id="psSessionDialog" aria-labelledby="psSessionTitle"><div class="pmDialogHead"><div><h2 id="psSessionTitle">Nouvelle séance chantier</h2><p>Regroupez les actions d’une même phase et d’une même tranche dans un créneau.</p></div><button type="button" class="pmClose" data-ps-action="cancel" aria-label="Fermer">×</button></div><form class="pmForm psSessionForm" id="psSessionForm"><input type="hidden" name="slotId"><div class="psSessionGrid"><label class="pmField psFull" for="psProject"><span>Projet *</span><select id="psProject" name="projectId" required></select></label><label class="pmField psFull psTrancheField" for="psTranche"><span>Tranche *</span><select id="psTranche" name="tranche" required></select></label><label class="pmField psFull" for="psPhase"><span>Phase *</span><select id="psPhase" name="phaseId" required></select></label><fieldset class="psTasks"><legend>Actions de la séance *</legend><span class="psSelectionCount" id="psSelectionCount" aria-live="polite"></span><div class="psTaskChoices" id="psTaskChoices"></div></fieldset><label class="pmField psFull" for="psDate"><span>Date *</span><input id="psDate" type="date" name="date" required></label><label class="pmField" for="psStart"><span>Début *</span><input id="psStart" type="time" name="start" step="300" required></label><label class="pmField" for="psEnd"><span>Fin *</span><input id="psEnd" type="time" name="end" step="300" required></label></div><div class="pmFormError psFormError" role="alert"></div><div class="pmFormActions"><button type="button" class="pmBtn" data-ps-action="cancel">Annuler</button><button type="submit" class="pmBtn pmBtnPrimary">Planifier la séance</button></div></form></dialog>');
+  document.addEventListener("click",psHandleClick);document.addEventListener("change",psHandleChange);document.addEventListener("change",psHandlePlanningFilter);document.addEventListener("submit",psHandleSubmit);
   var dialog=document.getElementById("psSessionDialog");dialog.addEventListener("cancel",function(event){event.preventDefault();psClose();});dialog.addEventListener("click",function(event){if(event.target===dialog)psClose();});planningSessionsUI.initialized=true;renderPlanningSessionsUI();
 }
 window.initPlanningSessionsUI=initPlanningSessionsUI;
@@ -3569,27 +3684,25 @@ function planningDeadlineDate(value){
 
 function planningDeadlinesForWeek(){
   var first=iso(lundi),last=iso(plusJours(lundi,6)),days={};
+  var filter=PM.planningTrancheFilter?PM.planningTrancheFilter():"all";
   for(var i=0;i<7;i++)days[iso(plusJours(lundi,i))]=[];
+  function add(date,item){date=planningDeadlineDate(date);if(date>=first&&date<=last&&(filter==="all"||item.tranche===filter))days[date].push(item);}
   pmProjects().filter(function(p){return p&&!p.archived;}).forEach(function(p){
-    var projectDate=planningDeadlineDate(p.deadline);
-    if(projectDate>=first&&projectDate<=last)days[projectDate].push({kind:"project",pid:p.id,project:p.name||"Projet sans nom",title:p.title||"Échéance du projet",done:false});
-    pmArray(p.tasks).forEach(function(t){
-      var taskDate=planningDeadlineDate(t.deadline);
-      if(taskDate>=first&&taskDate<=last)days[taskDate].push({kind:"task",pid:p.id,tid:t.id,project:p.name||"Projet sans nom",title:t.title||"Action sans titre",done:t.status==="done"});
-    });
-    pmArray(p.milestones).forEach(function(m){
-      var milestoneDate=planningDeadlineDate(m.date);
-      if(milestoneDate>=first&&milestoneDate<=last)days[milestoneDate].push({kind:"milestone",pid:p.id,project:p.name||"Projet sans nom",title:m.title||"Jalon sans titre",done:!!m.done});
-    });
+    var name=p.name||"Projet sans nom",scope=p.tranche==="1"||p.tranche==="2"?p.tranche:"common";
+    add(p.deadline,{kind:"project",pid:p.id,project:name,title:p.title||"Échéance du projet",tranche:scope,done:false});
+    ["1","2"].forEach(function(tranche){var detail=p.trancheDetails&&p.trancheDetails[tranche];if(detail)add(detail.deadline,{kind:"tranche",pid:p.id,project:name,title:"Échéance de la tranche "+tranche,tranche:tranche,done:false});});
+    pmArray(p.tasks).forEach(function(t){add(t.deadline,{kind:"task",pid:p.id,tid:t.id,project:name,title:t.title||"Action sans titre",tranche:t.tranche||scope,done:t.status==="done"});});
+    pmArray(p.milestones).forEach(function(m){add(m.date,{kind:"milestone",pid:p.id,project:name,title:m.title||"Jalon sans titre",tranche:scope,done:!!m.done});});
   });
-  Object.keys(days).forEach(function(date){days[date].sort(function(a,b){return a.project.localeCompare(b.project,"fr")||a.title.localeCompare(b.title,"fr");});});
+  Object.keys(days).forEach(function(date){days[date].sort(function(a,b){return a.project.localeCompare(b.project,"fr")||a.tranche.localeCompare(b.tranche)||a.title.localeCompare(b.title,"fr");});});
   return days;
 }
 
 function planningDeadlineItem(item){
   var action=item.kind==="task"?"edit-task":"open-project";
   var type=item.kind==="task"?"Action":item.kind==="milestone"?"Jalon":"Projet";
-  return '<li><button type="button" class="pdItem'+(item.done?' isDone':'')+'" data-pm-action="'+action+'" data-pid="'+pmE(item.pid)+'" data-id="'+pmE(item.pid)+'"'+(item.tid?' data-tid="'+pmE(item.tid)+'"':'')+' title="Ouvrir '+pmE(type.toLowerCase())+' : '+pmE(item.title)+'"><span class="pdType">'+pmE(type)+(item.done?' · Fait':'')+'</span><strong>'+pmE(item.title)+'</strong><small>'+pmE(item.project)+'</small></button></li>';
+  var label=PM.trancheLabel?PM.trancheLabel(item.tranche):(item.tranche==="common"?"Commun":"T"+item.tranche);
+  return '<li><button type="button" class="pdItem'+(item.done?' isDone':'')+'" data-pm-action="'+action+'" data-tranche="'+pmE(item.tranche)+'" data-pid="'+pmE(item.pid)+'" data-id="'+pmE(item.pid)+'"'+(item.tid?' data-tid="'+pmE(item.tid)+'"':'')+' title="Ouvrir '+pmE(type.toLowerCase())+' : '+pmE(item.title)+'"><span class="pdContext"><span class="pdType">'+pmE(type)+(item.done?' · Fait':'')+'</span><span class="pdScope" data-tranche="'+pmE(item.tranche)+'">'+pmE(label)+'</span></span><strong>'+pmE(item.title)+'</strong><small>'+pmE(item.project)+'</small></button></li>';
 }
 
 function pdClose(restoreFocus){

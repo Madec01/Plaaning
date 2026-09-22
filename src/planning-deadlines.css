@@ -19,3 +19,7 @@
 .pdType{color:var(--ink-3);font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.4px}
 .pdItem.isDone strong{text-decoration:line-through}.pdItem.isDone{opacity:.72}
 @media(pointer:coarse){.pdRailDeadline{min-width:32px;min-height:32px}.pdItem{min-height:48px}}
+
+.pdContext{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.pdScope{font-size:10px;font-weight:750;color:var(--ink-2);padding:2px 6px;border:1px solid var(--line-2);border-radius:5px;background:var(--surface)}
+.pdScope[data-tranche="1"]{border-color:#6283c6}.pdScope[data-tranche="2"]{border-color:#65a193}

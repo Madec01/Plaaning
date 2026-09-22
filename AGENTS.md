@@ -26,6 +26,10 @@
   stables ; renommer leur titre ne doit pas perdre les valeurs saisies.
 - Les journées nouvelles sont vides. Une séance garde ses identifiants de tâches
   sélectionnées ; terminer une tâche ne la retire pas des séances existantes.
+- Un projet peut couvrir les deux tranches. Une tâche appartient à Commun, T1
+  ou T2 ; les copies ont des identifiants distincts et ne partagent pas leurs coches.
+  Une séance sélectionne des tâches d’une seule tranche. Les deadlines de tranche
+  sont distinctes des créneaux et de l’échéance générale du projet.
 - Les relations projets/actions/planning reposent sur des identifiants stables,
   jamais uniquement sur les libellés modifiables.
 
@@ -45,5 +49,7 @@
   concernés avec `node tests/projects.spec.cjs` (Playwright + Chromium).
   Les priorités et les nouveaux suivis sont couverts par
   `node tests/priorities.spec.cjs`, ainsi que les séances et échéances du planning.
+- Les migrations, la copie et les parcours T1/T2 sont couverts par
+  `node tests/tranches.spec.cjs`.
 - Pour une modification visuelle, vérifier sur ordinateur et téléphone, dans
   les thèmes clair et sombre.

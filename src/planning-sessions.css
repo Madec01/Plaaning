@@ -1,5 +1,7 @@
 /* Sélecteur de séances chantier */
-.psPlanningToolbar{display:flex;justify-content:flex-end;padding-block:0 13px}
+.psPlanningToolbar{display:flex;justify-content:space-between;align-items:end;gap:12px;padding-block:0 13px}
+.psPlanningFilter{display:flex;flex-direction:column;gap:5px;color:var(--ink-3);font-size:12px;font-weight:650}
+.psPlanningFilter select{min-height:40px;border:1px solid var(--line);border-radius:9px;background:var(--surface);color:var(--ink);padding:7px 34px 7px 10px;font:inherit;font-size:14px}
 .psNewSession{border:0;border-radius:10px;background:var(--accent);color:#fff;padding:10px 16px;font-family:inherit;font-size:14px;font-weight:600;box-shadow:0 5px 14px rgba(30,48,100,.2);cursor:pointer}
 .psNewSession:hover{filter:brightness(1.07)}
 .psNewSession:focus-visible{outline:3px solid color-mix(in srgb,var(--accent) 45%,transparent);outline-offset:3px}
@@ -9,6 +11,8 @@
 .psSessionGrid .psFull,.psTasks{grid-column:1/-1}
 .psSessionGrid .pmField{display:flex;flex-direction:column;gap:6px}
 .psSessionGrid .pmField>span,.psTasks legend{font-weight:650;color:var(--ink)}
+.psTrancheField select:invalid{color:var(--ink-3)}
+.psTrancheField option{color:var(--ink)}
 .psTasks{border:0;margin:2px 0 0;padding:0;min-width:0}
 .psTasks legend{display:block;float:none;margin-bottom:4px}
 .psSelectionCount{display:block;color:var(--ink-3);font-size:12px;margin-top:0}
@@ -27,7 +31,7 @@
 .psTextButton{border:0;background:transparent;color:var(--accent);padding:0;text-decoration:underline;cursor:pointer;font:inherit}
 .psFormError{min-height:20px}
 @media(max-width:620px){
-  .psPlanningToolbar{justify-content:stretch;padding-inline:16px}.psNewSession{width:100%;min-height:44px}
+  .psPlanningToolbar{align-items:stretch;padding-inline:16px}.psPlanningFilter{flex:1}.psPlanningFilter select{width:100%;min-height:44px}.psNewSession{flex:1;min-height:44px}
   .psSessionDialog{width:calc(100vw - 12px);max-height:94vh;margin:auto;padding:16px}
   .psSessionGrid{grid-template-columns:1fr}.psSessionGrid .pmField,.psTasks{grid-column:1}
   .psTaskChoices{max-height:34vh}.psTaskTitle{align-items:flex-start;flex-direction:column;gap:4px}
