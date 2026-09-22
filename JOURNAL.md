@@ -878,3 +878,99 @@ Le format de stockage existant et sa clé `plaaning.v1` sont conservés. Les don
 restent propres au navigateur et à l'emplacement de la page : utiliser Exporter /
 Restaurer pour déplacer le planning. Le volume des séances est un cumul, qui peut
 inclure des horaires qui se chevauchent.
+
+---
+
+## 018 — Gestion de projets : dossier structuré et poste de pilotage
+*22 septembre 2026*
+
+### Demande et choix validé
+Ajouter une page par projet, organisée en Préparation / En cours / Finalisation,
+avec des actions libres, un statut, une échéance et un lien au planning. Création
+par bouton « + », nom, titre, tranche 1 ou 2, codes et labels personnalisables.
+
+Trois directions ont été proposées avant développement : dossier structuré,
+tableau des phases, poste de pilotage. Le choix retenu est le **mélange du dossier
+structuré et du poste de pilotage** : vue transversale à l'accueil, détail lisible
+pour chaque projet, planning partagé.
+
+### Organisation de cette session
+- Coordination et intégration par l'agent principal.
+- Moteur des projets et compatibilité du planning : sous-agent Terra.
+- Ergonomie et interface : sous-agent Sol.
+- Vérification indépendante des parcours et de la migration : sous-agent Sol.
+- Développement sur la branche `codex/gestion-projets`.
+
+### Principes de fonctionnement
+- Identifiants stables : renommer un projet ne doit pas casser ses liens.
+- La phase d'une action et son statut d'avancement sont indépendants.
+- Une échéance est une date limite ; un créneau représente du temps réservé.
+- Plusieurs créneaux peuvent être reliés à la même action.
+- Les données restent locales et l'application reste un fichier HTML autonome.
+- Les sources de l'interface projets sont intégrées dans `index.html` par
+  `python3 tools/build.py`. Aucune étape de compilation n'est nécessaire pour
+  l'utilisateur final.
+
+### Réalisé
+- Navigation **Accueil / Projets / Planning / Personnaliser**, adaptée au téléphone
+  et aux thèmes clair/sombre.
+- Accueil avec projets actifs, échéances, actions en retard, liste d'actions à
+  planifier et prochains créneaux ouvrables dans le planning.
+- Création/édition d'un projet : nom, titre descriptif, tranche, code, labels,
+  échéance ; recherche, filtres et archivage dans la liste.
+- Page projet avec phases repliables, ajout/renommage/réorganisation de phases,
+  actions libres, statut, case de fin, note, labels et échéance.
+- Création et modification des codes et étiquettes. Une étiquette encore utilisée
+  ne peut pas être retirée accidentellement ; son renommage conserve ses liens.
+- Modèles de projet réutilisables, avec phases et actions remises à faire, sans
+  reprendre les créneaux ni les deadlines de l'ancien projet.
+- Plusieurs créneaux par action, accès au jour correspondant, modification des
+  dates/heures et retrait d'une séance sans supprimer l'action.
+- Affichage des tâches projet dans les colonnes et la chronologie. Le compteur du
+  jour ne compte qu'une fois les actions concernées par ses séances.
+- Renommer un projet actualise ses libellés dans le planning tout en conservant
+  les identifiants et références historiques.
+- Migration v2 vers v3 : rassemblement des fiches liées de même nom dans un projet,
+  répartition par phase, conservation des notes et périodes historiques, conversion
+  des sous-tâches datées en créneaux. La tranche reste à compléter pour les dossiers
+  anciens : elle ne peut pas être déduite de leurs données.
+- Export/restauration du nouvel état complet ; contrôle des références, dates,
+  versions et données importées avant tout remplacement.
+- `AGENTS.md` pérennise les consignes de journal, de modèles des sous-agents et de
+  récapitulatif de fin de session.
+
+### Corrections issues de la revue et des essais
+- Un champ caché nommé `id` masquait la propriété native du formulaire : renommé
+  en `projectId`, avec identification explicite des formulaires au submit.
+- Les codes et labels des formulaires sont rafraîchis à l'ouverture, immédiatement
+  après leur création dans Personnaliser. La sélection d'un label unique est conservée.
+- Les anciens créneaux globaux restent liés au projet, sans être attribués
+  arbitrairement à la première sous-tâche.
+- Un déplacement de créneau conserve son identifiant. Un identifiant absent ne
+  crée pas silencieusement une séance en double.
+- Les sauvegardes vides/inconnues sont refusées avant migration ; les imports v3
+  sont validés avant toute normalisation.
+- Les lignes compactes de l'accueil séparent nom, titre et progression. Le focus
+  clavier est conservé après une coche ou un changement de statut.
+
+### Vérifications finales
+- **5 parcours automatisés réussis**, avec Chromium/Playwright : migration et
+  rechargement ; moteur et deux créneaux ; création/édition et labels ; phases,
+  actions, échéances, renommage et synchronisation planning ↔ projet ; export,
+  restauration et refus d'un fichier vide sans mutation ni confirmation.
+- **4 contrôles d'affichage réussis** : 390 et 1440 px, en clair et sombre,
+  sans débordement horizontal ni erreur JavaScript. Captures relues.
+- Vérification complémentaire réelle à **320 px en sombre** : création complète,
+  focus des cases, déplacement d'un créneau en gardant son identifiant, création
+  et utilisation d'un modèle sans dupliquer les séances.
+- Ajustement après inspection : hauteur de navigation calée sur l'en-tête réel,
+  commandes de phase et navigation réorganisées sur les écrans de 320 px.
+- Script de build déterministe, analyse syntaxique JavaScript et
+  `git diff --check` réussis.
+
+### Fichiers concernés
+`index.html`, `src/projects-ui.js`, `src/projects.css`, `tools/build.py`,
+`tests/projects.spec.cjs`, `README.md`, `AGENTS.md` et ce journal.
+
+Le suivi reste personnel et local. Le planning hebdomadaire conserve son cadre
+lundi–vendredi ; les deadlines peuvent tomber n'importe quel jour.
