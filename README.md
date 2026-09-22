@@ -29,17 +29,21 @@ Cocher une action la marque terminée dans toutes les vues.
 ## Un projet sur les deux tranches
 
 Choisir **Tranches 1 et 2** à la création ou dans **Modifier**. La même fiche réunit
-les onglets **Vue globale**, **Commun**, **Tranche 1** et **Tranche 2**. La vue globale
+les onglets **Vue globale**, **Tranche 1** et **Tranche 2**. La vue globale
 compare les avancements ; chaque tranche a sa phase actuelle et sa deadline.
 Les documents, contacts, codes et informations générales restent communs.
 
-Une action appartient à **Commun**, **T1** ou **T2**. Les actions portant le même
+Chaque nouvelle action d’un projet à deux tranches appartient à **T1** ou **T2**. Les actions portant le même
 intitulé dans deux tranches sont indépendantes : cocher celle de T1 ne termine
-pas celle de T2. Le volet Commun contient les actions réalisées une seule fois.
+pas celle de T2. Préparation, en cours et finalisation se suivent dans chaque tranche.
+Les anciennes actions communes restent dans la vue globale, sous **Actions à
+affecter à une tranche**, sans phases communes. Leurs données et séances sont
+conservées ; pour changer la tranche d’une action déjà planifiée, retirer d’abord
+ses créneaux puis la replanifier dans sa tranche.
 **Copier les tâches vers l’autre tranche** crée de nouvelles actions, à faire et
 sans dates, avec des identifiants distincts. Les créneaux ne sont pas copiés.
 
-Dans le planning, choisir la tranche avant les actions. Les séances et les
+Dans le planning, choisir T1 ou T2 avant les actions d’un projet à deux tranches. Les séances et les
 échéances affichent **T1**, **T2** ou **Commun** ; le filtre de tranche permet de
 concentrer la vue. Les réunions et autres activités sans projet restent visibles.
 

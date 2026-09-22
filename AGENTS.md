@@ -26,8 +26,11 @@
   stables ; renommer leur titre ne doit pas perdre les valeurs saisies.
 - Les journées nouvelles sont vides. Une séance garde ses identifiants de tâches
   sélectionnées ; terminer une tâche ne la retire pas des séances existantes.
-- Un projet peut couvrir les deux tranches. Une tâche appartient à Commun, T1
-  ou T2 ; les copies ont des identifiants distincts et ne partagent pas leurs coches.
+- Un projet peut couvrir les deux tranches. Dans ce cas, les nouvelles actions
+  et séances utilisent T1 ou T2, sans onglet ni phases Commun. Les anciennes
+  actions communes restent accessibles dans la vue globale pour affectation,
+  sans suppression ni changement automatique de tranche. Les copies ont des
+  identifiants distincts et ne partagent pas leurs coches.
   Une séance sélectionne des tâches d’une seule tranche. Les deadlines de tranche
   sont distinctes des créneaux et de l’échéance générale du projet.
 - Les relations projets/actions/planning reposent sur des identifiants stables,

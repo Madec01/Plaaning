@@ -1271,3 +1271,35 @@ l'intégration, la revue des données et les contrôles visuels.
 - Contrôles de syntaxe JavaScript, build autonome et diff sans erreur.
 
 Livraison par demande de fusion GitHub, sans modification automatique de main.
+
+## 024 — Retrait du volet Commun des projets T1 + T2
+
+Demande : les préparations, travaux et finalisations se suivent séparément dans
+chaque tranche ; supprimer l’onglet Commun.
+
+Modifications :
+- La fiche à deux tranches présente Vue globale, T1 et T2 uniquement. Le résumé
+  d’avancement Commun et ses phases disparaissent. Les anciens liens vers ce
+  volet ouvrent la vue globale.
+- Une nouvelle action demande T1 ou T2, avec présélection dans le volet de la
+  tranche. Une nouvelle séance d’un projet à deux tranches suit le même choix.
+- Les anciennes actions communes restent visibles dans une liste « Actions à
+  affecter à une tranche », sans phases communes ni affectation automatique.
+  Notes, échéances, coches et liens existants sont conservés. Une ancienne séance
+  commune reste modifiable ; le moteur protège les changements de tranche des
+  actions déjà planifiées en demandant de retirer d’abord leurs créneaux.
+- Le bouton Planifier d’une action à affecter ouvre ses détails pour choisir la
+  tranche. Les documents et contacts restent dans les informations du projet.
+- README et consignes du dépôt actualisés. Travail partagé avec un sous-agent
+  Sol pour l’interface projet ; intégration, séances et vérifications par le principal.
+
+Vérifications :
+- Suite projets validée : cinq scénarios et quatre configurations d’affichage.
+- Suite tranches validée : sept scénarios, dont l’absence d’onglet/phases communes,
+  le choix T1/T2 obligatoire, la réaffectation d’une ancienne action en conservant
+  note et échéance, et l’édition d’une ancienne séance commune.
+- Douze captures ordinateur/mobile, clair/sombre, sans débordement ni erreur JS ;
+  contrôle visuel de la vue globale sur mobile.
+- Syntaxe JavaScript, génération du fichier autonome et diff vérifiés.
+
+Livraison par demande de fusion GitHub, sans fusion automatique dans main.
